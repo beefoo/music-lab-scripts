@@ -1,1 +1,7 @@
-.sass-cache
+samples/
+output/
+.project
+_dev/
+
+*.wav
+*.ogg

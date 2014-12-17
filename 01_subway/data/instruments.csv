@@ -1,0 +1,28 @@
+Name	Type	Price	File
+Hands	Percussion	0	
+Voice	Wind	0	fulani_vocals_01.wav
+Shakers	Percussion	20	
+Blocks	Percussion	20	
+Maracas	Percussion	30	
+Tambourine	Percussion	50	
+Cowbell	Percussion	50	
+Harmonica	Wind	60	boxer_harmonica_02.wav
+Bongos	Percussion	100	
+Chimes	Percussion	100	
+Cymbal	Percussion	200	1train_cymbal_01.wav
+Drum Machine	Percussion	200	fulani_drum_01.wav
+Snare Drum	Percussion	300	1train_snare_01.wav
+Bass Drum	Percussion	400	1train_kick_01.wav
+Acoustic Guitar	Guitar	400	boxer_guitar_02.wav
+Banjo	Guitar	400	
+Synthesizer	Electronic	500	1train_synth_01.wav
+Electric Guitar	Guitar	600	nyc_guitar_04.wav
+Bass Guitar	Guitar	600	
+Keyboard	Piano	800	
+Flute	Wind	800	
+Trumpet	Brass	1000	
+Clarinet	Wind	1000	
+Violin	String	1000	1train_strings_01.wav
+Saxaphone	Wind	2000	
+Bass	String	2000	
+Piano	Piano	5000	piss_factory_piano_01.wav
