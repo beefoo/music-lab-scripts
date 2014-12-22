@@ -1,4 +1,4 @@
-Name	Type	Price	File	Gain	Borough	Positions	Beats	Active
+Name	Type	Price	File	Gain	Borough	Pattern	Beats	Active
 Piano	Piano	5000	piss_factory_piano_01.wav	0.5	Any	0	2	1
 French Horn	Brass	2000		0.5	Any	0	1	0
 Saxaphone	Wind	2000		0.5	Any	0	1	0
@@ -12,11 +12,11 @@ Electric Guitar 3	Guitar	600	nyc_guitar_03.wav	0.5	Any	0	2	1
 Electric Guitar 4	Guitar	600	nyc_guitar_04.wav	0.5	Any	8	2	1
 Bass Guitar	Guitar	600		0.5	Any	0	1	0
 Synthesizer	Electronic	500	1train_synth_01.wav	0.5	Any	0	2	1
-Bass Drum	Percussion	400	1train_kick_01.wav	0.5	Any	0,2,8	2	1
+Bass Drum	Percussion	400	1train_kick_01.wav	0.5	Any	0,4,8,20,30	4	1
 Acoustic Guitar	Guitar	400	boxer_guitar_02.wav	0.5	Any	0	1	1
 Banjo	Guitar	400		0.5	Any	0	1	0
-Snare Drum	Percussion	300	1train_snare_01.wav	0.5	Any	4,12	2	1
-Cymbal	Percussion	200	1train_cymbal_01.wav	0.5	Any	0,4,8,12	1	1
+Snare Drum	Percussion	300	1train_snare_01.wav	0.5	Any	8,14,18,24	4	1
+Cymbal	Percussion	200	1train_cymbal_01.wav	0.5	Any	0,4	1	1
 Drum Machine	Percussion	200	fulani_drum_01.wav	0.5	Any	0	2	1
 Bongos	Percussion	100		0.5	Any	0	1	0
 Chimes	Percussion	100		0.5	Any	0	1	0

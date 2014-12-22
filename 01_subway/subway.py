@@ -41,7 +41,7 @@ sequence = []
 with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 	r = csv.reader(f, delimiter='\t')
 	next(r, None) # remove header
-	for name,type,price,file,gain,borough,positions,beats,active in r:
+	for name,type,price,file,gain,borough,pattern,beats,active in r:
 		if file and int(active):
 			instruments.append({
 				'name': name,
@@ -50,7 +50,7 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 				'file': INSTRUMENTS_DIR + file,
 				'gain': round(float(gain), 1),
 				'borough': borough.lower(),
-				'positions': [int(n) for n in positions.split(',')],
+				'pattern': [int(n) for n in pattern.split(',')],
 				'beats': int(beats)
 			})			
 
@@ -143,11 +143,11 @@ print('Average beats per station: '+(str(1.0*total_beats/station_count))+' ('+(s
 
 # Determine if we should play this instrument at a particular beat/division
 def canPlayInstrument(instrument, beat, division):
-	positions = instrument['positions']
+	pattern = instrument['pattern']
 	beat_range = instrument['beats']
 	valid_position = (beat % beat_range) * DIVISIONS_PER_BEAT + division
 	canPlay = False
-	for position in positions:
+	for position in pattern:
 		if position == valid_position:
 			canPlay = True
 			break
@@ -161,14 +161,18 @@ for index, station in enumerate(stations):
 			instrumentPlayed = False
 			for instrument in station['instruments']:
 				if canPlayInstrument(instrument, beat, division):
+					my_ms = ms
+					if my_ms > 0:
+						my_ms += DIVISION_MS
 					sequence.append({
 						'instrument_index': instrument['idx'],
 						'position': 0,
 						'gain': instrument['gain'],
 						'rate': 1,
-						'milliseconds': int(ms)
+						'milliseconds': int(my_ms)
 					})
 					instrumentPlayed = True
+					ms = 0
 			if 	instrumentPlayed:
 				ms = 0
 			else:
