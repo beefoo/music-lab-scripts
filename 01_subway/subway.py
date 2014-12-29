@@ -13,7 +13,7 @@ import random
 import re
 
 # Config
-BPM = 75
+BPM = 90
 DIVISIONS_PER_BEAT = 8
 METERS_PER_BEAT = 75
 INSTRUMENTS_INPUT_FILE = 'data/instruments.csv'
@@ -34,25 +34,79 @@ print('Building sequence at '+str(BPM)+' BPM ('+str(BEAT_MS)+'ms per beat) with 
 
 # Initialize Variables
 instruments = []
+instrument_groups = []
+instrument_price_groups = []
 stations = []
 sequence = []
+
+def halton(index, base):
+	result = 0.0
+	f = 1.0 / base
+	i = 1.0 * index
+	while(i > 0):
+		result += f * (i % base)  
+		i = math.floor(i / base)
+		f = f / base
+	return result
+
+# Find index of first item that matches value
+def findInList(list, key, value):
+	found = -1
+	for index, item in enumerate(list):
+		if item[key] == value:
+			found = index
+			break
+	return found
+
+# Add item to list given key, value
+def addToList(list, key, value, items_key, item):
+	index = findInList(list, key, value)
+	if index >= 0:
+		list[index][items_key].append(item)
+	else:
+		index = len(list)
+		new_item = {}
+		new_item[key] = value
+		new_item[items_key] = [item]
+		list.append(new_item)
+	return list[index]
 
 # Read instruments from file
 with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 	r = csv.reader(f, delimiter='\t')
 	next(r, None) # remove header
-	for name,type,price,file,gain,borough,pattern,beats,active in r:
+	for name,type,price,file,gain,borough,pattern1,pattern2,pattern3,beats,active in r:
 		if file and int(active):
-			instruments.append({
+			group_name = name.lower().replace(' ', '_')
+			index = len(instruments)
+			# determine valid patterns
+			patterns = [
+				[int(n) for n in pattern1.split(',')],
+				[int(n) for n in pattern2.split(',')],
+				[int(n) for n in pattern3.split(',')]
+			]
+			valid_patterns = []
+			for pattern in patterns:
+				if len(pattern) > 0 and pattern[0] >= 0:
+					valid_patterns.append(pattern)
+			# add instrument to instruments, groups, and prices
+			instrument = {
+				'index': index,
+				'group': group_name,
 				'name': name,
 				'type': type.lower().replace(' ', '_'),
 				'price': int(price),
 				'file': INSTRUMENTS_DIR + file,
 				'gain': round(float(gain), 1),
 				'borough': borough.lower(),
-				'pattern': [int(n) for n in pattern.split(',')],
+				'patterns': valid_patterns,
 				'beats': int(beats)
-			})			
+			}
+			instruments.append(instrument)
+			group = addToList(instrument_groups, 'name', instrument['group'], 'instruments', instrument)
+			if len(group['instruments']) <= 1:
+				price_group = addToList(instrument_price_groups, 'price', instrument['price'], 'instrument_groups', group)
+
 
 # Read stations from file
 with open(STATIONS_INPUT_FILE, 'rb') as f:
@@ -80,36 +134,26 @@ def distBetweenCoords(lat1, lng1, lat2, lng2):
 	dist = float(earthRadius * c)
 	return dist
 	
-def getInstrumentIndex(name):
-	return next((index for index, instrument in enumerate(instruments) if instrument['name'] == name), 0)
+def chooseInstrumentGroup(hindex, groups):
+	l = len(groups)
+	h = halton(hindex, 2)
+	index = int(math.floor(h*l))
+	return groups[index]
 
 # Buy instruments based on a specified budget
 def buyInstruments(budget):
+	hindex = 0
 	instruments_cart = []
-	instruments_shelf = instruments[:]
-	count = 0
+	instruments_shelf = instrument_price_groups[:]
 	while(len(instruments_shelf) > 0 and budget > 0):
 		for idx, i in enumerate(instruments_shelf):
-			# Alternate percussion and non-percussion instruments
-			if count % 2 == 0:
-				if i['type'] != 'percussion' and i['price'] < budget:
-					budget -= i['price']
-					new_instrument = instruments_shelf.pop(idx)
-					new_instrument['idx'] = getInstrumentIndex(new_instrument['name'])
-					instruments_cart.append(new_instrument)
-					break
-				elif i['type'] != 'percussion':
-					instruments_shelf.pop(idx)
-			else:
-				if i['type'] == 'percussion' and i['price'] < budget:
-					budget -= i['price']
-					new_instrument = instruments_shelf.pop(idx)
-					new_instrument['idx'] = getInstrumentIndex(new_instrument['name'])
-					instruments_cart.append(new_instrument)
-					break
-				elif i['type'] == 'percussion':
-					instruments_shelf.pop(idx)
-		count += 1
+			instrument_price_group = instruments_shelf.pop(idx)
+			instrument_group = chooseInstrumentGroup(hindex, instrument_price_group['instrument_groups'])
+			hindex += 1
+			if i['price'] < budget:
+				budget -= i['price']			
+				instruments_cart.append(instrument_group)
+				break
 	return instruments_cart
 
 # Pre-process stations
@@ -141,9 +185,15 @@ print('Distance range in meters: ['+str(min_distance)+','+str(max_distance)+']')
 print('Total beats: '+str(total_beats)+' ('+str(minutes)+' minutes)')
 print('Average beats per station: '+(str(1.0*total_beats/station_count))+' ('+(str(1.0*minutes/station_count*60))+' seconds)')
 
+def choosePattern(hindex, patterns):
+	l = len(patterns)
+	h = halton(hindex, 3)
+	index = int(math.floor(h*l))
+	return patterns[index]
+
 # Determine if we should play this instrument at a particular beat/division
-def canPlayInstrument(instrument, beat, division):
-	pattern = instrument['pattern']
+def canPlayInstrument(instrument, beat, division, hindex):
+	pattern = choosePattern(hindex, instrument['patterns'])
 	beat_range = instrument['beats']
 	valid_position = (beat % beat_range) * DIVISIONS_PER_BEAT + division
 	canPlay = False
@@ -152,27 +202,30 @@ def canPlayInstrument(instrument, beat, division):
 			canPlay = True
 			break
 	return canPlay
-
+	
 # Build sequence
 ms = 0
 for index, station in enumerate(stations):
+	hindex = 0
 	for beat in range(station['beats']):
 		for division in range(DIVISIONS_PER_BEAT):
 			instrumentPlayed = False
-			for instrument in station['instruments']:
-				if canPlayInstrument(instrument, beat, division):
-					my_ms = ms
-					if my_ms > 0:
-						my_ms += DIVISION_MS
-					sequence.append({
-						'instrument_index': instrument['idx'],
-						'position': 0,
-						'gain': instrument['gain'],
-						'rate': 1,
-						'milliseconds': int(my_ms)
-					})
-					instrumentPlayed = True
-					ms = 0
+			for instrument_group in station['instruments']:
+				for instrument in instrument_group['instruments']:					
+					if canPlayInstrument(instrument, beat, division, hindex):
+						my_ms = ms
+						if my_ms > 0:
+							my_ms += DIVISION_MS
+						sequence.append({
+							'instrument_index': instrument['index'],
+							'position': 0,
+							'gain': instrument['gain'],
+							'rate': 1,
+							'milliseconds': int(my_ms)
+						})
+						instrumentPlayed = True
+						ms = 0
+					hindex += 1
 			if 	instrumentPlayed:
 				ms = 0
 			else:
