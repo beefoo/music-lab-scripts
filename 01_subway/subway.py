@@ -11,9 +11,11 @@ import math
 import os
 import random
 import re
+import time
 
 # Config
-BPM = 100
+BPM_MIN = 60
+BPM_MAX = 110
 DIVISIONS_PER_BEAT = 4
 METERS_PER_BEAT = 50
 INSTRUMENTS_INPUT_FILE = 'data/instruments.csv'
@@ -26,10 +28,11 @@ WRITE_SEQUENCE = True
 WRITE_SUMMARY = True
 
 # Calculations
-BEAT_MS = round(60.0 / BPM * 1000)
-DIVISION_MS = round(1.0 * BEAT_MS / DIVISIONS_PER_BEAT)
+AVG_BPM = 0.5 * (BPM_MAX - BPM_MIN)
+MIN_BEAT_MS = round(60.0 / BPM_MAX * 1000)
+MAX_BEAT_MS = round(60.0 / BPM_MIN * 1000)
 
-print('Building sequence at '+str(BPM)+' BPM ('+str(BEAT_MS)+'ms per beat) with '+str(DIVISION_MS)+'ms per division')
+print('Building sequence at '+str(BPM_MIN)+'-'+str(BPM_MAX)+' BPM ('+str(MIN_BEAT_MS)+'-'+str(MAX_BEAT_MS)+'ms per beat)')
 
 # Initialize Variables
 instruments = []
@@ -107,7 +110,6 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 			if len(group['instruments']) <= 1:
 				price_group = addToList(instrument_price_groups, 'price', instrument['price'], 'instrument_groups', group)
 
-
 # Read stations from file
 with open(STATIONS_INPUT_FILE, 'rb') as f:
 	r = csv.reader(f, delimiter='\t')
@@ -179,12 +181,12 @@ for index, station in enumerate(stations):
 			min_distance = distance
 
 # Calculate how many beats
-minutes = round(1.0*total_beats/BPM, 2)
+minutes = round(1.0*total_beats/AVG_BPM, 2)
 station_count = len(stations)-1
 print('Total distance in meters: '+str(round(total_distance)))
 print('Distance range in meters: ['+str(min_distance)+','+str(max_distance)+']')
-print('Total beats: '+str(total_beats)+' ('+str(minutes)+' minutes)')
-print('Average beats per station: '+(str(1.0*total_beats/station_count))+' ('+(str(1.0*minutes/station_count*60))+' seconds)')
+print('Total beats: '+str(total_beats))
+print('Average beats per station: '+str(1.0*total_beats/station_count))
 
 # Choose pattern from a list of patterns
 def choosePattern(hindex, patterns):
@@ -205,7 +207,18 @@ def canPlayInstrument(instrument, beat, division, hindex):
 			break
 	return canPlay
 
+def getMS(beat, division, total_beats, divisions_per_beat, min_ms, max_ms):
+	total_divisions = total_beats * divisions_per_beat
+	current_division = beat * divisions_per_beat + division
+	percent_complete = 1.0 * current_division / total_divisions
+	multiplier = abs(0.5 - percent_complete) * 2.0
+	min = 1.0 * min_ms / divisions_per_beat
+	max = 1.0 * max_ms / divisions_per_beat
+	ms = multiplier * (max - min) + min
+	return ms
+
 # Build sequence
+total_ms = 0
 ms = 0
 hindex = 0
 # Each station
@@ -228,8 +241,15 @@ for index, station in enumerate(stations):
 						})
 						ms = 0
 					hindex += 1
-			ms += DIVISION_MS
-				
+			inc = getMS(beat, division, station['beats'], DIVISIONS_PER_BEAT, MIN_BEAT_MS, MAX_BEAT_MS)
+			ms += inc
+			total_ms += inc
+
+total_seconds = int(1.0*total_ms/1000)
+seconds_per_station = int(1.0*total_seconds/station_count)
+print('Total time: '+time.strftime('%M:%S', time.gmtime(total_seconds)) + '(' + str(total_seconds) + 's)')
+print('Average time per station: '+time.strftime('%M:%S', time.gmtime(seconds_per_station)))
+			
 # Write instruments to file
 if WRITE_SEQUENCE:
 	with open(INSTRUMENTS_OUTPUT_FILE, 'wb') as f:
