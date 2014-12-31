@@ -1,35 +1,35 @@
 Name	Type	Price	File	Gain	Borough	Pattern 1	Pattern 2	Pattern 3	Beats	Active
-Piano	Piano	5000	piss_factory_piano_01.wav	0.1	Any	0	-1	-1	2	1
+Piano 1	Piano	5000	rhapsody_piano_01.wav	0.1	Any	0	-1	-1	1	1
+Piano 1	Piano	5000	rhapsody_piano_02.wav	0.1	Any	2	-1	-1	1	1
+Piano 1	Piano	5000	rhapsody_piano_03.wav	0.1	Any	1	-1	-1	1	1
 French Horn	Brass	2000		0.1	Any	0	-1	-1	1	0
 Saxaphone	Wind	2000		0.1	Any	0	-1	-1	1	0
-Bass	String	2000		0.1	Any	0	-1	-1	1	0
-Trumpet	Brass	1000		0.1	Any	0	-1	-1	1	0
-Clarinet	Wind	1000		0.1	Any	0	-1	-1	1	0
-Violin	String	1000	1train_strings_01.wav	0.1	Any	0	-1	-1	4	1
+Bass	String	2000	blown_cello_01.wav	0.1	Any	0	-1	-1	1	1
+Trumpet	Brass	1000	nocturne_horn_02.wav	0.1	Any	0,2	-1	-1	1	1
+Clarinet	Wind	1000	rhapsody_clarinet_01.wav	0.1	Any	0,2	-1	-1	1	1
+Violin	String	1000		0.1	Any	0	-1	-1	1	0
 Keyboard	Piano	800		0.1	Any	0	-1	-1	1	0
 Flute	Wind	800		0.1	Any	0	-1	-1	1	0
-Electric Guitar 3	Guitar	600	nyc_guitar_03.wav	0.1	Any	0	-1	-1	2	1
-Electric Guitar 4	Guitar	600	nyc_guitar_04.wav	0.1	Any	8	-1	-1	2	1
-Bass Guitar	Guitar	600		0.1	Any	0	-1	-1	1	0
-Synthesizer	Electronic	500	1train_synth_01.wav	0.1	Any	0	-1	-1	2	1
-Bass Drum	Percussion	400	1train_kick_01.wav	0.1	Any	0,4,8,20,30	-1	-1	4	1
-Acoustic Guitar	Guitar	400	boxer_guitar_02.wav	0.1	Any	0	-1	-1	1	1
+Electric Guitar 3	Guitar	600		0.1	Any	0	-1	-1	1	0
+Electric Guitar 4	Guitar	600		0.1	Any	8	-1	-1	1	0
+Bass Guitar 1	Guitar	600	blown_bass_01.wav	0.1	Any	0,2	-1	-1	1	1
+Bass Guitar 2	Guitar	600	blown_bass_02.wav	0.1	Any	0,2	-1	-1	1	1
+Synthesizer	Electronic	500		0.1	Any	0	-1	-1	1	0
+Bass Drum	Percussion	400		0.1	Any	0	-1	-1	1	0
+Acoustic Guitar	Guitar	400		0.1	Any	0	-1	-1	1	0
 Banjo	Guitar	400		0.1	Any	0	-1	-1	1	0
-Snare Drum	Percussion	300	1train_snare_01.wav	0.1	Any	8,14,18,24	-1	-1	4	1
-Cymbal	Percussion	200	1train_cymbal_01.wav	0.1	Any	0,4	-1	-1	1	1
-Drum Machine	Percussion	200	fulani_drum_01.wav	0.1	Any	0,4	-1	-1	1	1
+Snare Drum	Percussion	300		0.1	Any	0	-1	-1	1	0
+Cymbal	Percussion	200	l_train_cymbal_01.wav	0.1	Any	0,2	-1	-1	1	1
+Drum Machine	Percussion	200		0.1	Any	0	-1	-1	1	0
 Bongos	Percussion	100		0.1	Any	0	-1	-1	1	0
 Chimes	Percussion	100		0.1	Any	0	-1	-1	1	0
-Harmonica	Wind	60	boxer_harmonica_02.wav	0.1	Any	0	-1	-1	1	1
+Harmonica	Wind	60		0.1	Any	0	-1	-1	1	0
 Tambourine	Percussion	50		0.1	Any	0	-1	-1	1	0
 Cowbell	Percussion	50		0.1	Any	0	-1	-1	1	0
 Maracas	Percussion	30		0.1	Any	0	-1	-1	1	0
 Shakers	Percussion	20		0.1	Any	0	-1	-1	1	0
 Blocks	Percussion	20		0.1	Any	0	-1	-1	1	0
 Hands	Percussion	0		0.1	Any	0	-1	-1	1	0
-Voice 1	Wind	0	subway_gospel_vocals_01.wav	0.1	Any	0	-1	-1	4	1
-Voice 1	Wind	0	subway_gospel_vocals_02.wav	0.1	Any	8	-1	-1	4	1
-Voice 1	Wind	0	subway_gospel_vocals_03.wav	0.1	Any	16	-1	-1	4	1
-Voice 1	Wind	0	subway_gospel_vocals_04.wav	0.1	Any	24	-1	-1	4	1
-Voice 2	Wind	0	fulani_vocals_01.wav	0.1	Any	0	-1	-1	4	0
-Voice 2	Wind	0	fulani_vocals_02.wav	0.1	Any	16	-1	-1	4	0
+Voice 1	Wind	0	diner_vocals_02.wav	0.1	Any	0	-1	-1	2	1
+Voice 1	Wind	0	diner_vocals_03.wav	0.1	Any	2	-1	-1	2	1
+Voice 1	Wind	0	diner_vocals_05.wav	0.1	Any	4	-1	-1	2	1

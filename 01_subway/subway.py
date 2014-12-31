@@ -13,16 +13,15 @@ import random
 import re
 
 # Config
-BPM = 90
-DIVISIONS_PER_BEAT = 8
-METERS_PER_BEAT = 75
+BPM = 100
+DIVISIONS_PER_BEAT = 4
+METERS_PER_BEAT = 50
 INSTRUMENTS_INPUT_FILE = 'data/instruments.csv'
 STATIONS_INPUT_FILE = 'data/stations.csv'
 SUMMARY_OUTPUT_FILE = 'data/ck_summary.csv'
 INSTRUMENTS_OUTPUT_FILE = 'data/ck_instruments.csv'
 SEQUENCE_OUTPUT_FILE = 'data/ck_sequence.csv'
 INSTRUMENTS_DIR = 'instruments/'
-SEQUENCE_MODE = 'random' # options: random, fixed
 WRITE_SEQUENCE = True
 WRITE_SUMMARY = True
 
@@ -38,6 +37,7 @@ instrument_groups = []
 instrument_price_groups = []
 stations = []
 sequence = []
+hindex = 0
 
 def halton(index, base):
 	result = 0.0
@@ -133,16 +133,17 @@ def distBetweenCoords(lat1, lng1, lat2, lng2):
 	c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
 	dist = float(earthRadius * c)
 	return dist
-	
+
+# Choose instrument group from a list of groups
 def chooseInstrumentGroup(hindex, groups):
 	l = len(groups)
-	h = halton(hindex, 2)
+	h = halton(hindex, 3)
 	index = int(math.floor(h*l))
 	return groups[index]
 
 # Buy instruments based on a specified budget
 def buyInstruments(budget):
-	hindex = 0
+	global hindex
 	instruments_cart = []
 	instruments_shelf = instrument_price_groups[:]
 	while(len(instruments_shelf) > 0 and budget > 0):
@@ -185,6 +186,7 @@ print('Distance range in meters: ['+str(min_distance)+','+str(max_distance)+']')
 print('Total beats: '+str(total_beats)+' ('+str(minutes)+' minutes)')
 print('Average beats per station: '+(str(1.0*total_beats/station_count))+' ('+(str(1.0*minutes/station_count*60))+' seconds)')
 
+# Choose pattern from a list of patterns
 def choosePattern(hindex, patterns):
 	l = len(patterns)
 	h = halton(hindex, 3)
@@ -202,35 +204,32 @@ def canPlayInstrument(instrument, beat, division, hindex):
 			canPlay = True
 			break
 	return canPlay
-	
+
 # Build sequence
 ms = 0
+hindex = 0
+# Each station
 for index, station in enumerate(stations):
-	hindex = 0
+	# Each beat in station
 	for beat in range(station['beats']):
+		# Each division in beat
 		for division in range(DIVISIONS_PER_BEAT):
-			instrumentPlayed = False
+			# Each instrument group in station
 			for instrument_group in station['instruments']:
-				for instrument in instrument_group['instruments']:					
+				# Each instrument in group
+				for instrument in instrument_group['instruments']:
 					if canPlayInstrument(instrument, beat, division, hindex):
-						my_ms = ms
-						if my_ms > 0:
-							my_ms += DIVISION_MS
 						sequence.append({
 							'instrument_index': instrument['index'],
 							'position': 0,
 							'gain': instrument['gain'],
 							'rate': 1,
-							'milliseconds': int(my_ms)
+							'milliseconds': int(ms)
 						})
-						instrumentPlayed = True
 						ms = 0
 					hindex += 1
-			if 	instrumentPlayed:
-				ms = 0
-			else:
-				ms += DIVISION_MS
-
+			ms += DIVISION_MS
+				
 # Write instruments to file
 if WRITE_SEQUENCE:
 	with open(INSTRUMENTS_OUTPUT_FILE, 'wb') as f:
