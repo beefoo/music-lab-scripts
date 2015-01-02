@@ -15,9 +15,9 @@ import time
 
 # Config
 BPM_MIN = 60
-BPM_MAX = 110
+BPM_MAX = 100
 DIVISIONS_PER_BEAT = 4
-METERS_PER_BEAT = 50
+METERS_PER_BEAT = 40
 INSTRUMENTS_INPUT_FILE = 'data/instruments.csv'
 STATIONS_INPUT_FILE = 'data/stations.csv'
 SUMMARY_OUTPUT_FILE = 'data/ck_summary.csv'
@@ -78,7 +78,7 @@ def addToList(list, key, value, items_key, item):
 with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 	r = csv.reader(f, delimiter='\t')
 	next(r, None) # remove header
-	for name,type,price,file,gain,borough,pattern1,pattern2,pattern3,beats,active in r:
+	for name,type,price,file,gain_min,gain_max,borough,pattern1,pattern2,pattern3,beats,active in r:
 		if file and int(active):
 			group_name = name.lower().replace(' ', '_')
 			index = len(instruments)
@@ -92,7 +92,7 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 			for pattern in patterns:
 				if len(pattern) > 0 and pattern[0] >= 0:
 					valid_patterns.append(pattern)
-			# add instrument to instruments, groups, and prices
+			# build instrument object
 			instrument = {
 				'index': index,
 				'group': group_name,
@@ -100,11 +100,16 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 				'type': type.lower().replace(' ', '_'),
 				'price': int(price),
 				'file': INSTRUMENTS_DIR + file,
-				'gain': round(float(gain), 1),
+				'gain_min': round(float(gain_min), 1),
+				'gain_max': round(float(gain_max), 1),
 				'borough': borough.lower(),
 				'patterns': valid_patterns,
 				'beats': int(beats)
 			}
+			# check gain bounds
+			if instrument['gain_min'] > instrument['gain_max']:
+				instrument['gain_min'],instrument['gain_max'] = instrument['gain_max'],instrument['gain_min']
+			# add instrument to instruments, groups, and prices
 			instruments.append(instrument)
 			group = addToList(instrument_groups, 'name', instrument['group'], 'instruments', instrument)
 			if len(group['instruments']) <= 1:
@@ -207,11 +212,26 @@ def canPlayInstrument(instrument, beat, division, hindex):
 			break
 	return canPlay
 
-def getMS(beat, division, total_beats, divisions_per_beat, min_ms, max_ms):
+# Determine multiplier based on current position in sequence
+def getMultiplier(beat, division, total_beats, divisions_per_beat):
 	total_divisions = total_beats * divisions_per_beat
 	current_division = beat * divisions_per_beat + division
 	percent_complete = 1.0 * current_division / total_divisions
 	multiplier = abs(0.5 - percent_complete) * 2.0
+	return multiplier
+
+# Determine gain based on current position in sequence
+def getGain(instrument, beat, division, total_beats, divisions_per_beat):
+	multiplier = getMultiplier(beat, division, total_beats, divisions_per_beat)
+	multiplier = 1.0 - multiplier
+	min = instrument['gain_min']
+	max = instrument['gain_max']
+	gain = multiplier * (max - min) + min
+	return gain
+
+# Determine interval in ms based on current position in sequence
+def getMS(beat, division, total_beats, divisions_per_beat, min_ms, max_ms):
+	multiplier = getMultiplier(beat, division, total_beats, divisions_per_beat)
 	min = 1.0 * min_ms / divisions_per_beat
 	max = 1.0 * max_ms / divisions_per_beat
 	ms = multiplier * (max - min) + min
@@ -235,7 +255,7 @@ for index, station in enumerate(stations):
 						sequence.append({
 							'instrument_index': instrument['index'],
 							'position': 0,
-							'gain': instrument['gain'],
+							'gain': getGain(instrument, beat, division, station['beats'], DIVISIONS_PER_BEAT),
 							'rate': 1,
 							'milliseconds': int(ms)
 						})
