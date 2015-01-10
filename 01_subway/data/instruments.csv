@@ -1,4 +1,0 @@
-Name	Type	Price	File	Gain Min	Gain Max	From Tempo	To Tempo	Beats Per Phase	Borough	Active
-Piano 1	String	500	rhapsody_piano_01.wav	0.05	0.5	1	0.5	16	Any	1
-Piano 2	String	500	rhapsody_piano_02.wav	0.05	0.5	1	1.5	16	Any	1
-Piano 3	String	500	rhapsody_piano_03.wav	0.05	0.5	1	2	16	Any	1
