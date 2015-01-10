@@ -14,8 +14,9 @@ import re
 import time
 
 # Config
-BPM = 90
+BPM = 75
 METERS_PER_BEAT = 40
+DIVISIONS_PER_BEAT = 32
 INSTRUMENTS_INPUT_FILE = 'data/instruments.csv'
 STATIONS_INPUT_FILE = 'data/stations.csv'
 SUMMARY_OUTPUT_FILE = 'data/ck_summary.csv'
@@ -27,6 +28,7 @@ WRITE_SUMMARY = True
 
 # Calculations
 BEAT_MS = round(60.0 / BPM * 1000)
+ROUND_TO_NEAREST = round(BEAT_MS/DIVISIONS_PER_BEAT)
 
 print('Building sequence at '+str(BPM)+' BPM ('+str(BEAT_MS)+'ms per beat)')
 
@@ -44,11 +46,14 @@ def findInList(list, key, value):
 			break
 	return found
 
+def roundToNearest(n, nearest):
+	return 1.0 * round(1.0*n/nearest) * nearest
+
 # Read instruments from file
 with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 	r = csv.reader(f, delimiter='\t')
 	next(r, None) # remove header
-	for name,type,price,file,gain_min,gain_max,tempo,beats_per_phase,borough,active in r:
+	for name,type,price,file,gain_min,gain_max,from_tempo,to_tempo,beats_per_phase,borough,active in r:
 		if file and int(active):
 			index = len(instruments)
 			# build instrument object
@@ -60,10 +65,12 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 				'file': INSTRUMENTS_DIR + file,
 				'gain_min': round(float(gain_min), 1),
 				'gain_max': round(float(gain_max), 1),
-				'tempo': float(tempo),
+				'from_tempo': float(from_tempo),
+				'to_tempo': float(to_tempo),
 				'borough': borough.lower(),
 				'beats_per_phase': int(beats_per_phase),
-				'beat_ms': int(round(BEAT_MS/float(tempo)))
+				'from_beat_ms': int(round(BEAT_MS/float(from_tempo))),
+				'to_beat_ms': int(round(BEAT_MS/float(to_tempo)))
 			}
 			# check gain bounds
 			if instrument['gain_min'] > instrument['gain_max']:
@@ -165,24 +172,26 @@ def getGain(instrument, beat):
 	gain = multiplier * (max - min) + min
 	return gain
 
-def getBeatMs(elapsed_duration, total_duration, beat_ms, base_beat_ms):
+def getBeatMs(elapsed_duration, total_duration, from_beat_ms, to_beat_ms):
+	global ROUND_TO_NEAREST
 	percent_complete = 1.0 * elapsed_duration / total_duration
 	multiplier = getMultiplier(percent_complete)
-	min = base_beat_ms if base_beat_ms < beat_ms else beat_ms
-	max = beat_ms if base_beat_ms < beat_ms else base_beat_ms
-	ms = multiplier * (max - min) + min
+	ms = multiplier * (to_beat_ms - from_beat_ms) + from_beat_ms
+	ms = int(roundToNearest(ms, ROUND_TO_NEAREST))
 	return ms
 
 # Add beats to sequence
-def addBeatsToSequence(instrument, duration, ms, beat_ms, base_beat_ms):
+def addBeatsToSequence(instrument, duration, ms):
 	global sequence
-	min_ms = base_beat_ms if base_beat_ms < beat_ms else beat_ms
+	from_beat_ms = instrument['from_beat_ms']
+	to_beat_ms = instrument['to_beat_ms']
+	min_ms = from_beat_ms if from_beat_ms < to_beat_ms else to_beat_ms
 	remaining_duration = int(duration)
 	elapsed_duration = 0
 	while remaining_duration >= min_ms:
-		this_beat_ms = getBeatMs(elapsed_duration, duration, beat_ms, base_beat_ms)
+		this_beat_ms = getBeatMs(elapsed_duration, duration, from_beat_ms, to_beat_ms)
 		elapsed_ms = int(ms + this_beat_ms)
-		elapsed_beat = int(elapsed_ms / beat_ms)
+		elapsed_beat = int(elapsed_ms / from_beat_ms)
 		sequence.append({
 			'instrument_index': instrument['index'],
 			'position': 0,
@@ -197,7 +206,6 @@ def addBeatsToSequence(instrument, duration, ms, beat_ms, base_beat_ms):
 # Build sequence
 for instrument in instruments:
 	ms = 0
-	beat_ms = instrument['beat_ms']
 	station_queue_duration = 0
 	# Each station in stations
 	for station in stations:
@@ -205,7 +213,7 @@ for instrument in instruments:
 		instrument_index = findInList(station['instruments'], 'index', instrument['index'])
 		# Instrument not here, just add the station duration and continue
 		if instrument_index < 0 and station_queue_duration > 0:
-			addBeatsToSequence(instrument, station_queue_duration, ms, beat_ms, BEAT_MS)
+			addBeatsToSequence(instrument, station_queue_duration, ms)
 			ms += station_queue_duration
 			station_queue_duration = 0
 		elif instrument_index < 0:
@@ -213,7 +221,7 @@ for instrument in instruments:
 		else:
 			station_queue_duration += station['duration']
 	if station_queue_duration > 0:
-		addBeatsToSequence(instrument, station_queue_duration, ms, beat_ms, BEAT_MS)
+		addBeatsToSequence(instrument, station_queue_duration, ms)
 		
 # Sort sequence
 sequence = sorted(sequence, key=lambda k: k['elapsed_ms'])
