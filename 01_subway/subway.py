@@ -15,8 +15,8 @@ import time
 
 # Config
 BPM = 75
-METERS_PER_BEAT = 40
-DIVISIONS_PER_BEAT = 32
+METERS_PER_BEAT = 75
+DIVISIONS_PER_BEAT = 4
 INSTRUMENTS_INPUT_FILE = 'data/instruments.csv'
 STATIONS_INPUT_FILE = 'data/stations.csv'
 SUMMARY_OUTPUT_FILE = 'data/ck_summary.csv'
@@ -53,7 +53,7 @@ def roundToNearest(n, nearest):
 with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 	r = csv.reader(f, delimiter='\t')
 	next(r, None) # remove header
-	for name,type,price,file,gain_min,gain_max,from_tempo,to_tempo,beats_per_phase,borough,active in r:
+	for name,type,price,bracket_min,bracket_max,file,gain_min,gain_max,from_tempo,to_tempo,beats_per_phase,borough,active in r:
 		if file and int(active):
 			index = len(instruments)
 			# build instrument object
@@ -61,6 +61,8 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 				'index': index,
 				'name': name,
 				'type': type.lower().replace(' ', '_'),
+				'bracket_min': float(bracket_min),
+				'bracket_max': float(bracket_max),
 				'price': int(price),
 				'file': INSTRUMENTS_DIR + file,
 				'gain_min': round(float(gain_min), 1),
@@ -83,15 +85,18 @@ with open(STATIONS_INPUT_FILE, 'rb') as f:
 	r = csv.reader(f, delimiter='\t')
 	next(r, None) # remove header
 	for name,income_annual,income,lat,lng,borough in r:
+		index = len(stations)
 		stations.append({
+			'index': index,
 			'name': name,
 			'budget': float(re.sub(r'[\$|,]', '', income)),
+			'percentile': 0.0,
 			'lat': float(lat),
 			'lng': float(lng),
 			'beats': 0,
 			'distance': 0,
 			'duration': 0,
-			'borough': borough.lower(),			
+			'borough': borough.lower(),		
 			'instruments': []
 		})
 
@@ -105,11 +110,20 @@ def distBetweenCoords(lat1, lng1, lat2, lng2):
 	dist = float(earthRadius * c)
 	return dist
 
+def getIncomePercentile(station, sorted_station_list):
+	percentile = 0.0
+	index = findInList(sorted_station_list, 'index', station['index'])
+	if index >= 0:
+		percentile = 1.0 * index / (len(sorted_station_list)-1) * 100
+	return percentile
+
 # Buy instruments based on a specified budget
-def buyInstruments(instruments_shelf, budget):
+def buyInstruments(station, instruments_shelf):
+	budget = station['budget']
+	percentile = station['percentile']
 	instruments_cart = []
 	for i in instruments_shelf:
-		if i['price'] < budget:
+		if i['price'] < budget and percentile >= i['bracket_min'] and percentile <= i['bracket_max']:
 			budget -= i['price']		
 			instruments_cart.append(i)
 		else:
@@ -122,9 +136,17 @@ max_distance = 0
 total_distance = 0
 total_beats = 0
 total_ms = 0
+
+# Create a list of stations sorted by budget
+sorted_stations = stations[:]
+sorted_stations = sorted(sorted_stations, key=lambda k: k['budget'])
+
+# Loop through stations
 for index, station in enumerate(stations):
-	# determine the station's budget
-	stations[index]['instruments'] = buyInstruments(instruments, station['budget'])
+	# determine station's income percentile
+	stations[index]['percentile'] = getIncomePercentile(station, sorted_stations)
+	# determine the station's instruments based on budget
+	stations[index]['instruments'] = buyInstruments(stations[index], instruments)
 	if index > 0:
 		# determine distance between last station
 		distance = distBetweenCoords(station['lat'], station['lng'], stations[index-1]['lat'], stations[index-1]['lng'])
@@ -132,7 +154,7 @@ for index, station in enumerate(stations):
 		duration = beats * BEAT_MS
 		stations[index-1]['distance'] = distance
 		stations[index-1]['beats'] = beats
-		stations[index-1]['duration'] = duration
+		stations[index-1]['duration'] = duration		
 		total_distance += distance
 		total_beats += beats
 		total_ms += duration
@@ -172,6 +194,7 @@ def getGain(instrument, beat):
 	gain = multiplier * (max - min) + min
 	return gain
 
+# Get beat duration in ms based on current point in time
 def getBeatMs(elapsed_duration, total_duration, from_beat_ms, to_beat_ms):
 	global ROUND_TO_NEAREST
 	percent_complete = 1.0 * elapsed_duration / total_duration
