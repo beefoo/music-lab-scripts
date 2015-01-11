@@ -19,12 +19,13 @@ METERS_PER_BEAT = 75
 DIVISIONS_PER_BEAT = 4
 INSTRUMENTS_INPUT_FILE = 'data/instruments.csv'
 STATIONS_INPUT_FILE = 'data/stations.csv'
-SUMMARY_OUTPUT_FILE = 'data/ck_summary.csv'
+REPORT_SUMMARY_OUTPUT_FILE = 'data/report_summary.csv'
+REPORT_SEQUENCE_OUTPUT_FILE = 'data/report_sequence.csv'
 INSTRUMENTS_OUTPUT_FILE = 'data/ck_instruments.csv'
 SEQUENCE_OUTPUT_FILE = 'data/ck_sequence.csv'
 INSTRUMENTS_DIR = 'instruments/'
 WRITE_SEQUENCE = True
-WRITE_SUMMARY = True
+WRITE_REPORT = True
 
 # Calculations
 BEAT_MS = round(60.0 / BPM * 1000)
@@ -114,7 +115,7 @@ def getIncomePercentile(station, sorted_station_list):
 	percentile = 0.0
 	index = findInList(sorted_station_list, 'index', station['index'])
 	if index >= 0:
-		percentile = 1.0 * index / (len(sorted_station_list)-1) * 100
+		percentile = 1.0 * index / len(sorted_station_list) * 100
 	return percentile
 
 # Buy instruments based on a specified budget
@@ -123,11 +124,9 @@ def buyInstruments(station, instruments_shelf):
 	percentile = station['percentile']
 	instruments_cart = []
 	for i in instruments_shelf:
-		if i['price'] < budget and percentile >= i['bracket_min'] and percentile <= i['bracket_max']:
+		if i['price'] < budget and percentile >= i['bracket_min'] and percentile < i['bracket_max']:
 			budget -= i['price']		
 			instruments_cart.append(i)
-		else:
-			break
 	return instruments_cart
 
 # Pre-process stations
@@ -192,6 +191,7 @@ def getGain(instrument, beat):
 	min = instrument['gain_min']
 	max = instrument['gain_max']
 	gain = multiplier * (max - min) + min
+	gain = round(gain, 2)
 	return gain
 
 # Get beat duration in ms based on current point in time
@@ -238,7 +238,7 @@ for instrument in instruments:
 		if instrument_index < 0 and station_queue_duration > 0:
 			addBeatsToSequence(instrument, station_queue_duration, ms)
 			ms += station_queue_duration
-			station_queue_duration = 0
+			station_queue_duration = station['duration']
 		elif instrument_index < 0:
 			ms += station['duration']
 		else:
@@ -281,8 +281,8 @@ if WRITE_SEQUENCE:
 		print('Successfully wrote sequence to file.')
 
 # Write summary file
-if WRITE_SUMMARY:
-	with open(SUMMARY_OUTPUT_FILE, 'wb') as f:
+if WRITE_REPORT:
+	with open(REPORT_SUMMARY_OUTPUT_FILE, 'wb') as f:
 		w = csv.writer(f)
 		w.writerow(['Time', 'Name', 'Distance', 'Duration', 'Beats', 'Instruments'])
 		elapsed = 0
@@ -293,4 +293,20 @@ if WRITE_SUMMARY:
 			elapsed += duration
 			w.writerow([elapsed_f, station['name'], station['distance'], duration_f, station['beats'], ' '.join([i['name'] for i in station['instruments']])])
 		print('Successfully wrote summary file.')
+
+# Write sequence report to file
+if WRITE_REPORT:
+	with open(REPORT_SEQUENCE_OUTPUT_FILE, 'wb') as f:
+		w = csv.writer(f)
+		w.writerow(['Time', 'Instrument', 'Gain'])
+		for step in sequence:
+			instrument = instruments[step['instrument_index']]
+			elapsed = step['elapsed_ms']
+			elapsed_f = time.strftime('%M:%S', time.gmtime(int(elapsed/1000)))
+			ms = elapsed % 1000
+			elapsed_f += '.' + str(ms)
+			w.writerow([elapsed_f, instrument['file'], step['gain']])
+		f.seek(-2, os.SEEK_END) # remove newline
+		f.truncate()
+		print('Successfully wrote sequence report to file.')
 
