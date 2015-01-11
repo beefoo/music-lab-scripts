@@ -3,7 +3,7 @@
 */
 
 SndBuf instrument;  
-me.dir() + "/subway/instruments/to_the_top_woodblock_01.wav" => instrument.read;
+me.dir() + "/subway/instruments/survival_woodblock_01.wav" => instrument.read;
 instrument.samples() => instrument.pos;
 instrument => dac;
 

@@ -237,8 +237,7 @@ for instrument in instruments:
 		# Instrument not here, just add the station duration and continue
 		if instrument_index < 0 and station_queue_duration > 0:
 			addBeatsToSequence(instrument, station_queue_duration, ms)
-			ms += station_queue_duration
-			station_queue_duration = station['duration']
+			ms += station_queue_duration + station['duration']
 		elif instrument_index < 0:
 			ms += station['duration']
 		else:
