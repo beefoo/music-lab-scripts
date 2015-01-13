@@ -54,7 +54,7 @@ def roundToNearest(n, nearest):
 with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 	r = csv.reader(f, delimiter='\t')
 	next(r, None) # remove header
-	for name,type,price,bracket_min,bracket_max,file,gain_min,gain_max,from_tempo,to_tempo,beats_per_phase,borough,active in r:
+	for name,type,price,bracket_min,bracket_max,file,gain_min,gain_max,from_tempo,to_tempo,gain_phase,tempo_phase,active in r:
 		if file and int(active):
 			index = len(instruments)
 			# build instrument object
@@ -70,8 +70,8 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 				'gain_max': round(float(gain_max), 1),
 				'from_tempo': float(from_tempo),
 				'to_tempo': float(to_tempo),
-				'borough': borough.lower(),
-				'beats_per_phase': int(beats_per_phase),
+				'gain_phase': int(gain_phase),
+				'tempo_phase': int(tempo_phase),
 				'from_beat_ms': int(round(BEAT_MS/float(from_tempo))),
 				'to_beat_ms': int(round(BEAT_MS/float(to_tempo)))
 			}
@@ -186,7 +186,8 @@ def getMultiplier(percent_complete):
 
 # Retrieve gain based on current beat
 def getGain(instrument, beat):
-	percent_complete = float(beat % instrument['beats_per_phase']) / instrument['beats_per_phase']
+	beats_per_phase = instrument['gain_phase']
+	percent_complete = float(beat % beats_per_phase) / beats_per_phase
 	multiplier = getMultiplier(percent_complete)
 	min = instrument['gain_min']
 	max = instrument['gain_max']
@@ -195,16 +196,19 @@ def getGain(instrument, beat):
 	return gain
 
 # Get beat duration in ms based on current point in time
-def getBeatMs(elapsed_duration, total_duration, from_beat_ms, to_beat_ms):
-	global ROUND_TO_NEAREST
-	percent_complete = 1.0 * elapsed_duration / total_duration
+def getBeatMs(instrument, beat):
+	global ROUND_TO_NEAREST	
+	from_beat_ms = instrument['from_beat_ms']
+	to_beat_ms = instrument['to_beat_ms']
+	beats_per_phase = instrument['tempo_phase']
+	percent_complete = float(beat % beats_per_phase) / beats_per_phase
 	multiplier = getMultiplier(percent_complete)
 	ms = multiplier * (to_beat_ms - from_beat_ms) + from_beat_ms
 	ms = int(roundToNearest(ms, ROUND_TO_NEAREST))
 	return ms
 
 # Add beats to sequence
-def addBeatsToSequence(instrument, duration, ms):
+def addBeatsToSequence(instrument, duration, ms, beat_ms):
 	global sequence
 	from_beat_ms = instrument['from_beat_ms']
 	to_beat_ms = instrument['to_beat_ms']
@@ -212,9 +216,9 @@ def addBeatsToSequence(instrument, duration, ms):
 	remaining_duration = int(duration)
 	elapsed_duration = 0
 	while remaining_duration >= min_ms:
-		this_beat_ms = getBeatMs(elapsed_duration, duration, from_beat_ms, to_beat_ms)
-		elapsed_ms = int(ms + this_beat_ms)
-		elapsed_beat = int(elapsed_ms / from_beat_ms)
+		elapsed_ms = int(ms)
+		elapsed_beat = int(elapsed_ms / beat_ms)
+		this_beat_ms = getBeatMs(instrument, elapsed_beat)		
 		sequence.append({
 			'instrument_index': instrument['index'],
 			'position': 0,
@@ -236,7 +240,7 @@ for instrument in instruments:
 		instrument_index = findInList(station['instruments'], 'index', instrument['index'])
 		# Instrument not here, just add the station duration and continue
 		if instrument_index < 0 and station_queue_duration > 0:
-			addBeatsToSequence(instrument, station_queue_duration, ms)
+			addBeatsToSequence(instrument, station_queue_duration, ms, BEAT_MS)
 			ms += station_queue_duration + station['duration']
 			station_queue_duration = 0
 		elif instrument_index < 0:
@@ -244,7 +248,7 @@ for instrument in instruments:
 		else:
 			station_queue_duration += station['duration']
 	if station_queue_duration > 0:
-		addBeatsToSequence(instrument, station_queue_duration, ms)
+		addBeatsToSequence(instrument, station_queue_duration, ms, BEAT_MS)
 		
 # Sort sequence
 sequence = sorted(sequence, key=lambda k: k['elapsed_ms'])
