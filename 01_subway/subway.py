@@ -14,7 +14,7 @@ import re
 import time
 
 # Config
-BPM = 75
+BPM = 100
 METERS_PER_BEAT = 75
 DIVISIONS_PER_BEAT = 4
 INSTRUMENTS_INPUT_FILE = 'data/instruments.csv'
@@ -238,6 +238,7 @@ for instrument in instruments:
 		if instrument_index < 0 and station_queue_duration > 0:
 			addBeatsToSequence(instrument, station_queue_duration, ms)
 			ms += station_queue_duration + station['duration']
+			station_queue_duration = 0
 		elif instrument_index < 0:
 			ms += station['duration']
 		else:

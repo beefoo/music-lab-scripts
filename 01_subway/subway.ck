@@ -33,7 +33,7 @@ while( sequence_fio.more() ) {
     Std.atoi(sequence_fio.readLine()) => int instrument_index;
     Std.atoi(sequence_fio.readLine()) => int position;
     Std.atof(sequence_fio.readLine()) => float gain;
-    Std.atoi(sequence_fio.readLine()) => int rate;
+    Std.atof(sequence_fio.readLine()) => float rate;
     Std.atoi(sequence_fio.readLine()) => int milliseconds;
     
 	if (milliseconds > 0)
