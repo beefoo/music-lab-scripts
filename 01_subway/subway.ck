@@ -1,3 +1,5 @@
+2000 => int padding;
+
 // data files
 me.sourceDir() + "/data/ck_instruments.csv" => string instruments_file;
 me.sourceDir() + "/data/ck_sequence.csv" => string sequence_file;
@@ -28,6 +30,9 @@ while( instruments_fio.more() )
     instruments[instrument_index] => dac;
 }
 
+// Add padding
+padding::ms => now;
+
 // read sequence from file
 while( sequence_fio.more() ) {    
     Std.atoi(sequence_fio.readLine()) => int instrument_index;
@@ -45,6 +50,9 @@ while( sequence_fio.more() ) {
     gain => instruments[instrument_index].gain;
     rate => instruments[instrument_index].rate;
 }
+
+// Add padding
+padding::ms => now;
 
 <<< "Done." >>>;
 

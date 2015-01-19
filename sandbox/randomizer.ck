@@ -3,9 +3,9 @@
 */
 
 // config
-4 => int instrument_count;
-200 => int min_duration;
-800 => int max_duration;
+1 => int instrument_count;
+2000 => int min_duration;
+2000 => int max_duration;
 
 // instrument object
 class Instrument { 
@@ -15,10 +15,7 @@ class Instrument {
 
 // define instrument filenames
 Instrument instruments[instrument_count];
-me.dir() + "/subway/instruments/diner_vocals_05.wav" => instruments[0].filename;
-me.dir() + "/subway/instruments/nocturne_horn_02.wav" => instruments[1].filename;
-me.dir() + "/subway/instruments/counterpoint_clarinet_01.wav" => instruments[2].filename;
-me.dir() + "/subway/instruments/rhapsody_piano_01.wav" => instruments[3].filename;
+me.dir() + "/subway/instruments/subway_ding_dong.wav" => instruments[0].filename;
 
 // load instruments into sound buffers
 for( 0 => int i; i < instrument_count; i++ )
@@ -34,7 +31,7 @@ while(true) {
     for( 0 => int i; i < instrument_count; i++ )
     { 
         Math.random2(0, 1) => int coin;
-        if (coin > 0) {
+        if (coin >= 0) {
             0 => instruments[i].buf.pos;
             0.5 => instruments[i].buf.gain;
             1 => instruments[i].buf.rate;

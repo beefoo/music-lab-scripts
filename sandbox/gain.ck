@@ -3,13 +3,13 @@
 */
 
 SndBuf instrument;  
-me.dir() + "/subway/instruments/survival_woodblock_01.wav" => instrument.read;
+me.dir() + "/subway/instruments/bass-clarinet_B2_025_fortissimo_normal.wav" => instrument.read;
 instrument.samples() => instrument.pos;
 instrument => dac;
 
 250 => int interval;
-0 => float min_gain;
-0.1 => float max_gain;
+0.01 => float min_gain;
+0.4 => float max_gain;
 0.01 => float gain_step;
 
 ((max_gain-min_gain)/gain_step) $ int => int steps;

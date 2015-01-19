@@ -14,7 +14,7 @@ import re
 import time
 
 # Config
-BPM = 100
+BPM = 120 # 60, 75, 100, 120, 150
 METERS_PER_BEAT = 75
 DIVISIONS_PER_BEAT = 4
 INSTRUMENTS_INPUT_FILE = 'data/instruments.csv'
@@ -124,9 +124,16 @@ def buyInstruments(station, instruments_shelf):
 	percentile = station['percentile']
 	instruments_cart = []
 	for i in instruments_shelf:
-		if i['price'] < budget and percentile >= i['bracket_min'] and percentile < i['bracket_max']:
+		# skip if not in bracket
+		if percentile < i['bracket_min'] and percentile >= i['bracket_max']:
+			continue
+		# add to cart if in budget
+		elif i['price'] < budget:
 			budget -= i['price']		
 			instruments_cart.append(i)
+		# out of budget, finished
+		else:
+			break
 	return instruments_cart
 
 # Pre-process stations
@@ -169,10 +176,11 @@ seconds_per_station = int(1.0*total_seconds/station_count)
 
 print('Total distance in meters: '+str(round(total_distance)))
 print('Distance range in meters: ['+str(min_distance)+','+str(max_distance)+']')
-print('Total beats: '+str(total_beats))
 print('Average beats per station: '+str(1.0*total_beats/station_count))
-print('Total time: '+time.strftime('%M:%S', time.gmtime(total_seconds)) + '(' + str(total_seconds) + 's)')
 print('Average time per station: '+time.strftime('%M:%S', time.gmtime(seconds_per_station)))
+print('Main sequence beats: '+str(total_beats))
+print('Main sequence time: '+time.strftime('%M:%S', time.gmtime(total_seconds)) + '(' + str(total_seconds) + 's)')
+
 
 # Multiplier based on sine curve
 def getMultiplier(percent_complete):
@@ -210,6 +218,7 @@ def getBeatMs(instrument, beat):
 # Add beats to sequence
 def addBeatsToSequence(instrument, duration, ms, beat_ms):
 	global sequence
+	previous_ms = int(ms)
 	from_beat_ms = instrument['from_beat_ms']
 	to_beat_ms = instrument['to_beat_ms']
 	min_ms = from_beat_ms if from_beat_ms < to_beat_ms else to_beat_ms
@@ -217,7 +226,7 @@ def addBeatsToSequence(instrument, duration, ms, beat_ms):
 	elapsed_duration = 0
 	while remaining_duration >= min_ms:
 		elapsed_ms = int(ms)
-		elapsed_beat = int(elapsed_ms / beat_ms)
+		elapsed_beat = int((elapsed_ms-previous_ms) / beat_ms)
 		this_beat_ms = getBeatMs(instrument, elapsed_beat)		
 		sequence.append({
 			'instrument_index': instrument['index'],
@@ -230,10 +239,27 @@ def addBeatsToSequence(instrument, duration, ms, beat_ms):
 		elapsed_duration += this_beat_ms
 		ms += this_beat_ms
 
-# Build sequence
+# Build intro sequence
+global_ms = 0
+ding_i = findInList(instruments, 'name', 'Subway Ding')
+dong_i = findInList(instruments, 'name', 'Subway Dong')
+if ding_i >= 0 and dong_i >= 0:
+	# Add ding and dong to sequence
+	ding = instruments[ding_i]
+	dong = instruments[dong_i]
+	intro_duration = 0.6 * ding['tempo_phase'] * BEAT_MS
+	addBeatsToSequence(ding, intro_duration, global_ms, BEAT_MS)
+	dong_offset = 0.5 * ding['from_beat_ms']
+	addBeatsToSequence(dong, intro_duration - dong_offset, dong_offset, BEAT_MS)
+	global_ms = intro_duration - BEAT_MS * 5.75
+	total_ms += global_ms
+
+# Build main sequence
 for instrument in instruments:
-	ms = 0
+	ms = int(global_ms)
 	station_queue_duration = 0
+	if instrument['type'] == 'misc':
+		continue
 	# Each station in stations
 	for station in stations:
 		# Check if instrument is in this station
@@ -249,6 +275,30 @@ for instrument in instruments:
 			station_queue_duration += station['duration']
 	if station_queue_duration > 0:
 		addBeatsToSequence(instrument, station_queue_duration, ms, BEAT_MS)
+
+# Build outro sequence
+global_ms = total_ms
+if ding_i >= 0 and dong_i >= 0:
+	# Add ding and dong to sequence
+	sequence.append({
+		'instrument_index': ding['index'],
+		'position': 0,
+		'gain': ding['gain_max'],
+		'rate': 1,
+		'elapsed_ms': global_ms
+	})
+	global_ms += BEAT_MS
+	sequence.append({
+		'instrument_index': dong['index'],
+		'position': 0,
+		'gain': dong['gain_max'],
+		'rate': 1,
+		'elapsed_ms': global_ms
+	})
+	total_ms += BEAT_MS * 2
+
+total_seconds = int(1.0*total_ms/1000)
+print('Total sequence time: '+time.strftime('%M:%S', time.gmtime(total_seconds)) + '(' + str(total_seconds) + 's)')
 		
 # Sort sequence
 sequence = sorted(sequence, key=lambda k: k['elapsed_ms'])
