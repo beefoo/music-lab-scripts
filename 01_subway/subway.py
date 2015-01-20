@@ -54,7 +54,7 @@ def roundToNearest(n, nearest):
 with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 	r = csv.reader(f, delimiter='\t')
 	next(r, None) # remove header
-	for name,type,price,bracket_min,bracket_max,file,gain_min,gain_max,from_tempo,to_tempo,gain_phase,tempo_phase,active in r:
+	for name,type,price,bracket_min,bracket_max,file,from_gain,to_gain,from_tempo,to_tempo,gain_phase,tempo_phase,active in r:
 		if file and int(active):
 			index = len(instruments)
 			# build instrument object
@@ -66,8 +66,8 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 				'bracket_max': float(bracket_max),
 				'price': int(price),
 				'file': INSTRUMENTS_DIR + file,
-				'gain_min': round(float(gain_min), 1),
-				'gain_max': round(float(gain_max), 1),
+				'from_gain': round(float(from_gain), 1),
+				'to_gain': round(float(to_gain), 1),
 				'from_tempo': float(from_tempo),
 				'to_tempo': float(to_tempo),
 				'gain_phase': int(gain_phase),
@@ -75,9 +75,6 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 				'from_beat_ms': int(round(BEAT_MS/float(from_tempo))),
 				'to_beat_ms': int(round(BEAT_MS/float(to_tempo)))
 			}
-			# check gain bounds
-			if instrument['gain_min'] > instrument['gain_max']:
-				instrument['gain_min'],instrument['gain_max'] = instrument['gain_max'],instrument['gain_min']
 			# add instrument to instruments
 			instruments.append(instrument)
 
@@ -197,9 +194,9 @@ def getGain(instrument, beat):
 	beats_per_phase = instrument['gain_phase']
 	percent_complete = float(beat % beats_per_phase) / beats_per_phase
 	multiplier = getMultiplier(percent_complete)
-	min = instrument['gain_min']
-	max = instrument['gain_max']
-	gain = multiplier * (max - min) + min
+	from_gain = instrument['from_gain']
+	to_gain = instrument['to_gain']
+	gain = multiplier * (to_gain - from_gain) + from_gain
 	gain = round(gain, 2)
 	return gain
 
@@ -254,8 +251,11 @@ if ding_i >= 0 and dong_i >= 0:
 	# Add linear ding-dong to sequence
 	ding['from_beat_ms'] = BEAT_MS
 	dong['from_beat_ms'] = BEAT_MS
-	addBeatsToSequence(ding, BEAT_MS * 6, intro_duration - BEAT_MS * 0.5, BEAT_MS, 1)
-	addBeatsToSequence(dong, BEAT_MS * 6, intro_duration - BEAT_MS * 0.5, BEAT_MS, 1)
+	ding['to_gain'] = 0.0
+	dong['to_gain'] = 0.0
+	ding_dong_beats = int(ding['gain_phase'] / 2)
+	addBeatsToSequence(ding, BEAT_MS * ding_dong_beats, intro_duration - BEAT_MS * 0.5, BEAT_MS, 1)
+	addBeatsToSequence(dong, BEAT_MS * ding_dong_beats, intro_duration - BEAT_MS * 0.5, BEAT_MS, 1)
 	global_ms = intro_duration - BEAT_MS * 1.5
 	total_ms += global_ms
 	intro_duration = global_ms
@@ -289,7 +289,7 @@ if ding_i >= 0 and dong_i >= 0:
 	sequence.append({
 		'instrument_index': ding['index'],
 		'position': 0,
-		'gain': ding['gain_max'],
+		'gain': max([ding['from_gain'], ding['to_gain']]),
 		'rate': 1,
 		'elapsed_ms': global_ms
 	})
@@ -297,7 +297,7 @@ if ding_i >= 0 and dong_i >= 0:
 	sequence.append({
 		'instrument_index': dong['index'],
 		'position': 0,
-		'gain': dong['gain_max'],
+		'gain': max([dong['from_gain'], dong['to_gain']]),
 		'rate': 1,
 		'elapsed_ms': global_ms
 	})
