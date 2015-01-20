@@ -241,6 +241,7 @@ def addBeatsToSequence(instrument, duration, ms, beat_ms):
 
 # Build intro sequence
 global_ms = 0
+intro_duration = 0
 ding_i = findInList(instruments, 'name', 'Subway Ding')
 dong_i = findInList(instruments, 'name', 'Subway Dong')
 if ding_i >= 0 and dong_i >= 0:
@@ -253,6 +254,7 @@ if ding_i >= 0 and dong_i >= 0:
 	addBeatsToSequence(dong, intro_duration - dong_offset, dong_offset, BEAT_MS)
 	global_ms = intro_duration - BEAT_MS * 5.75
 	total_ms += global_ms
+	intro_duration = global_ms
 
 # Build main sequence
 for instrument in instruments:
@@ -339,7 +341,7 @@ if WRITE_REPORT:
 	with open(REPORT_SUMMARY_OUTPUT_FILE, 'wb') as f:
 		w = csv.writer(f)
 		w.writerow(['Time', 'Name', 'Distance', 'Duration', 'Beats', 'Instruments'])
-		elapsed = 0
+		elapsed = int(intro_duration/1000)
 		for station in stations:
 			duration = int(station['duration']/1000)
 			duration_f = time.strftime('%M:%S', time.gmtime(duration))
