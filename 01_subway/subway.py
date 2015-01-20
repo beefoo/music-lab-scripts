@@ -244,14 +244,19 @@ intro_duration = 0
 ding_i = findInList(instruments, 'name', 'Subway Ding')
 dong_i = findInList(instruments, 'name', 'Subway Dong')
 if ding_i >= 0 and dong_i >= 0:
-	# Add ding and dong to sequence
+	# Add curved ding-dong to sequence
 	ding = instruments[ding_i]
 	dong = instruments[dong_i]
-	intro_duration = 0.6 * ding['tempo_phase'] * BEAT_MS
+	intro_duration = 0.5 * ding['tempo_phase'] * BEAT_MS
 	addBeatsToSequence(ding, intro_duration, global_ms, BEAT_MS, 1)
 	dong_offset = 0.5 * ding['from_beat_ms']
-	addBeatsToSequence(dong, intro_duration - dong_offset, dong_offset, BEAT_MS, 1)
-	global_ms = intro_duration - int(BEAT_MS * 5.4)
+	addBeatsToSequence(dong, intro_duration - dong_offset, dong_offset, BEAT_MS, 1)	
+	# Add linear ding-dong to sequence
+	ding['from_beat_ms'] = BEAT_MS
+	dong['from_beat_ms'] = BEAT_MS
+	addBeatsToSequence(ding, BEAT_MS * 6, intro_duration - BEAT_MS * 0.5, BEAT_MS, 1)
+	addBeatsToSequence(dong, BEAT_MS * 6, intro_duration - BEAT_MS * 0.5, BEAT_MS, 1)
+	global_ms = intro_duration - BEAT_MS * 1.5
 	total_ms += global_ms
 	intro_duration = global_ms
 
