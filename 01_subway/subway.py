@@ -204,19 +204,18 @@ def getGain(instrument, beat):
 	return gain
 
 # Get beat duration in ms based on current point in time
-def getBeatMs(instrument, beat):
-	global ROUND_TO_NEAREST	
+def getBeatMs(instrument, beat, round_to):	
 	from_beat_ms = instrument['from_beat_ms']
 	to_beat_ms = instrument['to_beat_ms']
 	beats_per_phase = instrument['tempo_phase']
 	percent_complete = float(beat % beats_per_phase) / beats_per_phase
 	multiplier = getMultiplier(percent_complete)
 	ms = multiplier * (to_beat_ms - from_beat_ms) + from_beat_ms
-	ms = int(roundToNearest(ms, ROUND_TO_NEAREST))
+	ms = int(roundToNearest(ms, round_to))
 	return ms
 
 # Add beats to sequence
-def addBeatsToSequence(instrument, duration, ms, beat_ms):
+def addBeatsToSequence(instrument, duration, ms, beat_ms, round_to):
 	global sequence
 	previous_ms = int(ms)
 	from_beat_ms = instrument['from_beat_ms']
@@ -227,7 +226,7 @@ def addBeatsToSequence(instrument, duration, ms, beat_ms):
 	while remaining_duration >= min_ms:
 		elapsed_ms = int(ms)
 		elapsed_beat = int((elapsed_ms-previous_ms) / beat_ms)
-		this_beat_ms = getBeatMs(instrument, elapsed_beat)		
+		this_beat_ms = getBeatMs(instrument, elapsed_beat, round_to)		
 		sequence.append({
 			'instrument_index': instrument['index'],
 			'position': 0,
@@ -249,10 +248,10 @@ if ding_i >= 0 and dong_i >= 0:
 	ding = instruments[ding_i]
 	dong = instruments[dong_i]
 	intro_duration = 0.6 * ding['tempo_phase'] * BEAT_MS
-	addBeatsToSequence(ding, intro_duration, global_ms, BEAT_MS)
+	addBeatsToSequence(ding, intro_duration, global_ms, BEAT_MS, 1)
 	dong_offset = 0.5 * ding['from_beat_ms']
-	addBeatsToSequence(dong, intro_duration - dong_offset, dong_offset, BEAT_MS)
-	global_ms = intro_duration - BEAT_MS * 5.75
+	addBeatsToSequence(dong, intro_duration - dong_offset, dong_offset, BEAT_MS, 1)
+	global_ms = intro_duration - int(BEAT_MS * 5.4)
 	total_ms += global_ms
 	intro_duration = global_ms
 
@@ -268,7 +267,7 @@ for instrument in instruments:
 		instrument_index = findInList(station['instruments'], 'index', instrument['index'])
 		# Instrument not here, just add the station duration and continue
 		if instrument_index < 0 and station_queue_duration > 0:
-			addBeatsToSequence(instrument, station_queue_duration, ms, BEAT_MS)
+			addBeatsToSequence(instrument, station_queue_duration, ms, BEAT_MS, ROUND_TO_NEAREST)
 			ms += station_queue_duration + station['duration']
 			station_queue_duration = 0
 		elif instrument_index < 0:
@@ -276,7 +275,7 @@ for instrument in instruments:
 		else:
 			station_queue_duration += station['duration']
 	if station_queue_duration > 0:
-		addBeatsToSequence(instrument, station_queue_duration, ms, BEAT_MS)
+		addBeatsToSequence(instrument, station_queue_duration, ms, BEAT_MS, ROUND_TO_NEAREST)
 
 # Build outro sequence
 global_ms = total_ms
