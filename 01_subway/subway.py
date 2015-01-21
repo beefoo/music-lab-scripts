@@ -24,6 +24,8 @@ REPORT_SEQUENCE_OUTPUT_FILE = 'data/report_sequence.csv'
 INSTRUMENTS_OUTPUT_FILE = 'data/ck_instruments.csv'
 SEQUENCE_OUTPUT_FILE = 'data/ck_sequence.csv'
 INSTRUMENTS_DIR = 'instruments/'
+DO_INTRO = True
+DO_OUTRO = True
 WRITE_SEQUENCE = True
 WRITE_REPORT = True
 
@@ -122,12 +124,13 @@ def buyInstruments(station, instruments_shelf):
 	instruments_cart = []
 	for i in instruments_shelf:
 		# skip if not in bracket
-		if percentile < i['bracket_min'] and percentile >= i['bracket_max']:
+		if percentile < i['bracket_min'] or percentile >= i['bracket_max']:
 			continue
 		# add to cart if in budget
 		elif i['price'] < budget:
-			budget -= i['price']		
-			instruments_cart.append(i)
+			budget -= i['price']
+			if i['type'] != 'placeholder':
+				instruments_cart.append(i)
 		# out of budget, finished
 		else:
 			break
@@ -240,7 +243,7 @@ global_ms = 0
 intro_duration = 0
 ding_i = findInList(instruments, 'name', 'Subway Ding')
 dong_i = findInList(instruments, 'name', 'Subway Dong')
-if ding_i >= 0 and dong_i >= 0:
+if DO_INTRO and ding_i >= 0 and dong_i >= 0:
 	# Add curved ding-dong to sequence
 	ding = instruments[ding_i]
 	dong = instruments[dong_i]
@@ -284,7 +287,9 @@ for instrument in instruments:
 
 # Build outro sequence
 global_ms = total_ms
-if ding_i >= 0 and dong_i >= 0:
+if DO_OUTRO and ding_i >= 0 and dong_i >= 0:
+	ding = instruments[ding_i]
+	dong = instruments[dong_i]
 	# Add ding and dong to sequence
 	sequence.append({
 		'instrument_index': ding['index'],
