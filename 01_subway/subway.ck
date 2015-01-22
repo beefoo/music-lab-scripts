@@ -1,4 +1,12 @@
 2000 => int padding;
+2 => int instrument_buffers;
+
+// instrument object
+class Instrument { 
+    string filename;
+    SndBuf buf[8];
+    int plays;
+}
 
 // data files
 me.sourceDir() + "/data/ck_instruments.csv" => string instruments_file;
@@ -18,17 +26,27 @@ if( !instruments_fio.good() || !sequence_fio.good() )
     me.exit();
 }
 
-// create instruments from file
-SndBuf instruments[120];
+// create instruments array
+Instrument instruments[128];
+
+// read instruments file
 while( instruments_fio.more() )
 {
+    // read instrument index and filename
     Std.atoi(instruments_fio.readLine()) => int instrument_index;
-    me.sourceDir() + "/" + instruments_fio.readLine() => string filename;    
-    filename => instruments[instrument_index].read;
-    // set position to end, so it won't play immediately upon open
-    instruments[instrument_index].samples() => instruments[instrument_index].pos;
-    instruments[instrument_index] => dac;
+    me.sourceDir() + "/" + instruments_fio.readLine() => instruments[instrument_index].filename;
+    0 => instruments[instrument_index].plays;
+    // create buffers from filename
+    for( 0 => int i; i < instrument_buffers; i++ )
+    {
+        instruments[instrument_index].filename => instruments[instrument_index].buf[i].read;
+        // set position to end, so it won't play immediately upon open
+        instruments[instrument_index].buf[i].samples() => instruments[instrument_index].buf[i].pos;
+        instruments[instrument_index].buf[i] => dac;
+    }
+         
 }
+
 
 // Add padding
 padding::ms => now;
@@ -41,14 +59,20 @@ while( sequence_fio.more() ) {
     Std.atof(sequence_fio.readLine()) => float rate;
     Std.atoi(sequence_fio.readLine()) => int milliseconds;
     
+    // wait duration
 	if (milliseconds > 0)
     {
         milliseconds::ms => now;
     }
+    
+    // choose buffer index
+    instruments[instrument_index].plays % instrument_buffers => int buffer_index;
+    instruments[instrument_index].plays++;
 	
-    position => instruments[instrument_index].pos;
-    gain => instruments[instrument_index].gain;
-    rate => instruments[instrument_index].rate;
+    // play the instrument
+    position => instruments[instrument_index].buf[buffer_index].pos;
+    gain => instruments[instrument_index].buf[buffer_index].gain;
+    rate => instruments[instrument_index].buf[buffer_index].rate;
 }
 
 // Add padding
