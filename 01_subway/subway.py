@@ -160,7 +160,7 @@ for index, station in enumerate(stations):
 		duration = beats * BEAT_MS
 		stations[index-1]['distance'] = distance
 		stations[index-1]['beats'] = beats
-		stations[index-1]['duration'] = duration		
+		stations[index-1]['duration'] = duration
 		total_distance += distance
 		total_beats += beats
 		total_ms += duration
@@ -180,7 +180,6 @@ print('Average beats per station: '+str(1.0*total_beats/station_count))
 print('Average time per station: '+time.strftime('%M:%S', time.gmtime(seconds_per_station)))
 print('Main sequence beats: '+str(total_beats))
 print('Main sequence time: '+time.strftime('%M:%S', time.gmtime(total_seconds)) + '(' + str(total_seconds) + 's)')
-
 
 # Multiplier based on sine curve
 def getMultiplier(percent_complete):
@@ -350,13 +349,13 @@ if WRITE_REPORT:
 	with open(REPORT_SUMMARY_OUTPUT_FILE, 'wb') as f:
 		w = csv.writer(f)
 		w.writerow(['Time', 'Name', 'Distance', 'Duration', 'Beats', 'Instruments'])
-		elapsed = int(intro_duration/1000)
+		elapsed = intro_duration
 		for station in stations:
-			duration = int(station['duration']/1000)
-			duration_f = time.strftime('%M:%S', time.gmtime(duration))
-			elapsed_f = time.strftime('%M:%S', time.gmtime(elapsed))
+			duration = station['duration']
+			duration_f = time.strftime('%M:%S', time.gmtime(int(duration/1000)))
+			elapsed_f = time.strftime('%M:%S', time.gmtime(int(elapsed/1000)))
 			elapsed += duration
-			w.writerow([elapsed_f, station['name'], station['distance'], duration_f, station['beats'], ' '.join([i['name'] for i in station['instruments']])])
+			w.writerow([elapsed_f, station['name'], round(station['distance'], 2), duration_f, station['beats'], ' '.join([i['name'] for i in station['instruments']])])
 		print('Successfully wrote summary file.')
 
 # Write sequence report to file
