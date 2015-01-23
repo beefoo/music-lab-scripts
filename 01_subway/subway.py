@@ -7,6 +7,7 @@
 
 # Library dependancies
 import csv
+import json
 import math
 import os
 import random
@@ -23,11 +24,13 @@ REPORT_SUMMARY_OUTPUT_FILE = 'data/report_summary.csv'
 REPORT_SEQUENCE_OUTPUT_FILE = 'data/report_sequence.csv'
 INSTRUMENTS_OUTPUT_FILE = 'data/ck_instruments.csv'
 SEQUENCE_OUTPUT_FILE = 'data/ck_sequence.csv'
+JSON_OUTPUT_FILE = 'visualization/data/stations.json'
 INSTRUMENTS_DIR = 'instruments/'
 DO_INTRO = True
 DO_OUTRO = True
 WRITE_SEQUENCE = True
 WRITE_REPORT = True
+WRITE_JSON = True
 
 # Calculations
 BEAT_MS = round(60.0 / BPM * 1000)
@@ -96,7 +99,7 @@ with open(STATIONS_INPUT_FILE, 'rb') as f:
 			'beats': 0,
 			'distance': 0,
 			'duration': 0,
-			'borough': borough.lower(),		
+			'borough': borough,		
 			'instruments': []
 		})
 
@@ -142,6 +145,8 @@ max_distance = 0
 total_distance = 0
 total_beats = 0
 total_ms = 0
+min_duration = 0
+max_duration = 0
 
 # Create a list of stations sorted by budget
 sorted_stations = stations[:]
@@ -166,8 +171,10 @@ for index, station in enumerate(stations):
 		total_ms += duration
 		if distance > max_distance:
 			max_distance = distance
+			max_duration = duration
 		if distance < min_distance or min_distance == 0:
 			min_distance = distance
+			min_duration = duration
 
 # Calculate how many beats
 station_count = len(stations)-1
@@ -328,7 +335,7 @@ if WRITE_SEQUENCE:
 			w.writerow([instrument['file']])
 		f.seek(-2, os.SEEK_END) # remove newline
 		f.truncate()
-		print('Successfully wrote instruments to file.')
+		print('Successfully wrote instruments to file: '+INSTRUMENTS_OUTPUT_FILE)
 
 # Write sequence to file
 if WRITE_SEQUENCE:
@@ -342,7 +349,7 @@ if WRITE_SEQUENCE:
 			w.writerow([step['milliseconds']])
 		f.seek(-2, os.SEEK_END) # remove newline
 		f.truncate()
-		print('Successfully wrote sequence to file.')
+		print('Successfully wrote sequence to file: '+SEQUENCE_OUTPUT_FILE)
 
 # Write summary file
 if WRITE_REPORT:
@@ -356,7 +363,7 @@ if WRITE_REPORT:
 			elapsed_f = time.strftime('%M:%S', time.gmtime(int(elapsed/1000)))
 			elapsed += duration
 			w.writerow([elapsed_f, station['name'], round(station['distance'], 2), duration_f, station['beats'], ' '.join([i['name'] for i in station['instruments']])])
-		print('Successfully wrote summary file.')
+		print('Successfully wrote summary file: '+REPORT_SUMMARY_OUTPUT_FILE)
 
 # Write sequence report to file
 if WRITE_REPORT:
@@ -372,5 +379,24 @@ if WRITE_REPORT:
 			w.writerow([elapsed_f, instrument['file'], step['gain']])
 		f.seek(-2, os.SEEK_END) # remove newline
 		f.truncate()
-		print('Successfully wrote sequence report to file.')
+		print('Successfully wrote sequence report to file: '+REPORT_SEQUENCE_OUTPUT_FILE)
 
+# Write JSON data for the visualization
+if WRITE_JSON:
+	json_data = []
+	previous_duration = 0
+	elapsed_duration = 0
+	for station in stations:
+		json_data.append({
+			'name': station['name'],
+			'borough': station['borough'].upper(),
+			'duration': station['duration'],
+			'previous_duration': previous_duration,
+			'elapsed_duration': elapsed_duration,
+			'min_duration': min_duration
+		})
+		previous_duration = station['duration']
+		elapsed_duration += station['duration']
+	with open(JSON_OUTPUT_FILE, 'w') as outfile:
+		json.dump(json_data, outfile)
+	print('Successfully wrote to JSON file: '+JSON_OUTPUT_FILE)

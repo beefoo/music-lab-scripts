@@ -1,7 +1,11 @@
 Data-Driven DJ Track 1: Two Trains
 =================
 
+You can listen to this track and read the full description [here](https://datadrivendj.com/tracks/subway).
+
 ## Software Required
+
+All software required for making this song from scratch is free and open-source
 
 * [ChucK](http://chuck.cs.princeton.edu/) - a programming language for real-time sound synthesis and music creation
 * [Python](https://www.python.org/) - I am running version 2.7.3
