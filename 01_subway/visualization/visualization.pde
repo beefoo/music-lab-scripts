@@ -72,7 +72,6 @@ void setup() {
   pixels_per_ms = total_width / total_ms;  
   padding_left_ms = padding_left / pixels_per_ms;
   elapsed_ms = -1.0 * padding_left_ms;
-  elapsed_ms = 240000;
   
   // initialize station components
   for (int i = 0; i < stations.size(); i++) {    
