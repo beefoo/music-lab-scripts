@@ -25,11 +25,15 @@ color bgColor = #232121;
 color textColor = #f8f3f3;
 color secondaryTextColor = #a49595;
 color highlightColor = #d12929;
+color secondaryHighlightColor = #edc7c7;
 
 // components
 float circle_diameter = 100;
 float circle_y = 320;
 float line_height = 18;
+float boundary_height = 160;
+float boundary_width = 2;
+float marker_width = 6;
 
 // text
 float boroughY = 200;
@@ -37,7 +41,6 @@ float stationY = 420;
 float stationWidth = 280;
 float stationTextWidth = 500;
 float stationHeight = canvasH - stationY;
-float stationPadding = 200;
 PFont font = createFont("OpenSans-Semibold", 36, true);
 PFont fontLarge = createFont("OpenSans-Semibold", 72, true);
 
@@ -52,8 +55,7 @@ void setup() {
   // set the stage
   size(canvasW, canvasH);  
   noStroke();
-  frameRate(fps);
-  textAlign(CENTER);
+  frameRate(fps);  
   
   // load data
   stationsJSON = loadJSONArray("stations.json");  
@@ -70,6 +72,7 @@ void setup() {
   pixels_per_ms = total_width / total_ms;  
   padding_left_ms = padding_left / pixels_per_ms;
   elapsed_ms = -1.0 * padding_left_ms;
+  elapsed_ms = 240000;
   
   // initialize station components
   for (int i = 0; i < stations.size(); i++) {    
@@ -89,6 +92,10 @@ void draw(){
     }    
   }
   
+  // draw marker
+  fill(textColor, 50);
+  rect(centerX-marker_width/2, 0, marker_width, canvasH);
+  
   elapsed_ms += (1.0/fps) * 1000;
   
   if(captureFrames) {
@@ -102,28 +109,29 @@ void mousePressed() {
 
 class Station
 {
-  int duration, previous_duration, elapsed_duration, min_duration, station_index, station_count;
+  int duration, elapsed_duration, min_duration, station_index, station_count;
   float x, y, w, start_x, stop_x, start_ms, stop_ms;
-  String name, borough;
+  String name, borough, borough_next;
   
   Station (float _y, JSONObject _station, int _station_index, int _station_count) {
     y = _y;
     name = _station.getString("name");
     borough = _station.getString("borough");
-    duration = _station.getInt("duration");
-    previous_duration = _station.getInt("previous_duration");
+    borough_next = _station.getString("borough_next");
+    duration = _station.getInt("duration");    
     elapsed_duration = _station.getInt("elapsed_duration");
     min_duration = _station.getInt("min_duration");
     station_index = _station_index;
     station_count = _station_count;
-    w = float(duration / min_duration) * stationWidth;
+    w = (1.0 * duration / min_duration) * stationWidth;
   }
   
   void initComponents(){    
     // calculate start/stop x-coordinate
     start_x = 1.0 * canvasW + 0.5 * stationTextWidth;
-    stop_x = -1.0 * w - stationPadding;
+    stop_x = -1.0 * w;
     
+    // calculate time and distance
     float distance = abs(stop_x - start_x);
     float ms = distance / pixels_per_ms;
     
@@ -132,6 +140,7 @@ class Station
     stop_ms = start_ms + ms;
     
     // println(start_ms, stop_ms, start_x, stop_x);
+    // println(w/pixels_per_ms, duration);   
     
     x = start_x;
   }
@@ -145,12 +154,13 @@ class Station
     ellipse(x, circle_y, circle_diameter, circle_diameter);
     
     // draw line
-    if (station_index < station_count-1) {
+    if (w > 0) {
       fill(secondaryTextColor);
-      rect(x+circle_diameter/2, circle_y-line_height/2, w-circle_diameter+stationPadding, line_height);
-    }    
+      rect(x+circle_diameter/2, circle_y-line_height/2, w-circle_diameter, line_height);
+    }   
     
     // draw station
+    textAlign(CENTER);
     textFont(fontLarge, 48);
     fill(textColor);
     text(name, x-stationTextWidth/2, stationY, stationTextWidth, stationHeight);
@@ -160,8 +170,31 @@ class Station
     fill(secondaryTextColor);
     text(borough, x, boroughY);
     
-    // TODO: draw label helper
-    // TODO: draw borough boundary
+    // draw label helper
+    if (w > canvasW && x < 0 && x > -(w-canvasW)) {      
+      textAlign(LEFT);
+      textFont(font, 36);
+      fill(secondaryTextColor);
+      text(name, 30, canvasH - 30);
+    }
+    
+    // draw borough boundary
+    if (!borough.equals(borough_next)) {
+      
+      float bx = x+w/2-boundary_width/2;
+      float b_padding = 30;
+      
+      // draw line
+      fill(secondaryTextColor);
+      rect(bx, circle_y-boundary_height, boundary_width, boundary_height);
+      
+      // draw borough text
+      textFont(font, 36);
+      textAlign(RIGHT);
+      text(borough, bx - b_padding, boroughY);
+      textAlign(LEFT);
+      text(borough_next, bx + b_padding, boroughY);
+    }
   }
   
   boolean isInFrame() {
@@ -175,4 +208,5 @@ class Station
   float getWidth() {
     return w; 
   }
+  
 }

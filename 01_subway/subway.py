@@ -99,7 +99,8 @@ with open(STATIONS_INPUT_FILE, 'rb') as f:
 			'beats': 0,
 			'distance': 0,
 			'duration': 0,
-			'borough': borough,		
+			'borough': borough,
+			'borough_next': borough,
 			'instruments': []
 		})
 
@@ -166,6 +167,7 @@ for index, station in enumerate(stations):
 		stations[index-1]['distance'] = distance
 		stations[index-1]['beats'] = beats
 		stations[index-1]['duration'] = duration
+		stations[index-1]['borough_next'] = station['borough']
 		total_distance += distance
 		total_beats += beats
 		total_ms += duration
@@ -384,18 +386,16 @@ if WRITE_REPORT:
 # Write JSON data for the visualization
 if WRITE_JSON:
 	json_data = []
-	previous_duration = 0
 	elapsed_duration = 0
 	for station in stations:
 		json_data.append({
 			'name': station['name'],
 			'borough': station['borough'].upper(),
-			'duration': station['duration'],
-			'previous_duration': previous_duration,
+			'borough_next': station['borough_next'].upper(),
+			'duration': station['duration'],			
 			'elapsed_duration': elapsed_duration,
 			'min_duration': min_duration
 		})
-		previous_duration = station['duration']
 		elapsed_duration += station['duration']
 	with open(JSON_OUTPUT_FILE, 'w') as outfile:
 		json.dump(json_data, outfile)
