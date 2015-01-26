@@ -6,7 +6,7 @@
 
 // output
 int fps = 30;
-String outputFrameFile = "output/frames-#####.png";
+String outputFrameFile = "output/frames/frames-#####.png";
 boolean captureFrames = false;
 float elapsed_ms = 0;
 
@@ -15,7 +15,7 @@ JSONArray stationsJSON;
 ArrayList<Station> stations = new ArrayList<Station>();
 
 // resolution
-int canvasW = 1280;
+int canvasW = 960; // 1280 - 320 (size of map)
 int canvasH = 720;
 float centerX = 0.5 * canvasW;
 float centerY = 0.5 * canvasH;
@@ -71,7 +71,7 @@ void setup() {
   padding_left = 0.5 * canvasW + 0.5 * stationTextWidth;
   pixels_per_ms = total_width / total_ms;  
   padding_left_ms = padding_left / pixels_per_ms;
-  elapsed_ms = -1.0 * padding_left_ms;
+  // elapsed_ms = -1.0 * padding_left_ms;
   
   // initialize station components
   for (int i = 0; i < stations.size(); i++) {    
@@ -99,7 +99,9 @@ void draw(){
   
   if(captureFrames) {
     saveFrame(outputFrameFile);
-  } 
+  }
+  
+  if (elapsed_ms > total_ms) exit();
 }
 
 void mousePressed() {
@@ -170,7 +172,8 @@ class Station
     text(borough, x, boroughY);
     
     // draw label helper
-    if (w > canvasW && x < 0 && x > -(w-canvasW)) {      
+    float threshold = canvasW + stationWidth;
+    if (w > threshold && x < 0 && x > -(w-threshold)) {      
       textAlign(LEFT);
       textFont(font, 36);
       fill(secondaryTextColor);

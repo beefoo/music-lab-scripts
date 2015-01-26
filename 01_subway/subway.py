@@ -24,7 +24,8 @@ REPORT_SUMMARY_OUTPUT_FILE = 'data/report_summary.csv'
 REPORT_SEQUENCE_OUTPUT_FILE = 'data/report_sequence.csv'
 INSTRUMENTS_OUTPUT_FILE = 'data/ck_instruments.csv'
 SEQUENCE_OUTPUT_FILE = 'data/ck_sequence.csv'
-JSON_OUTPUT_FILE = 'visualization/data/stations.json'
+STATIONS_VISUALIZATION_OUTPUT_FILE = 'visualization/stations/data/stations.json'
+MAP_VISUALIZATION_OUTPUT_FILE = 'visualization/map/data/stations.json'
 INSTRUMENTS_DIR = 'instruments/'
 DO_INTRO = True
 DO_OUTRO = True
@@ -394,9 +395,15 @@ if WRITE_JSON:
 			'borough_next': station['borough_next'].upper(),
 			'duration': station['duration'],			
 			'elapsed_duration': elapsed_duration,
-			'min_duration': min_duration
+			'min_duration': min_duration,
+			'lat': station['lat'],
+			'lng': station['lng']
 		})
 		elapsed_duration += station['duration']
-	with open(JSON_OUTPUT_FILE, 'w') as outfile:
+	with open(STATIONS_VISUALIZATION_OUTPUT_FILE, 'w') as outfile:
 		json.dump(json_data, outfile)
-	print('Successfully wrote to JSON file: '+JSON_OUTPUT_FILE)
+	print('Successfully wrote to JSON file: '+STATIONS_VISUALIZATION_OUTPUT_FILE)
+	with open(MAP_VISUALIZATION_OUTPUT_FILE, 'w') as outfile:
+		json.dump(json_data, outfile)
+	print('Successfully wrote to JSON file: '+MAP_VISUALIZATION_OUTPUT_FILE)
+
