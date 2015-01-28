@@ -18,6 +18,7 @@ import time
 BPM = 120 # 60, 75, 100, 120, 150
 METERS_PER_BEAT = 75
 DIVISIONS_PER_BEAT = 4
+VARIANCE_MS = 10 # +/- milliseconds an instrument note should be off by to give it a little more "natural" feel
 INSTRUMENTS_INPUT_FILE = 'data/instruments.csv'
 STATIONS_INPUT_FILE = 'data/stations.csv'
 REPORT_SUMMARY_OUTPUT_FILE = 'data/report_summary.csv'
@@ -27,8 +28,7 @@ SEQUENCE_OUTPUT_FILE = 'data/ck_sequence.csv'
 STATIONS_VISUALIZATION_OUTPUT_FILE = 'visualization/stations/data/stations.json'
 MAP_VISUALIZATION_OUTPUT_FILE = 'visualization/map/data/stations.json'
 INSTRUMENTS_DIR = 'instruments/'
-DO_INTRO = True
-DO_OUTRO = True
+DO_INTRO = False
 WRITE_SEQUENCE = True
 WRITE_REPORT = True
 WRITE_JSON = True
@@ -43,6 +43,17 @@ print('Building sequence at '+str(BPM)+' BPM ('+str(BEAT_MS)+'ms per beat)')
 instruments = []
 stations = []
 sequence = []
+hindex = 0
+
+def halton(index, base):
+	result = 0.0
+	f = 1.0 / base
+	i = 1.0 * index
+	while(i > 0):
+		result += f * (i % base)  
+		i = math.floor(i / base)
+		f = f / base
+	return result
 
 # Find index of first item that matches value
 def findInList(list, key, value):
@@ -60,7 +71,7 @@ def roundToNearest(n, nearest):
 with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 	r = csv.reader(f, delimiter='\t')
 	next(r, None) # remove header
-	for name,type,price,bracket_min,bracket_max,file,from_gain,to_gain,from_tempo,to_tempo,gain_phase,tempo_phase,active in r:
+	for name,type,price,bracket_min,bracket_max,file,from_gain,to_gain,from_tempo,to_tempo,gain_phase,tempo_phase,tempo_offset,interval_phase,interval,interval_offset,active in r:
 		if file and int(active):
 			index = len(instruments)
 			# build instrument object
@@ -72,14 +83,18 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 				'bracket_max': float(bracket_max),
 				'price': int(price),
 				'file': INSTRUMENTS_DIR + file,
-				'from_gain': round(float(from_gain), 1),
-				'to_gain': round(float(to_gain), 1),
+				'from_gain': round(float(from_gain), 2),
+				'to_gain': round(float(to_gain), 2),
 				'from_tempo': float(from_tempo),
 				'to_tempo': float(to_tempo),
 				'gain_phase': int(gain_phase),
 				'tempo_phase': int(tempo_phase),
 				'from_beat_ms': int(round(BEAT_MS/float(from_tempo))),
-				'to_beat_ms': int(round(BEAT_MS/float(to_tempo)))
+				'to_beat_ms': int(round(BEAT_MS/float(to_tempo))),
+				'tempo_offset': float(tempo_offset),
+				'interval_ms': int(int(interval_phase)*BEAT_MS),
+				'interval': int(interval),
+				'interval_offset': int(interval_offset)
 			}
 			# add instrument to instruments
 			instruments.append(instrument)
@@ -208,8 +223,9 @@ def getGain(instrument, beat):
 	multiplier = getMultiplier(percent_complete)
 	from_gain = instrument['from_gain']
 	to_gain = instrument['to_gain']
+	min_gain = min(from_gain, to_gain)
 	gain = multiplier * (to_gain - from_gain) + from_gain
-	gain = round(gain, 2)
+	gain = max(min_gain, round(gain, 2))
 	return gain
 
 # Get beat duration in ms based on current point in time
@@ -223,26 +239,48 @@ def getBeatMs(instrument, beat, round_to):
 	ms = int(roundToNearest(ms, round_to))
 	return ms
 
+# Return if the instrument should be played in the given interval
+def isValidInterval(instrument, elapsed_ms):
+	interval_ms = instrument['interval_ms']
+	interval = instrument['interval']
+	interval_offset = instrument['interval_offset']	
+	return int(math.floor(1.0*elapsed_ms/interval_ms)) % interval == interval_offset
+
+# Make sure there's no sudden drop in gain
+def continueFromPrevious(instrument):
+	return instrument['bracket_min'] > 0 or instrument['bracket_max'] < 100
+
 # Add beats to sequence
 def addBeatsToSequence(instrument, duration, ms, beat_ms, round_to):
 	global sequence
+	global hindex
 	previous_ms = int(ms)
 	from_beat_ms = instrument['from_beat_ms']
 	to_beat_ms = instrument['to_beat_ms']
-	min_ms = from_beat_ms if from_beat_ms < to_beat_ms else to_beat_ms
+	min_ms = min(from_beat_ms, to_beat_ms)
 	remaining_duration = int(duration)
-	elapsed_duration = 0
+	elapsed_duration = instrument['tempo_offset'] * beat_ms
+	continue_from_prev = continueFromPrevious(instrument)
 	while remaining_duration >= min_ms:
 		elapsed_ms = int(ms)
 		elapsed_beat = int((elapsed_ms-previous_ms) / beat_ms)
-		this_beat_ms = getBeatMs(instrument, elapsed_beat, round_to)		
-		sequence.append({
-			'instrument_index': instrument['index'],
-			'position': 0,
-			'gain': getGain(instrument, elapsed_beat),
-			'rate': 1,
-			'elapsed_ms': elapsed_ms
-		})
+		# continue beat from previous
+		if continue_from_prev:
+			elapsed_beat = int(elapsed_ms / beat_ms)
+		this_beat_ms = getBeatMs(instrument, elapsed_beat, round_to)
+		# add to sequence if in valid interval
+		if isValidInterval(instrument, elapsed_ms):
+			h = halton(hindex, 3)
+			variance = int(h * VARIANCE_MS * 2 - VARIANCE_MS)
+			sequence.append({
+				'instrument_index': instrument['index'],
+				'instrument': instrument,
+				'position': 0,
+				'gain': getGain(instrument, elapsed_beat),
+				'rate': 1,
+				'elapsed_ms': elapsed_ms + variance
+			})
+			hindex += 1
 		remaining_duration -= this_beat_ms
 		elapsed_duration += this_beat_ms
 		ms += this_beat_ms
@@ -293,30 +331,8 @@ for instrument in instruments:
 			station_queue_duration += station['duration']
 	if station_queue_duration > 0:
 		addBeatsToSequence(instrument, station_queue_duration, ms, BEAT_MS, ROUND_TO_NEAREST)
-
-# Build outro sequence
-global_ms = total_ms
-if DO_OUTRO and ding_i >= 0 and dong_i >= 0:
-	ding = instruments[ding_i]
-	dong = instruments[dong_i]
-	# Add ding and dong to sequence
-	sequence.append({
-		'instrument_index': ding['index'],
-		'position': 0,
-		'gain': max([ding['from_gain'], ding['to_gain']]),
-		'rate': 1,
-		'elapsed_ms': global_ms
-	})
-	global_ms += BEAT_MS
-	sequence.append({
-		'instrument_index': dong['index'],
-		'position': 0,
-		'gain': max([dong['from_gain'], dong['to_gain']]),
-		'rate': 1,
-		'elapsed_ms': global_ms
-	})
-	total_ms += BEAT_MS * 2
-
+		
+# Calculate total time
 total_seconds = int(1.0*total_ms/1000)
 print('Total sequence time: '+time.strftime('%M:%S', time.gmtime(total_seconds)) + '(' + str(total_seconds) + 's)')
 		
