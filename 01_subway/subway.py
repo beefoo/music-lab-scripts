@@ -254,12 +254,14 @@ def continueFromPrevious(instrument):
 def addBeatsToSequence(instrument, duration, ms, beat_ms, round_to):
 	global sequence
 	global hindex
+	offset_ms = int(instrument['tempo_offset'] * beat_ms)
+	ms += offset_ms
 	previous_ms = int(ms)
 	from_beat_ms = instrument['from_beat_ms']
 	to_beat_ms = instrument['to_beat_ms']
 	min_ms = min(from_beat_ms, to_beat_ms)
 	remaining_duration = int(duration)
-	elapsed_duration = instrument['tempo_offset'] * beat_ms
+	elapsed_duration = offset_ms
 	continue_from_prev = continueFromPrevious(instrument)
 	while remaining_duration >= min_ms:
 		elapsed_ms = int(ms)
