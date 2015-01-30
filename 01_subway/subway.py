@@ -15,9 +15,9 @@ import re
 import time
 
 # Config
-BPM = 120 # 60, 75, 100, 120, 150
-METERS_PER_BEAT = 75
-DIVISIONS_PER_BEAT = 4
+BPM = 120 # Beats per minute, e.g. 60, 75, 100, 120, 150
+METERS_PER_BEAT = 75 # Higher numbers creates shorter songs
+DIVISIONS_PER_BEAT = 4 # e.g. 4 = quarter notes, 8 = eighth notes
 VARIANCE_MS = 10 # +/- milliseconds an instrument note should be off by to give it a little more "natural" feel
 INSTRUMENTS_INPUT_FILE = 'data/instruments.csv'
 STATIONS_INPUT_FILE = 'data/stations.csv'
@@ -28,7 +28,6 @@ SEQUENCE_OUTPUT_FILE = 'data/ck_sequence.csv'
 STATIONS_VISUALIZATION_OUTPUT_FILE = 'visualization/stations/data/stations.json'
 MAP_VISUALIZATION_OUTPUT_FILE = 'visualization/map/data/stations.json'
 INSTRUMENTS_DIR = 'instruments/'
-DO_INTRO = False
 WRITE_SEQUENCE = True
 WRITE_REPORT = True
 WRITE_JSON = True
@@ -45,6 +44,7 @@ stations = []
 sequence = []
 hindex = 0
 
+# For creating pseudo-random numbers
 def halton(index, base):
 	result = 0.0
 	f = 1.0 / base
@@ -287,34 +287,9 @@ def addBeatsToSequence(instrument, duration, ms, beat_ms, round_to):
 		elapsed_duration += this_beat_ms
 		ms += this_beat_ms
 
-# Build intro sequence
-global_ms = 0
-intro_duration = 0
-ding_i = findInList(instruments, 'name', 'Subway Ding')
-dong_i = findInList(instruments, 'name', 'Subway Dong')
-if DO_INTRO and ding_i >= 0 and dong_i >= 0:
-	# Add curved ding-dong to sequence
-	ding = instruments[ding_i]
-	dong = instruments[dong_i]
-	intro_duration = 0.5 * ding['tempo_phase'] * BEAT_MS
-	addBeatsToSequence(ding, intro_duration, global_ms, BEAT_MS, 1)
-	dong_offset = 0.5 * ding['from_beat_ms']
-	addBeatsToSequence(dong, intro_duration - dong_offset, dong_offset, BEAT_MS, 1)	
-	# Add linear ding-dong to sequence
-	ding['from_beat_ms'] = BEAT_MS
-	dong['from_beat_ms'] = BEAT_MS
-	ding['to_gain'] = 0.0
-	dong['to_gain'] = 0.0
-	ding_dong_beats = int(ding['gain_phase'] / 2)
-	addBeatsToSequence(ding, BEAT_MS * ding_dong_beats, intro_duration - BEAT_MS * 0.5, BEAT_MS, 1)
-	addBeatsToSequence(dong, BEAT_MS * ding_dong_beats, intro_duration - BEAT_MS * 0.5, BEAT_MS, 1)
-	global_ms = intro_duration - BEAT_MS * 1.5
-	total_ms += global_ms
-	intro_duration = global_ms
-
 # Build main sequence
 for instrument in instruments:
-	ms = int(global_ms)
+	ms = 0
 	station_queue_duration = 0
 	if instrument['type'] == 'misc':
 		continue
@@ -333,7 +308,7 @@ for instrument in instruments:
 			station_queue_duration += station['duration']
 	if station_queue_duration > 0:
 		addBeatsToSequence(instrument, station_queue_duration, ms, BEAT_MS, ROUND_TO_NEAREST)
-		
+
 # Calculate total time
 total_seconds = int(1.0*total_ms/1000)
 print('Total sequence time: '+time.strftime('%M:%S', time.gmtime(total_seconds)) + '(' + str(total_seconds) + 's)')
@@ -377,7 +352,7 @@ if WRITE_REPORT:
 	with open(REPORT_SUMMARY_OUTPUT_FILE, 'wb') as f:
 		w = csv.writer(f)
 		w.writerow(['Time', 'Name', 'Distance', 'Duration', 'Beats', 'Instruments'])
-		elapsed = intro_duration
+		elapsed = 0
 		for station in stations:
 			duration = station['duration']
 			duration_f = time.strftime('%M:%S', time.gmtime(int(duration/1000)))
