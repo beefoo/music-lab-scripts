@@ -1,4 +1,3 @@
-instruments/
 output/
 data/*.csv
 visualization/*/output/

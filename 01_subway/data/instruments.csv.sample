@@ -1,0 +1,84 @@
+Name	Type	Price	Bracket Min	Bracket Max	File	From Gain	To Gain	From Tempo	To Tempo	Gain Phase	Tempo Phase	Tempo Offset	Interval Phase	Interval	Interval Offset	Active
+Vocal 1	Wind	0	0	20	say_you_vocal_0-00.wav	0.05	0.05	1	1	42	28	0	24	2	1	1
+Vocal 1	Wind	0	20	60	say_you_vocal_0-00.wav	0.05	0.1	1	1	42	28	0	24	2	1	1
+Vocal 1	Wind	0	60	100	say_you_vocal_0-00.wav	0.05	0.2	1	1	42	28	0	24	2	1	1
+Clarinet Gs4 piano	Wind	100	0	60	clarinet_Gs4_025_piano_normal.wav	0.1	0.2	1	1	24	28	0	24	2	0	1
+Clarinet Fs4 piano	Wind	100	0	60	clarinet_Fs4_025_piano_normal.wav	0.1	0.2	1	1	24	28	0	24	2	1	1
+Bass Clarinet E3 pianissimo	Wind	100	0	60	bass-clarinet_E3_025_pianissimo_normal.wav	0.05	0.2	1	1	36	20	0.5	24	2	0	1
+Bass Clarinet D2 pianissimo	Wind	100	0	60	bass-clarinet_D2_025_pianissimo_normal.wav	0.05	0.2	1	1	36	20	0.5	24	2	1	1
+Clarinet B4 pianissimo	Wind	100	0	60	clarinet_B4_025_pianissimo_normal.wav	0.05	0.2	1	2	18	12	0	24	2	0	1
+Clarinet A4 piano	Wind	100	0	60	clarinet_A4_025_piano_normal.wav	0.05	0.2	1	2	18	12	0	24	2	1	1
+Bass Clarinet Gs pianissimo	Wind	100	0	60	bass-clarinet_Gs2_025_pianissimo_normal.wav	0.05	0.2	1	1	36	36	0	24	2	0	1
+Bass Clarinet Fs2 pianissimo	Wind	100	0	60	bass-clarinet_Fs2_025_pianissimo_normal.wav	0.05	0.2	1	1	36	36	0	24	2	1	1
+Clarinet E4 piano	Wind	400	0	60	clarinet_E4_025_piano_normal.wav	0.01	0.2	2	2	20	20	0	24	2	0	1
+Clarinet Ds4 pianissimo	Wind	400	0	60	clarinet_D4_025_pianissimo_normal.wav	0.01	0.2	2	2	20	20	0	24	2	1	1
+Bass Clarinet B2 pianissimo	Wind	400	0	60	bass-clarinet_B2_025_pianissimo_normal.wav	0.01	0.2	2	2	24	12	0	24	2	0	1
+Bass Clarinet A2 pianissimo	Wind	400	0	60	bass-clarinet_A2_025_pianissimo_normal.wav	0.01	0.2	2	2	24	12	0	24	2	1	1
+Bass Clarinet Gs3 mezzo-forte	Wind	400	0	60	bass-clarinet_Gs3_025_mezzo-forte_staccato.wav	0.01	0.2	2	2	28	32	0	24	2	0	1
+Bass Clarinet Fs3 mezzo-forte	Wind	400	0	60	bass-clarinet_Fs3_025_mezzo-forte_normal.wav	0.01	0.2	2	2	28	32	0	24	2	1	1
+Bass Clarinet Gs3 forte	Wind	400	0	60	bass-clarinet_Gs3_025_forte_normal.wav	0.01	0.2	1	2	30	32	0	24	2	0	1
+Bass Clarinet Fs3 forte	Wind	400	0	60	bass-clarinet_Fs3_025_forte_normal.wav	0.01	0.2	1	2	30	32	0	24	2	1	1
+Clarinet Gs4 forte	Wind	400	0	60	clarinet_Gs4_025_forte_normal.wav	0.01	0.2	1	1	36	24	0	24	2	0	1
+Clarinet Fs4 forte	Wind	400	0	60	clarinet_Fs4_025_forte_normal.wav	0.01	0.2	1	1	36	24	0	24	2	1	1
+Clarinet Gs4 piano	Wind	100	60	100	clarinet_Gs4_025_piano_normal.wav	0.05	0.4	1	1	24	28	0	16	2	0	1
+Clarinet Fs4 piano	Wind	100	60	100	clarinet_Fs4_025_piano_normal.wav	0.05	0.4	1	1	24	28	0	16	2	1	1
+Bass Clarinet E3 pianissimo	Wind	100	60	100	bass-clarinet_E3_025_pianissimo_normal.wav	0.05	0.4	1	1	36	20	0.5	16	2	0	1
+Bass Clarinet D2 pianissimo	Wind	100	60	100	bass-clarinet_D2_025_pianissimo_normal.wav	0.05	0.4	1	1	36	20	0.5	16	2	1	1
+Clarinet B4 pianissimo	Wind	100	60	100	clarinet_B4_025_pianissimo_normal.wav	0.05	0.4	1	2	18	12	0	16	2	0	1
+Clarinet A4 piano	Wind	100	60	100	clarinet_A4_025_piano_normal.wav	0.05	0.4	1	2	18	12	0	16	2	1	1
+Bass Clarinet Gs pianissimo	Wind	100	60	100	bass-clarinet_Gs2_025_pianissimo_normal.wav	0.05	0.4	1	1	36	36	0	16	2	0	1
+Bass Clarinet Fs2 pianissimo	Wind	100	60	100	bass-clarinet_Fs2_025_pianissimo_normal.wav	0.05	0.4	1	1	36	36	0	16	2	1	1
+Clarinet E4 piano	Wind	400	60	100	clarinet_E4_025_piano_normal.wav	0.01	0.4	2	2	20	20	0	16	2	0	1
+Clarinet Ds4 pianissimo	Wind	400	60	100	clarinet_D4_025_pianissimo_normal.wav	0.01	0.4	2	2	20	20	0	16	2	1	1
+Bass Clarinet B2 pianissimo	Wind	400	60	100	bass-clarinet_B2_025_pianissimo_normal.wav	0.01	0.4	2	2	24	12	0	16	2	0	1
+Bass Clarinet A2 pianissimo	Wind	400	60	100	bass-clarinet_A2_025_pianissimo_normal.wav	0.01	0.4	2	2	24	12	0	16	2	1	1
+Bass Clarinet Gs3 mezzo-forte	Wind	400	60	100	bass-clarinet_Gs3_025_mezzo-forte_staccato.wav	0.01	0.4	2	2	28	32	0	16	2	0	1
+Bass Clarinet Fs3 mezzo-forte	Wind	400	60	100	bass-clarinet_Fs3_025_mezzo-forte_normal.wav	0.01	0.4	2	2	28	32	0	16	2	1	1
+Clarinet Gs4 forte	Wind	400	60	100	clarinet_Gs4_025_forte_normal.wav	0.01	0.4	1	1	36	24	0	16	2	0	1
+Clarinet Fs4 forte	Wind	400	60	100	clarinet_Fs4_025_forte_normal.wav	0.01	0.4	1	1	36	24	0	16	2	1	1
+Bass Clarinet Gs3 forte	Wind	400	60	100	bass-clarinet_Gs3_025_forte_normal.wav	0.01	0.4	1	2	30	32	0	16	2	0	1
+Bass Clarinet Fs3 forte	Wind	400	60	100	bass-clarinet_Fs3_025_forte_normal.wav	0.01	0.4	1	2	30	32	0	16	2	1	1
+Drum 1	Percussion	400	0	100	keep_on_running_drum_01.wav	0.01	0.2	1	2	30	12	0	16	1	0	1
+Kick 1	Percussion	400	0	100	bellybuttons_kick_02.wav	0.01	0.4	1	1	24	8	0	16	1	0	1
+Vocal 3	Wind	0	0	100	say_you_vocal_0-39.wav	0.05	0.4	1	1	12	28	0.5	32	2	1	1
+Vocal 4	Wind	0	0	100	say_you_vocal_1-19.wav	0.05	0.2	1	1	24	12	0.5	32	2	1	0
+Clarinet E3 forte	Wind	200	0	100	clarinet_E3_025_forte_normal.wav	0.01	0.4	1	1	36	24	0	16	2	0	1
+Clarinet D3 piano	Wind	200	0	100	clarinet_D3_025_piano_normal.wav	0.01	0.4	1	1	36	24	0	16	2	1	1
+Bass Clarinet E3 mezzo-forte	Wind	200	0	100	bass-clarinet_E3_025_mezzo-forte_staccato.wav	0.01	0.4	1	2	30	32	0	16	2	0	1
+Bass Clarinet D3 mezzo-forte	Wind	200	0	100	bass-clarinet_D3_025_mezzo-forte_normal.wav	0.01	0.4	1	2	30	32	0	16	2	1	1
+Clarinet E4 forte	Wind	200	0	100	clarinet_E4_025_forte_normal.wav	0.01	0.4	2	2	30	20	0	16	2	0	1
+Clarinet D4 forte	Wind	200	0	100	clarinet_D4_025_forte_normal.wav	0.01	0.4	2	2	30	20	0	16	2	1	1
+Bass Clarinet E3 forte	Wind	200	0	100	bass-clarinet_E3_025_forte_normal.wav	0.01	0.4	1	2	24	12	0	16	2	0	1
+Bass Clarinet D3 forte	Wind	200	0	100	bass-clarinet_D3_025_forte_normal.wav	0.01	0.4	1	2	24	12	0	16	2	1	1
+Clarinet E5 forte	Wind	200	0	100	clarinet_E5_025_forte_normal.wav	0.01	0.4	2	2.5	36	36	0	16	2	0	1
+Clarinet D5 forte	Wind	200	0	100	clarinet_D5_025_forte_normal.wav	0.01	0.4	2	2.5	36	36	0	16	2	1	1
+Bass Clarinet E4 forte	Wind	200	0	100	bass-clarinet_E4_025_forte_normal.wav	0.01	0.4	2	2	30	20	0	16	2	0	1
+Bass Clarinet D4 forte	Wind	200	0	100	bass-clarinet_D4_025_forte_normal.wav	0.01	0.4	2	2	30	20	0	16	2	1	1
+Shaker 1	Percussion	200	0	100	cha_chaka_shaker_01.wav	0.01	0.1	2	2	24	12	0	16	1	0	1
+Bongo 1	Percussion	200	0	100	keep_u_bongo_02.wav	0.1	0.1	1	1	24	8	0	16	1	0	1
+Bongo 2	Percussion	100	0	100	keep_u_bongo_03.wav	0.1	0.1	1	2	24	10	0	16	1	0	1
+Bongo 3	Percussion	100	0	100	keep_u_bongo_04.wav	0.1	0.1	0.5	0.5	24	8	0	16	1	0	1
+Clarinet B3 fortissimo	Wind	50	0	100	clarinet_B3_025_fortissimo_normal.wav	0.01	0.4	1	2	24	12	0	16	2	0	1
+Clarinet A3 fortissimo	Wind	50	0	100	clarinet_A3_025_fortissimo_normal.wav	0.01	0.4	1	2	24	12	0	16	2	1	1
+Bass Clarinet B2 fortissimo	Wind	50	0	100	bass-clarinet_B2_025_fortissimo_normal.wav	0.01	0.4	2	2.5	36	36	0	16	2	0	1
+Bass Clarinet A2 fortissimo	Wind	50	0	100	bass-clarinet_A2_025_fortissimo_normal.wav	0.01	0.4	2	2.5	36	36	0	16	2	1	1
+Clarinet B4 forte	Wind	50	0	100	clarinet_B4_025_forte_normal.wav	0.01	0.4	2	2	30	20	0	16	2	0	1
+Clarinet A4 forte	Wind	50	0	100	clarinet_A4_025_forte_normal.wav	0.01	0.4	2	2	30	20	0	16	2	1	1
+Bass Clarinet B3 fortissimo	Wind	50	0	100	bass-clarinet_B3_025_fortissimo_normal.wav	0.01	0.4	1	2	24	12	0	16	2	0	1
+Bass Clarinet A3 fortissimo	Wind	50	0	100	bass-clarinet_A3_025_fortissimo_normal.wav	0.01	0.4	1	2	24	12	0	16	2	1	1
+Bass Clarinet B4 fortissimo	Wind	150	0	100	bass-clarinet_B4_025_fortissimo_normal.wav	0.6	0.6	2	2	24	36	0	16	2	0	1
+Bass Clarinet A4 fortissimo	Wind	50	0	100	bass-clarinet_A4_025_fortissimo_normal.wav	0.6	0.6	2	2	24	36	0	16	2	1	1
+Vocal 6	Wind	0	0	100	say_you_vocal_0-07.wav	0.05	0.6	1	2	16	12	0	32	2	1	1
+Vocal 7	Wind	0	0	100	say_you_vocal_0-27.wav	0.05	0.1	1	1	36	12	0.5	32	2	1	1
+Vocal 2	Wind	0	0	100	say_you_vocal_1-32.wav	0.05	0.2	1	1	30	28	1	32	2	1	1
+Vocal 5	Wind	0	0	100	say_you_vocal_3-40.wav	0.05	0.4	1	1	32	12	0.5	32	2	1	1
+Kick 2	Percussion	50	0	100	keep_u_kick_01.wav	0.1	0.5	0.5	0.5	24	8	0	16	1	0	1
+Kick 3	Percussion	50	0	100	keep_on_running_kick_01.wav	0.1	0.5	1	1	24	8	0	16	1	0	1
+Kick 4	Percussion	50	0	100	man_vs_machine_kick_01.wav	0.1	0.5	1	2	24	10	0	16	1	0	1
+Xylophone G2 soft	Percussion	50	0	100	xylophone_g-2-soft.wav	0.05	0.6	1	1	24	28	0	32	1	0	1
+Xylophone E3 soft	Percussion	50	0	100	xylophone_e3-soft.wav	0.05	0.6	1	1	24	28	0	32	1	0	1
+Xylophone E3 hard	Percussion	50	0	100	xylophone_e3-hard.wav	0.05	0.6	1	1	36	20	0.5	32	1	0	1
+Xylophone G2 hard	Percussion	50	0	100	xylophone_g-2-hard.wav	0.05	0.6	1	1	36	20	0.5	32	1	0	1
+Xylophone G2 med	Percussion	50	0	100	xylophone_g-2-med.wav	0.05	0.6	1	2	18	12	0	32	1	0	1
+Xylophone E3 med	Percussion	50	0	100	xylophone_e3-med.wav	0.05	0.6	1	2	18	12	0	32	1	0	1
+Subway Horn	Wind	400	0	100	subway_horn.wav	0.1	0.3	0.125	0.125	24	8	0	16	1	0	1
