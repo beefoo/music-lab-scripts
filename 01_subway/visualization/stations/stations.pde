@@ -28,21 +28,21 @@ color highlightColor = #d12929;
 color secondaryHighlightColor = #edc7c7;
 
 // components
-float circle_diameter = 100;
-float circle_y = 320;
+float circle_diameter = 60;
+float circle_y = 350;
 float line_height = 18;
 float boundary_height = 160;
 float boundary_width = 2;
 float marker_width = 6;
 
 // text
-float boroughY = 200;
-float stationY = 420;
+float boroughY = 230;
+float stationY = 450;
 float stationWidth = 280;
 float stationTextWidth = 500;
 float stationHeight = canvasH - stationY;
-PFont font = createFont("OpenSans-Semibold", 36, true);
-PFont fontLarge = createFont("OpenSans-Semibold", 72, true);
+PFont font = createFont("OpenSans-Semibold", 32, true);
+PFont fontLarge = createFont("OpenSans-Semibold", 40, true);
 
 // calculations to make
 float total_width = 0;
@@ -162,23 +162,23 @@ class Station
     
     // draw station
     textAlign(CENTER);
-    textFont(fontLarge, 48);
+    textFont(fontLarge, 40);
     fill(textColor);
     text(name, x-stationTextWidth/2, stationY, stationTextWidth, stationHeight);
     
     // draw borough 
-    textFont(font, 36);
+    textFont(font, 32);
     fill(secondaryTextColor);
     text(borough, x, boroughY);
     
     // draw label helper
-    float threshold = canvasW + stationWidth;
+    /* float threshold = canvasW + stationWidth;
     if (w > threshold && x < 0 && x > -(w-threshold)) {      
       textAlign(LEFT);
       textFont(font, 36);
       fill(secondaryTextColor);
       text(name, 30, canvasH - 30);
-    }
+    } */
     
     // draw borough boundary
     if (!borough.equals(borough_next)) {
