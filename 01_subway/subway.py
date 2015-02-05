@@ -1,6 +1,6 @@
 ##
 # TRACK 1
-# One Train Two Tracks (datadrivendj.com/tracks/subway)
+# Two Trains (datadrivendj.com/tracks/subway)
 # Brian Foo (brianfoo.com)
 # This file builds the sequence file for use with ChucK from the data supplied
 ##
@@ -18,7 +18,8 @@ import time
 BPM = 120 # Beats per minute, e.g. 60, 75, 100, 120, 150
 METERS_PER_BEAT = 75 # Higher numbers creates shorter songs
 DIVISIONS_PER_BEAT = 4 # e.g. 4 = quarter notes, 8 = eighth notes
-VARIANCE_MS = 10 # +/- milliseconds an instrument note should be off by to give it a little more "natural" feel
+VARIANCE_MS = 20 # +/- milliseconds an instrument note should be off by to give it a little more "natural" feel
+VARIANCE_RATE = 0 # for adding variance to the playback rate
 INSTRUMENTS_INPUT_FILE = 'data/instruments.csv'
 STATIONS_INPUT_FILE = 'data/stations.csv'
 REPORT_SUMMARY_OUTPUT_FILE = 'data/report_summary.csv'
@@ -274,12 +275,13 @@ def addBeatsToSequence(instrument, duration, ms, beat_ms, round_to):
 		if isValidInterval(instrument, elapsed_ms):
 			h = halton(hindex, 3)
 			variance = int(h * VARIANCE_MS * 2 - VARIANCE_MS)
+			rate_variance = float(h * VARIANCE_RATE * 2 - VARIANCE_RATE)
 			sequence.append({
 				'instrument_index': instrument['index'],
 				'instrument': instrument,
 				'position': 0,
 				'gain': getGain(instrument, elapsed_beat),
-				'rate': 1,
+				'rate': 1.0 + rate_variance,
 				'elapsed_ms': elapsed_ms + variance
 			})
 			hindex += 1
