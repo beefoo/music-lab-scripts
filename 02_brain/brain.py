@@ -106,16 +106,18 @@ def roundToNearest(n, nearest):
 with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 	r = csv.reader(f, delimiter='\t')
 	next(r, None) # remove header
-	for name,phases,channel,weight,file,from_gain,to_gain,from_tempo,to_tempo,gain_phase,tempo_phase,tempo_offset,interval_phase,interval,interval_offset,active in r:
+	for name,channel,variance_min,variance_max,wavelength_min,wavelength_max,file,from_gain,to_gain,from_tempo,to_tempo,gain_phase,tempo_phase,tempo_offset,interval_phase,interval,interval_offset,active in r:
 		if file and int(active):
 			index = len(instruments)
 			# build instrument object
 			instrument = {
 				'index': index,
 				'name': name,
-				'phases': phases.split(','),
-				'channel': int(channel),
-				'weight': float(weight),
+				'channel': channel,
+				'variance_min': float(variance_min),
+				'variance_max': float(variance_max),
+				'wavelength_min': float(wavelength_min),
+				'wavelength_max': float(wavelength_max),
 				'file': INSTRUMENTS_DIR + file,
 				'from_gain': round(float(from_gain), 2),
 				'to_gain': round(float(to_gain), 2),
@@ -170,7 +172,7 @@ def getWavelength(data, _min, _max, _stdev):
 	if len(waves) > 0:
 		return mean(waves)
 	else:
-		return 0
+		return -1
 
 # Read eeg from file
 with open(EEG_INPUT_FILE, 'rb') as f:
@@ -245,7 +247,7 @@ for mindex, measure in enumerate(measures):
 		_wavelength = getWavelength(channel, _min, _max, _stdev)
 		stdevs.append(_stdev)
 		maxs.append(_max)
-		if _wavelength > 0:
+		if _wavelength >= 0:
 			wavelengths.append(_wavelength)
 			# Keep track of max/mins
 			if _wavelength > max_wavelength:
@@ -258,6 +260,8 @@ for mindex, measure in enumerate(measures):
 			min_stdev = _stdev
 		# Add to channel list to measure
 		measures[mindex]["channels"].append({
+			"index": cindex + 1,
+			"name": LABELS[cindex + 1],
 			"stdev": _stdev,
 			"max": _max,
 			"wavelength": _wavelength
@@ -285,13 +289,124 @@ for mindex, measure in enumerate(measures):
 	stdev_mean_delta = max_mean_stdev - min_mean_stdev
 	stdev2_delta = max_stdev2 - min_stdev2
 	wavelength_delta = max_wavelength - min_wavelength
+	# Normalize all values to between 0 and 1
 	measures[mindex]["mean_stdev"] = 1.0 * (measure["mean_stdev"]-min_mean_stdev) / stdev_mean_delta
 	measures[mindex]["stdev_stdev"] = 1.0 * (measure["stdev_stdev"]-min_stdev2) / stdev2_delta
 	measures[mindex]["mean_wavelength"] = 1.0 * (measure["mean_wavelength"]-min_wavelength) / wavelength_delta
 	for cindex, channel in enumerate(measure["channels"]):
 		measures[mindex]["channels"][cindex]["stdev"] = 1.0 * (channel["stdev"]-min_stdev) / stdev_delta
-		measures[mindex]["channels"][cindex]["wavelength"] = max(1.0 * (channel["wavelength"]-min_wavelength) / wavelength_delta, 0)
+		if channel["wavelength"] >= 0:
+			measures[mindex]["channels"][cindex]["wavelength"] = 1.0 * (channel["wavelength"]-min_wavelength) / wavelength_delta
 
+# Returns list of valid instruments given channel, phase, and measure data
+def getChannelInstruments(_instruments, _channel, _measure):
+	valid_instruments = []
+	for instrument in _instruments:
+		if instrument["channel"]==_channel["name"] and _channel["stdev"]>=instrument["variance_min"] and _channel["stdev"]<instrument["variance_max"] and _channel["wavelength"]>=instrument["wavelength_min"] and _channel["wavelength"]<instrument["wavelength_max"]:
+			valid_instruments.append(instrument)
+	return valid_instruments
+		
+# Determine instruments
+for mindex, measure in enumerate(measures):
+	_instruments = []
+	for cindex, channel in enumerate(measure["channels"]):
+		# Add instruments based on channel, phase, measure
+		_instruments.extend(getChannelInstruments(instruments, channel, measure))
+	measures[mindex]["instruments"] = _instruments
+
+# Multiplier based on sine curve
+def getMultiplier(percent_complete):
+	radians = percent_complete * math.pi
+	multiplier = math.sin(radians)
+	if multiplier < 0:
+		multiplier = 0.0
+	elif multiplier > 1:
+		multplier = 1.0
+	return multiplier
+
+# Retrieve gain based on current beat
+def getGain(instrument, beat):
+	beats_per_phase = instrument['gain_phase']
+	percent_complete = float(beat % beats_per_phase) / beats_per_phase
+	multiplier = getMultiplier(percent_complete)
+	from_gain = instrument['from_gain']
+	to_gain = instrument['to_gain']
+	min_gain = min(from_gain, to_gain)
+	gain = multiplier * (to_gain - from_gain) + from_gain
+	gain = max(min_gain, round(gain, 2))
+	return gain
+
+# Get beat duration in ms based on current point in time
+def getBeatMs(instrument, beat, round_to):	
+	from_beat_ms = instrument['from_beat_ms']
+	to_beat_ms = instrument['to_beat_ms']
+	beats_per_phase = instrument['tempo_phase']
+	percent_complete = float(beat % beats_per_phase) / beats_per_phase
+	multiplier = getMultiplier(percent_complete)
+	ms = multiplier * (to_beat_ms - from_beat_ms) + from_beat_ms
+	ms = int(roundToNearest(ms, round_to))
+	return ms
+
+# Return if the instrument should be played in the given interval
+def isValidInterval(instrument, elapsed_ms):
+	interval_ms = instrument['interval_ms']
+	interval = instrument['interval']
+	interval_offset = instrument['interval_offset']	
+	return int(math.floor(1.0*elapsed_ms/interval_ms)) % interval == interval_offset
+
+# Add beats to sequence
+def addBeatsToSequence(instrument, duration, ms, beat_ms, round_to):
+	global sequence
+	global hindex
+	offset_ms = int(instrument['tempo_offset'] * beat_ms)
+	ms += offset_ms
+	previous_ms = int(ms)
+	from_beat_ms = instrument['from_beat_ms']
+	to_beat_ms = instrument['to_beat_ms']
+	min_ms = min(from_beat_ms, to_beat_ms)
+	remaining_duration = int(duration)
+	elapsed_duration = offset_ms
+	while remaining_duration >= min_ms:
+		elapsed_ms = int(ms)
+		elapsed_beat = int((elapsed_ms-previous_ms) / beat_ms)
+		this_beat_ms = getBeatMs(instrument, elapsed_beat, round_to)
+		# add to sequence if in valid interval
+		if isValidInterval(instrument, elapsed_ms):
+			h = halton(hindex, 3)
+			variance = int(h * VARIANCE_MS * 2 - VARIANCE_MS)
+			sequence.append({
+				'instrument_index': instrument['index'],
+				'instrument': instrument,
+				'position': 0,
+				'gain': getGain(instrument, elapsed_beat),
+				'rate': 1,
+				'elapsed_ms': elapsed_ms + variance
+			})
+			hindex += 1
+		remaining_duration -= this_beat_ms
+		elapsed_duration += this_beat_ms
+		ms += this_beat_ms
+
+# Build main sequence
+for instrument in instruments:
+	ms = 0
+	queue_duration = 0
+	# Each measure
+	for measure in measures:
+		# Check if instrument is in this measure
+		instrument_index = findInList(measure['instruments'], 'index', instrument['index'])
+		# Instrument not here, just add the measure duration and continue
+		if instrument_index < 0 and queue_duration > 0:
+			addBeatsToSequence(instrument, queue_duration, ms, BEAT_MS, ROUND_TO_NEAREST)
+			ms += queue_duration + measure['duration']
+			queue_duration = 0
+		elif instrument_index < 0:
+			ms += measure['duration']
+		else:
+			queue_duration += measure['duration']
+	if queue_duration > 0:
+		addBeatsToSequence(instrument, queue_duration, ms, BEAT_MS, ROUND_TO_NEAREST)
+		
 # Calculate total time
 total_seconds = int(1.0*total_ms/1000)
 print('Total sequence time: '+time.strftime('%M:%S', time.gmtime(total_seconds)) + '(' + str(total_seconds) + 's)')
