@@ -106,7 +106,7 @@ def roundToNearest(n, nearest):
 with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 	r = csv.reader(f, delimiter='\t')
 	next(r, None) # remove header
-	for name,channel,variance_min,variance_max,wavelength_min,wavelength_max,file,from_gain,to_gain,from_tempo,to_tempo,gain_phase,tempo_phase,tempo_offset,interval_phase,interval,interval_offset,active in r:
+	for name,channel,variance_min,variance_max,variance2_min,variance2_max,wavelength_min,wavelength_max,file,from_gain,to_gain,from_tempo,to_tempo,gain_phase,tempo_phase,tempo_offset,interval_phase,interval,interval_offset,active in r:
 		if file and int(active):
 			index = len(instruments)
 			# build instrument object
@@ -116,6 +116,8 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 				'channel': channel,
 				'variance_min': float(variance_min),
 				'variance_max': float(variance_max),
+				'variance2_min': float(variance2_min),
+				'variance2_max': float(variance2_max),
 				'wavelength_min': float(wavelength_min),
 				'wavelength_max': float(wavelength_max),
 				'file': INSTRUMENTS_DIR + file,
@@ -216,6 +218,11 @@ with open(EEG_INPUT_FILE, 'rb') as f:
 			"duration": total_ms - MEASURE_MS * len(measures)
 		})
 
+# Report EEG data
+print('Retrieved EEG data with '+ str(len(LABELS)-1) + ' channels')
+print('uV range: ['+str(abs_min)+','+str(abs_max)+'], uV length: '+str(abs_max-abs_min))
+print(str(len(measures)) + ' total measures created, ' + str(MEASURE_MS) + 'ms each')
+		
 # Keep track of min/max stdev for normalization
 min_stdev = 0
 max_stdev = 0
@@ -298,8 +305,16 @@ for mindex, measure in enumerate(measures):
 		if channel["wavelength"] >= 0:
 			measures[mindex]["channels"][cindex]["wavelength"] = 1.0 * (channel["wavelength"]-min_wavelength) / wavelength_delta
 
-# Returns list of valid instruments given channel, phase, and measure data
-def getChannelInstruments(_instruments, _channel, _measure):
+# Returns list of valid instruments given measure data
+def getInstruments(_instruments, _measure):
+	valid_instruments = []
+	for instrument in _instruments:
+		if instrument["channel"]=="all" and _measure["mean_stdev"]>=instrument["variance_min"] and _measure["mean_stdev"]<instrument["variance_max"] and _measure["stdev_stdev"]>=instrument["variance2_min"] and _measure["stdev_stdev"]<instrument["variance2_max"]:
+			valid_instruments.append(instrument)
+	return valid_instruments
+
+# Returns list of valid instruments given channel data
+def getChannelInstruments(_instruments, _channel):
 	valid_instruments = []
 	for instrument in _instruments:
 		if instrument["channel"]==_channel["name"] and _channel["stdev"]>=instrument["variance_min"] and _channel["stdev"]<instrument["variance_max"] and _channel["wavelength"]>=instrument["wavelength_min"] and _channel["wavelength"]<instrument["wavelength_max"]:
@@ -309,9 +324,10 @@ def getChannelInstruments(_instruments, _channel, _measure):
 # Determine instruments
 for mindex, measure in enumerate(measures):
 	_instruments = []
+	_instruments.extend(getInstruments(instruments, measure))
 	for cindex, channel in enumerate(measure["channels"]):
 		# Add instruments based on channel, phase, measure
-		_instruments.extend(getChannelInstruments(instruments, channel, measure))
+		_instruments.extend(getChannelInstruments(instruments, channel))
 	measures[mindex]["instruments"] = _instruments
 
 # Multiplier based on sine curve
@@ -490,6 +506,8 @@ if WRITE_REPORT and len(sequence) > 0:
 # Write JSON data for the visualization
 if WRITE_JSON:
 	json_data = eeg
+	json_data.insert(0, eeg_max)
+	json_data.insert(0, eeg_min)
 	json_data.insert(0, LABELS)
 	with open(VISUALIZATION_OUTPUT_FILE, 'w') as outfile:
 		json.dump(json_data, outfile)

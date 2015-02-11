@@ -13,6 +13,8 @@ boolean captureFrames = false;
 JSONArray eegJSON;
 JSONArray labelsJSON;
 float maxIntervalMs = 10;
+float minUV = 0;
+float maxUV = 0;
 
 // resolution
 int canvasW = 1280;
@@ -40,7 +42,7 @@ float pointD = 10;
 float lineWeight = 1;
 float lineStartWeight = 2;
 float lineStopWeight = 0.05;
-float readingPadding = 60;
+float readingPadding = 40;
 
 // text
 int fontSize = 18;
@@ -55,6 +57,19 @@ float startMs = 0; // 120000
 float stopMs = 280000; // 160000
 float elapsedMs = startMs;
 
+// scale
+int scaleXUnit = 1;
+int scaleYUnit = 1000;
+float scaleW = 1.0 * scaleXUnit * 1000 * pixelsPerMs;
+float scaleH = labelH + readingPadding * 2;
+float scaleX = 20;
+float scaleMarginY = 30;
+float scaleY = 1.0 * canvasH - scaleH - scaleMarginY;
+float scaleYRatio = 1;
+float scaleLineWeight = 1;
+float scaleFontSize = 16;
+PFont scaleFont = createFont("OpenSans-Regular", scaleFontSize, true);
+
 void setup() {  
   // set the stage
   size(canvasW, canvasH);  
@@ -66,6 +81,27 @@ void setup() {
   eegJSON = loadJSONArray("eeg.json");
   labelsJSON = eegJSON.getJSONArray(0);
   eegJSON.remove(0);
+  JSONArray minJSON = eegJSON.getJSONArray(0);
+  eegJSON.remove(0);
+  JSONArray maxJSON = eegJSON.getJSONArray(0);
+  eegJSON.remove(0);
+  
+  // calculate min/max
+  float[] mins = new float[minJSON.size()-1];  
+  for(int i=1; i<minJSON.size(); i++) {
+    mins[i-1] = minJSON.getFloat(i);
+  }
+  minUV = min(mins);
+  float[] maxs = new float[maxJSON.size()-1];
+  for(int i=1; i<maxJSON.size(); i++) {
+    maxs[i-1] = maxJSON.getFloat(i);
+  }
+  maxUV = max(maxs);
+  
+  // calculate scale ratio
+  scaleYRatio = (maxUV - minUV) / scaleYUnit;
+  
+  // println(minUV, maxUV, scaleYRatio);
   
   // draw label bg
   noStroke();
@@ -85,6 +121,9 @@ void setup() {
     text(label, x, y, labelW - textIndent, labelH);
     y += labelH;
   }
+  
+  // scale fonts
+  textFont(scaleFont, scaleFontSize);
   
   // noLoop();
 }
@@ -187,6 +226,19 @@ void draw(){
     ellipse(markerX, y, pointD, pointD);
   }
   
+  // draw scale
+  strokeWeight(scaleLineWeight);
+  stroke(textColor);
+  fill(textColor);
+  line(scaleX, scaleY+scaleH, scaleX+scaleW, scaleY+scaleH); // x-axis
+  line(scaleX, scaleY, scaleX, scaleY+scaleH); // y-axis
+  String xlabel = Integer.toString(scaleXUnit) + " s";
+  String ylabel = Integer.toString(scaleYUnit) + " uV";
+  textAlign(CENTER, CENTER);
+  text(xlabel, scaleX, scaleY+scaleH-5, scaleW, scaleMarginY);
+  textAlign(LEFT, CENTER);
+  text(ylabel, scaleX + 5, scaleY + scaleH/2);
+  
   // increment time
   elapsedMs += (1.0/fps) * 1000;
   
@@ -216,7 +268,11 @@ float getVertexY(int reading_index, float _height, float padding, float value) {
   float minY = _height * reading_index - padding;
   float maxY = minY + _height + padding*2;
   
-  return value * (maxY - minY) + minY;  
+  // update value to fit in the canvas's Y scale
+  float yDiff = (scaleYRatio * scaleH) - scaleH;
+  value = value * scaleYRatio;
+  
+  return value * (maxY - minY) + minY - yDiff/2;  
 }
 
 class Reading
