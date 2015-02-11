@@ -42,7 +42,7 @@ float pointD = 10;
 float lineWeight = 1;
 float lineStartWeight = 2;
 float lineStopWeight = 0.05;
-float readingPadding = 40;
+float readingPadding = 60;
 
 // text
 int fontSize = 18;
@@ -60,8 +60,9 @@ float elapsedMs = startMs;
 // scale
 int scaleXUnit = 1;
 int scaleYUnit = 1000;
+int scaleYUnitDisplay = 500;
 float scaleW = 1.0 * scaleXUnit * 1000 * pixelsPerMs;
-float scaleH = labelH + readingPadding * 2;
+float scaleH = (labelH + readingPadding * 2) * scaleYUnitDisplay / scaleYUnit;
 float scaleX = 20;
 float scaleMarginY = 30;
 float scaleY = 1.0 * canvasH - scaleH - scaleMarginY;
@@ -233,7 +234,7 @@ void draw(){
   line(scaleX, scaleY+scaleH, scaleX+scaleW, scaleY+scaleH); // x-axis
   line(scaleX, scaleY, scaleX, scaleY+scaleH); // y-axis
   String xlabel = Integer.toString(scaleXUnit) + " s";
-  String ylabel = Integer.toString(scaleYUnit) + " uV";
+  String ylabel = Integer.toString(scaleYUnitDisplay) + " uV";
   textAlign(CENTER, CENTER);
   text(xlabel, scaleX, scaleY+scaleH-5, scaleW, scaleMarginY);
   textAlign(LEFT, CENTER);
