@@ -3,3 +3,4 @@ data/*.csv
 data/*.txt
 visualization/output/
 visualization/data/
+instruments/*

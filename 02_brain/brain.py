@@ -26,10 +26,10 @@ INSTRUMENTS_OUTPUT_FILE = 'data/ck_instruments.csv'
 SEQUENCE_OUTPUT_FILE = 'data/ck_sequence.csv'
 VISUALIZATION_OUTPUT_FILE = 'visualization/data/eeg.json'
 INSTRUMENTS_DIR = 'instruments/'
-WRITE_SEQUENCE = False
+WRITE_SEQUENCE = True
 WRITE_REPORT = False
 WRITE_JSON = False
-LABELS = ['Time', 'FP1-F7', 'F7-T7', 'T7-P7', 'P7-O1', 'FP1-F3', 'F3-C3', 'C3-P3', 'P3-O1', 'FP2-F4', 'F4-C4', 'C4-P4', 'P4-O2', 'FP2-F8', 'F8-T8', 'T8-P8', 'P8-O2', 'FZ-CZ', 'CZ-PZ', 'P7-T7', 'T7-FT9', 'FT9-FT10', 'FT10-T8', 'T8-P8']
+LABELS = ['Time', 'FP1-F7', 'F7-T7', 'T7-P7', 'P7-O1', 'FP1-F3', 'F3-C3', 'C3-P3', 'P3-O1', 'FP2-F4', 'F4-C4', 'C4-P4', 'P4-O2', 'FP2-F8', 'F8-T8', 'T8-P8', 'P8-O2', 'FZ-CZ', 'CZ-PZ']
 
 # Calculations
 BEAT_MS = round(60.0 / BPM * 1000)
@@ -183,7 +183,7 @@ with open(EEG_INPUT_FILE, 'rb') as f:
 	next_measure = MEASURE_MS
 	for t,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12,s13,s14,s15,s16,s17,s18,s19,s20,s21,s22,s23 in r:
 		ms = int(t)
-		row = [ms,float(s1),float(s2),float(s3),float(s4),float(s5),float(s6),float(s7),float(s8),float(s9),float(s10),float(s11),float(s12),float(s13),float(s14),float(s15),float(s16),float(s17),float(s18),float(s19),float(s20),float(s21),float(s22),float(s23)]
+		row = [ms,float(s1),float(s2),float(s3),float(s4),float(s5),float(s6),float(s7),float(s8),float(s9),float(s10),float(s11),float(s12),float(s13),float(s14),float(s15),float(s16),float(s17),float(s18)]
 		# get row with minimum values
 		if ms <= -2:
 			eeg_min = row

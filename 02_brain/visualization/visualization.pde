@@ -3,15 +3,16 @@
  * Author: Brian Foo (http://brianfoo.com)
  * This is a visualization of the song "Rhapsody In Grey" (https://datadrivendj.com/tracks/brain)
  */
-
+ 
 // output
 int fps = 30;
 String outputFrameFile = "output/frames/frames-#####.png";
-boolean captureFrames = true;
+boolean captureFrames = false;
 
 // data
 JSONArray eegJSON;
 JSONArray labelsJSON;
+float maxIntervalMs = 10;
 
 // resolution
 int canvasW = 1280;
@@ -20,30 +21,34 @@ int X_AXIS = 0;
 int Y_AXIS = 1;
 
 // color palette
-color bgColor = #443d3d;
+color bgColor = #262222;
 color labelBgColor = #262222;
 color textColor = #f8f3f3;
-color lineColor = #fcf8e0;
+color lineColor = #6b6961;
+color lineStartColor = #ffffff;
+color lineStopColor = #262222;
 color pointColor = #ffe030;
 color highlightColor = #ef6e6e;
 
 // components
-int labelCount = 23;
+int labelCount = 18;
 float labelW = 100;
 float labelH = 1.0 * canvasH / labelCount;
 float markerX = 0.5 * (canvasW - labelW/2);
 float markerW = 10;
 float pointD = 10;
-float lineWeight = 2;
+float lineWeight = 1;
+float lineStartWeight = 2;
+float lineStopWeight = 0.05;
 float readingPadding = 60;
 
 // text
-int fontSize = 16;
+int fontSize = 18;
 float textIndent = 20;
 PFont font = createFont("OpenSans-Semibold", fontSize, true);
 
 // distance/time
-float pixelsPerMs = 100.0 / 1000;
+float pixelsPerMs = 90.0 / 1000;
 float msBefore = markerX / pixelsPerMs;
 float msAfter = 1.0 * (canvasW - markerX - labelW) / pixelsPerMs;
 float startMs = 0; // 120000
@@ -54,7 +59,8 @@ void setup() {
   // set the stage
   size(canvasW, canvasH);  
   colorMode(RGB, 255, 255, 255, 100);
-  frameRate(fps);  
+  frameRate(fps);
+  smooth();
   
   // load data
   eegJSON = loadJSONArray("eeg.json");
@@ -110,7 +116,7 @@ void draw(){
     }
     
     // add point
-    if (abs(round(ms) - round(elapsedMs)) < 10) {
+    if (abs(round(ms) - round(elapsedMs)) < maxIntervalMs) {
       points = new FloatList(labelCount);
       for(int j=1; j < valuesJSON.size(); j++) {
          points.append(valuesJSON.getFloat(j));
@@ -128,35 +134,46 @@ void draw(){
   fill(bgColor);
   rect(0, 0, canvasW - labelW, canvasH);
   
-  // draw lines
-  strokeWeight(lineWeight);
-  stroke(lineColor);
+  // draw lines  
   noFill();
   
   // loop through each line
   for(int i=0; i<lines.size(); i++) {
   
     ArrayList<Reading> line = lines.get(i);
-    beginShape();
+    
+    // get initial point
+    Reading r = line.get(0);
+    float x1 = getVertexX(markerX, elapsedMs, r.getMs());
+    float y1 = getVertexY(i, labelH, readingPadding, r.getValue());
     
     // loop through each point
-    for(int j=0; j<line.size(); j++) {
-      Reading r = line.get(j);
-      float x = getVertexX(markerX, elapsedMs, r.getMs());
-      float y = getVertexY(i, labelH, readingPadding, r.getValue());
-      vertex(x, y);
+    for(int j=1; j<line.size(); j++) {
+      r = line.get(j);
+      float x2 = getVertexX(markerX, elapsedMs, r.getMs());
+      float y2 = getVertexY(i, labelH, readingPadding, r.getValue());
+      
+      // if it's after the marker, make a gradient from light to dark
+      if (x1 >= markerX) {
+        float inter = 1.0 * (x1-markerX) / (canvasW-labelW-markerX);
+        float lw = inter * (lineStopWeight - lineStartWeight) + lineStartWeight;
+        color lc = lerpColor(lineStartColor, lineStopColor, inter);
+        strokeWeight(lw);
+        stroke(lc);
+        
+      // if it's before the marker, reverse the gradient and keep a unified weight
+      } else {
+        float inter = 1.0 * x1 / markerX;
+        color lc = lerpColor(lineStopColor, lineColor, inter);
+        strokeWeight(lineWeight);
+        stroke(lc);
+      }
+      
+      line(x1, y1, x2, y2);
+      x1 = x2;
+      y1 = y2;
     }
-    
-    endShape(); 
-  }  
-  
-  // draw left overlay
-  noStroke();
-  fill(labelBgColor, 80);
-  rect(0, 0, markerX, canvasH);
-
-  // draw right gradient overlay
-  alphaGradient(int(markerX), 0, float(canvasW) - markerX - labelW + 1, float(canvasH), bgColor, X_AXIS);
+  }
   
   // draw marker
   noStroke();
@@ -195,35 +212,11 @@ float getVertexX(float cx, float elapsed_ms, float ms){
   return cx + delta_px;
 }
 
-float getVertexY(int reading_index, float height, float padding, float value) {
-  float minY = height * reading_index - padding;
-  float maxY = minY + height + padding*2;
+float getVertexY(int reading_index, float _height, float padding, float value) {
+  float minY = _height * reading_index - padding;
+  float maxY = minY + _height + padding*2;
   
   return value * (maxY - minY) + minY;  
-}
-
-void alphaGradient(int x, int y, float w, float h, color c, int axis) {
-  noFill();
-  strokeWeight(1);
-  float a1 = 0;
-  float a2 = 100;
-
-  if (axis == Y_AXIS) {  // Top to bottom gradient
-    for (int i = y; i <= y+h; i++) {
-      float inter = map(i, y, y+h, 0, 1);
-      float alpha = inter * (a2 - a1) + a1;
-      stroke(c, alpha);
-      line(x, i, x+w, i);
-    }
-  }  
-  else if (axis == X_AXIS) {  // Left to right gradient
-    for (int i = x; i <= x+w; i++) {
-      float inter = map(i, x, x+w, 0, 1);
-      float alpha = inter * (a2 - a1) + a1;
-      stroke(c, alpha);
-      line(i, y, i, y+h);
-    }
-  }
 }
 
 class Reading
