@@ -42,7 +42,7 @@ float pointD = 10;
 float lineWeight = 1;
 float lineStartWeight = 2;
 float lineStopWeight = 0.05;
-float readingPadding = 60;
+float readingPadding = 40;
 
 // text
 int fontSize = 18;

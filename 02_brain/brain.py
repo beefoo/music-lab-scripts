@@ -106,7 +106,7 @@ def roundToNearest(n, nearest):
 with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 	r = csv.reader(f, delimiter='\t')
 	next(r, None) # remove header
-	for name,channel,variance_min,variance_max,variance2_min,variance2_max,wavelength_min,wavelength_max,file,from_gain,to_gain,from_tempo,to_tempo,gain_phase,tempo_phase,tempo_offset,interval_phase,interval,interval_offset,active in r:
+	for name,channel,variance_min,variance_max,variance2_min,variance2_max,freq_min,freq_max,file,from_gain,to_gain,from_tempo,to_tempo,gain_phase,tempo_phase,tempo_offset,interval_phase,interval,interval_offset,active in r:
 		if file and int(active):
 			index = len(instruments)
 			# build instrument object
@@ -118,8 +118,8 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 				'variance_max': float(variance_max),
 				'variance2_min': float(variance2_min),
 				'variance2_max': float(variance2_max),
-				'wavelength_min': float(wavelength_min),
-				'wavelength_max': float(wavelength_max),
+				'freq_min': float(freq_min),
+				'freq_max': float(freq_max),
 				'file': INSTRUMENTS_DIR + file,
 				'from_gain': round(float(from_gain), 2),
 				'to_gain': round(float(to_gain), 2),
@@ -149,32 +149,19 @@ def normalizeRow(row, min_value, max_value):
 			normalized_row.append(col)
 	return normalized_row
 
-def getWavelength(data, _min, _max, _stdev):
-	waves = []
-	start = -1
-	bottom_found = False
-	end = -1
-	data_len = len(data)
-	for index, value in enumerate(data):
-		# Look for the first peak
-		if value > (_max-_stdev) and start < 0:
-			start = index
-		# Look for the bottom crest
-		elif value < (_min+_stdev) and start >= 0 and not bottom_found and end < 0:
-			bottom_found = True
-		# Look for second peak
-		elif bottom_found and value > (_max-_stdev) and end < 0:
-			end = index
-			# Add wave to list and reset
-			waves.append(1.0 * (end - start) / data_len)
-			start = -1
-			bottom_found = False
-			end = -1
-	# wave(s) found, return average length
-	if len(waves) > 0:
-		return mean(waves)
-	else:
-		return -1
+# Count the number of waves in a given list of values
+def getFrequency(data, _min, _max, _stdev):
+	waves = 0.0
+	threshold = _stdev / 2.0
+	last_peak_value = None
+	for i, value in enumerate(data):
+		if i > 0 and i < len(data)-1:
+			# Look for a peak that has a value that is more than a {threshold} than the last peak value
+			if (value > data[i-1] and value > data[i+1] or value < data[i-1] and value < data[i+1]) and (last_peak_value is None or abs(value-last_peak_value) > threshold):
+				last_peak_value = value
+				waves += 1
+	# wave(s) found
+	return waves
 
 # Read eeg from file
 with open(EEG_INPUT_FILE, 'rb') as f:
@@ -224,21 +211,23 @@ print('uV range: ['+str(abs_min)+','+str(abs_max)+'], uV length: '+str(abs_max-a
 print(str(len(measures)) + ' total measures created, ' + str(MEASURE_MS) + 'ms each')
 		
 # Keep track of min/max stdev for normalization
-min_stdev = 0
-max_stdev = 0
-min_mean_stdev = 0
-max_mean_stdev = 0
-min_stdev2 = 0
-max_stdev2 = 0
-min_wavelength = 0
-max_wavelength = 0
+min_stdev = None
+max_stdev = None
+min_mean_stdev = None
+max_mean_stdev = None
+min_stdev2 = None
+max_stdev2 = None
+min_freq = None
+max_freq = None
+min_mean_freq = None
+max_mean_freq = None
 			
 # Go through each measure
 for mindex, measure in enumerate(measures):
 	channels = []
 	stdevs = []
 	maxs = []
-	wavelengths = []
+	freqs = []
 	# Create an array of channel-value arrays
 	for channel in range(CHANNEL_COUNT):
 		channels.append([])
@@ -247,23 +236,22 @@ for mindex, measure in enumerate(measures):
 			channels[channel].append(value)
 	# For each channel
 	for cindex, channel in enumerate(channels):
-		# Calculate stdev, min/max, wavelength
+		# Calculate stdev, min/max, freq
 		_stdev = stdev(channel)
 		_min = min(channel)
 		_max = max(channel)
-		_wavelength = getWavelength(channel, _min, _max, _stdev)
+		_freq = getFrequency(channel, _min, _max, _stdev)
 		stdevs.append(_stdev)
 		maxs.append(_max)
-		if _wavelength >= 0:
-			wavelengths.append(_wavelength)
-			# Keep track of max/mins
-			if _wavelength > max_wavelength:
-				max_wavelength = _wavelength
-			if _wavelength < min_wavelength or min_wavelength==0:
-				min_wavelength = _wavelength
-		if _stdev > max_stdev:
+		freqs.append(_freq)
+		# Keep track of max/mins
+		if _freq > max_freq or max_freq is None:
+			max_freq = _freq
+		if _freq < min_freq or min_freq is None:
+			min_freq = _freq
+		if _stdev > max_stdev or max_stdev is None:
 			max_stdev = _stdev
-		if _stdev < min_stdev or min_stdev==0:
+		if _stdev < min_stdev or min_stdev is None:
 			min_stdev = _stdev
 		# Add to channel list to measure
 		measures[mindex]["channels"].append({
@@ -271,39 +259,44 @@ for mindex, measure in enumerate(measures):
 			"name": LABELS[cindex + 1],
 			"stdev": _stdev,
 			"max": _max,
-			"wavelength": _wavelength
+			"freq": _freq
 		})
 	# Calculate max/means/stdevs
 	mean_stdev = mean(stdevs)
 	stdev_stdev = stdev(stdevs)
+	mean_freq = mean(freqs)
 	measures[mindex]["max"] = max(maxs)
 	measures[mindex]["mean_stdev"] = mean_stdev
-	measures[mindex]["mean_wavelength"] = mean(wavelengths)
+	measures[mindex]["mean_freq"] = mean_freq
 	measures[mindex]["stdev_stdev"] = stdev_stdev
 	# Keep track of min/max
-	if mean_stdev > max_mean_stdev:
+	if mean_stdev > max_mean_stdev or max_mean_stdev is None:
 		max_mean_stdev = mean_stdev
-	if mean_stdev < min_mean_stdev or min_mean_stdev==0:
+	if mean_stdev < min_mean_stdev or min_mean_stdev is None:
 		min_mean_stdev = mean_stdev
-	if stdev_stdev > max_stdev2:
+	if stdev_stdev > max_stdev2 or max_stdev2 is None:
 		max_stdev2 = stdev_stdev
-	if stdev_stdev < min_stdev2 or min_stdev2==0:
+	if stdev_stdev < min_stdev2 or min_stdev2 is None:
 		min_stdev2 = stdev_stdev
+	if mean_freq > max_mean_freq or max_mean_freq is None:
+		max_mean_freq = mean_freq
+	if mean_freq < min_mean_freq or min_mean_freq is None:
+		min_mean_freq = mean_freq
 
 # Normalize all values in measures
 for mindex, measure in enumerate(measures):
 	stdev_delta = max_stdev - min_stdev
 	stdev_mean_delta = max_mean_stdev - min_mean_stdev
 	stdev2_delta = max_stdev2 - min_stdev2
-	wavelength_delta = max_wavelength - min_wavelength
+	freq_delta = max_freq - min_freq
+	freq_mean_delta = max_mean_freq - min_mean_freq
 	# Normalize all values to between 0 and 1
 	measures[mindex]["mean_stdev"] = 1.0 * (measure["mean_stdev"]-min_mean_stdev) / stdev_mean_delta
 	measures[mindex]["stdev_stdev"] = 1.0 * (measure["stdev_stdev"]-min_stdev2) / stdev2_delta
-	measures[mindex]["mean_wavelength"] = 1.0 * (measure["mean_wavelength"]-min_wavelength) / wavelength_delta
+	measures[mindex]["mean_freq"] = 1.0 * (measure["mean_freq"]-min_mean_freq) / freq_mean_delta
 	for cindex, channel in enumerate(measure["channels"]):
 		measures[mindex]["channels"][cindex]["stdev"] = 1.0 * (channel["stdev"]-min_stdev) / stdev_delta
-		if channel["wavelength"] >= 0:
-			measures[mindex]["channels"][cindex]["wavelength"] = 1.0 * (channel["wavelength"]-min_wavelength) / wavelength_delta
+		measures[mindex]["channels"][cindex]["freq"] = 1.0 * (channel["freq"]-min_freq) / freq_delta
 
 # Returns list of valid instruments given measure data
 def getInstruments(_instruments, _measure):
@@ -317,7 +310,7 @@ def getInstruments(_instruments, _measure):
 def getChannelInstruments(_instruments, _channel):
 	valid_instruments = []
 	for instrument in _instruments:
-		if instrument["channel"]==_channel["name"] and _channel["stdev"]>=instrument["variance_min"] and _channel["stdev"]<instrument["variance_max"] and _channel["wavelength"]>=instrument["wavelength_min"] and _channel["wavelength"]<instrument["wavelength_max"]:
+		if instrument["channel"]==_channel["name"] and _channel["stdev"]>=instrument["variance_min"] and _channel["stdev"]<instrument["variance_max"] and _channel["freq"]>=instrument["freq_min"] and _channel["freq"]<instrument["freq_max"]:
 			valid_instruments.append(instrument)
 	return valid_instruments
 		
@@ -422,7 +415,7 @@ for instrument in instruments:
 			queue_duration += measure['duration']
 	if queue_duration > 0:
 		addBeatsToSequence(instrument, queue_duration, ms, BEAT_MS, ROUND_TO_NEAREST)
-		
+
 # Calculate total time
 total_seconds = int(1.0*total_ms/1000)
 print('Total sequence time: '+time.strftime('%M:%S', time.gmtime(total_seconds)) + '(' + str(total_seconds) + 's)')
@@ -465,13 +458,13 @@ if WRITE_SEQUENCE and len(sequence) > 0:
 if WRITE_REPORT:
 	with open(REPORT_SUMMARY_OUTPUT_FILE, 'wb') as f:
 		w = csv.writer(f)
-		w.writerow(['Time', 'Mean-Stdev', 'Stdev-Stdev', 'Mean-Wavelength', 'Duration'])
+		w.writerow(['Time', 'Mean-Stdev', 'Stdev-Stdev', 'Mean-Freq', 'Duration'])
 		for mindex, measure in enumerate(measures):
 			elapsed = mindex * MEASURE_MS
 			elapsed_f = time.strftime('%M:%S', time.gmtime(int(elapsed/1000)))
 			ms = int(elapsed % 1000)
 			elapsed_f += '.' + str(ms)
-			w.writerow([elapsed_f, measure['mean_stdev'], measure['stdev_stdev'], measure['mean_wavelength'], int(measure['duration'])])
+			w.writerow([elapsed_f, measure['mean_stdev'], measure['stdev_stdev'], measure['mean_freq'], int(measure['duration'])])
 		print('Successfully wrote summary file: '+REPORT_SUMMARY_OUTPUT_FILE)
 	with open(REPORT_SUMMARY_CHANNEL_OUTPUT_FILE, 'wb') as f:
 		w = csv.writer(f)
@@ -483,7 +476,7 @@ if WRITE_REPORT:
 			elapsed_f += '.' + str(ms)
 			channels = [elapsed_f]
 			for channel in measure["channels"]:
-				channels.append(channel["stdev"])
+				channels.append(channel["freq"])
 			w.writerow(channels)
 		print('Successfully wrote channel summary file: '+REPORT_SUMMARY_CHANNEL_OUTPUT_FILE)
 
