@@ -26,8 +26,8 @@ INSTRUMENTS_OUTPUT_FILE = 'data/ck_instruments.csv'
 SEQUENCE_OUTPUT_FILE = 'data/ck_sequence.csv'
 VISUALIZATION_OUTPUT_FILE = 'visualization/data/eeg.json'
 INSTRUMENTS_DIR = 'instruments/'
-WRITE_SEQUENCE = True
-WRITE_REPORT = False
+WRITE_SEQUENCE = False
+WRITE_REPORT = True
 WRITE_JSON = False
 LABELS = ['Time', 'FP1-F7', 'F7-T7', 'T7-P7', 'P7-O1', 'FP1-F3', 'F3-C3', 'C3-P3', 'P3-O1', 'FP2-F4', 'F4-C4', 'C4-P4', 'P4-O2', 'FP2-F8', 'F8-T8', 'T8-P8', 'P8-O2', 'FZ-CZ', 'CZ-PZ']
 
@@ -106,7 +106,7 @@ def roundToNearest(n, nearest):
 with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 	r = csv.reader(f, delimiter='\t')
 	next(r, None) # remove header
-	for name,channel,variance_min,variance_max,variance2_min,variance2_max,freq_min,freq_max,file,from_gain,to_gain,from_tempo,to_tempo,gain_phase,tempo_phase,tempo_offset,interval_phase,interval,interval_offset,active in r:
+	for name,channel,amp_min,amp_max,freq_min,freq_max,var_min,var_max,file,from_gain,to_gain,from_tempo,to_tempo,gain_phase,tempo_phase,tempo_offset,interval_phase,interval,interval_offset,active in r:
 		if file and int(active):
 			index = len(instruments)
 			# build instrument object
@@ -114,12 +114,12 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 				'index': index,
 				'name': name,
 				'channel': channel,
-				'variance_min': float(variance_min),
-				'variance_max': float(variance_max),
-				'variance2_min': float(variance2_min),
-				'variance2_max': float(variance2_max),
+				'amp_min': float(amp_min),
+				'amp_max': float(amp_max),
 				'freq_min': float(freq_min),
 				'freq_max': float(freq_max),
+				'var_min': float(var_min),
+				'var_max': float(var_max),
 				'file': INSTRUMENTS_DIR + file,
 				'from_gain': round(float(from_gain), 2),
 				'to_gain': round(float(to_gain), 2),
@@ -211,21 +211,21 @@ print('uV range: ['+str(abs_min)+','+str(abs_max)+'], uV length: '+str(abs_max-a
 print(str(len(measures)) + ' total measures created, ' + str(MEASURE_MS) + 'ms each')
 		
 # Keep track of min/max stdev for normalization
-min_stdev = None
-max_stdev = None
-min_mean_stdev = None
-max_mean_stdev = None
-min_stdev2 = None
-max_stdev2 = None
+min_amp = None
+max_amp = None
+min_mean_amp = None
+max_mean_amp = None
 min_freq = None
 max_freq = None
 min_mean_freq = None
 max_mean_freq = None
+min_var = None
+max_var = None
 			
 # Go through each measure
 for mindex, measure in enumerate(measures):
 	channels = []
-	stdevs = []
+	amps = []
 	maxs = []
 	freqs = []
 	# Create an array of channel-value arrays
@@ -241,68 +241,68 @@ for mindex, measure in enumerate(measures):
 		_min = min(channel)
 		_max = max(channel)
 		_freq = getFrequency(channel, _min, _max, _stdev)
-		stdevs.append(_stdev)
-		maxs.append(_max)
+		amps.append(_stdev)
 		freqs.append(_freq)
+		maxs.append(_max)		
 		# Keep track of max/mins
+		if _stdev > max_amp or max_amp is None:
+			max_amp = _stdev
+		if _stdev < min_amp or min_amp is None:
+			min_amp = _stdev
 		if _freq > max_freq or max_freq is None:
 			max_freq = _freq
 		if _freq < min_freq or min_freq is None:
-			min_freq = _freq
-		if _stdev > max_stdev or max_stdev is None:
-			max_stdev = _stdev
-		if _stdev < min_stdev or min_stdev is None:
-			min_stdev = _stdev
+			min_freq = _freq		
 		# Add to channel list to measure
 		measures[mindex]["channels"].append({
 			"index": cindex + 1,
 			"name": LABELS[cindex + 1],
-			"stdev": _stdev,
+			"amp": _stdev,
 			"max": _max,
 			"freq": _freq
 		})
 	# Calculate max/means/stdevs
-	mean_stdev = mean(stdevs)
-	stdev_stdev = stdev(stdevs)
+	mean_amp = mean(amps)
+	var = stdev(amps)
 	mean_freq = mean(freqs)
 	measures[mindex]["max"] = max(maxs)
-	measures[mindex]["mean_stdev"] = mean_stdev
+	measures[mindex]["mean_amp"] = mean_amp
 	measures[mindex]["mean_freq"] = mean_freq
-	measures[mindex]["stdev_stdev"] = stdev_stdev
+	measures[mindex]["var"] = var
 	# Keep track of min/max
-	if mean_stdev > max_mean_stdev or max_mean_stdev is None:
-		max_mean_stdev = mean_stdev
-	if mean_stdev < min_mean_stdev or min_mean_stdev is None:
-		min_mean_stdev = mean_stdev
-	if stdev_stdev > max_stdev2 or max_stdev2 is None:
-		max_stdev2 = stdev_stdev
-	if stdev_stdev < min_stdev2 or min_stdev2 is None:
-		min_stdev2 = stdev_stdev
+	if mean_amp > max_mean_amp or max_mean_amp is None:
+		max_mean_amp = mean_amp
+	if mean_amp < min_mean_amp or min_mean_amp is None:
+		min_mean_amp = mean_amp
 	if mean_freq > max_mean_freq or max_mean_freq is None:
 		max_mean_freq = mean_freq
 	if mean_freq < min_mean_freq or min_mean_freq is None:
 		min_mean_freq = mean_freq
+	if var > max_var or max_var is None:
+		max_var = var
+	if var < min_var or min_var is None:
+		min_var = var
 
 # Normalize all values in measures
 for mindex, measure in enumerate(measures):
-	stdev_delta = max_stdev - min_stdev
-	stdev_mean_delta = max_mean_stdev - min_mean_stdev
-	stdev2_delta = max_stdev2 - min_stdev2
+	amp_delta = max_amp - min_amp
+	amp_mean_delta = max_mean_amp - min_mean_amp
 	freq_delta = max_freq - min_freq
 	freq_mean_delta = max_mean_freq - min_mean_freq
+	var_delta = max_var - min_var	
 	# Normalize all values to between 0 and 1
-	measures[mindex]["mean_stdev"] = 1.0 * (measure["mean_stdev"]-min_mean_stdev) / stdev_mean_delta
-	measures[mindex]["stdev_stdev"] = 1.0 * (measure["stdev_stdev"]-min_stdev2) / stdev2_delta
+	measures[mindex]["mean_amp"] = 1.0 * (measure["mean_amp"]-min_mean_amp) / amp_mean_delta
 	measures[mindex]["mean_freq"] = 1.0 * (measure["mean_freq"]-min_mean_freq) / freq_mean_delta
+	measures[mindex]["var"] = 1.0 * (measure["var"]-min_var) / var_delta	
 	for cindex, channel in enumerate(measure["channels"]):
-		measures[mindex]["channels"][cindex]["stdev"] = 1.0 * (channel["stdev"]-min_stdev) / stdev_delta
+		measures[mindex]["channels"][cindex]["amp"] = 1.0 * (channel["amp"]-min_amp) / amp_delta
 		measures[mindex]["channels"][cindex]["freq"] = 1.0 * (channel["freq"]-min_freq) / freq_delta
 
 # Returns list of valid instruments given measure data
 def getInstruments(_instruments, _measure):
 	valid_instruments = []
 	for instrument in _instruments:
-		if instrument["channel"]=="all" and _measure["mean_stdev"]>=instrument["variance_min"] and _measure["mean_stdev"]<instrument["variance_max"] and _measure["stdev_stdev"]>=instrument["variance2_min"] and _measure["stdev_stdev"]<instrument["variance2_max"]:
+		if instrument["channel"]=="all" and _measure["mean_amp"]>=instrument["amp_min"] and _measure["mean_amp"]<instrument["amp_max"] and _measure["mean_freq"]>=instrument["freq_min"] and _measure["mean_freq"]<instrument["freq_max"] and _measure["var"]>=instrument["var_min"] and _measure["var"]<instrument["var_max"]:
 			valid_instruments.append(instrument)
 	return valid_instruments
 
@@ -310,7 +310,7 @@ def getInstruments(_instruments, _measure):
 def getChannelInstruments(_instruments, _channel):
 	valid_instruments = []
 	for instrument in _instruments:
-		if instrument["channel"]==_channel["name"] and _channel["stdev"]>=instrument["variance_min"] and _channel["stdev"]<instrument["variance_max"] and _channel["freq"]>=instrument["freq_min"] and _channel["freq"]<instrument["freq_max"]:
+		if instrument["channel"]==_channel["name"] and _channel["amp"]>=instrument["amp_min"] and _channel["amp"]<instrument["amp_max"] and _channel["freq"]>=instrument["freq_min"] and _channel["freq"]<instrument["freq_max"]:
 			valid_instruments.append(instrument)
 	return valid_instruments
 		
@@ -458,13 +458,13 @@ if WRITE_SEQUENCE and len(sequence) > 0:
 if WRITE_REPORT:
 	with open(REPORT_SUMMARY_OUTPUT_FILE, 'wb') as f:
 		w = csv.writer(f)
-		w.writerow(['Time', 'Mean-Stdev', 'Stdev-Stdev', 'Mean-Freq', 'Duration'])
+		w.writerow(['Time', 'Amplitude', 'Frequency', 'Variance', 'Duration'])
 		for mindex, measure in enumerate(measures):
 			elapsed = mindex * MEASURE_MS
 			elapsed_f = time.strftime('%M:%S', time.gmtime(int(elapsed/1000)))
 			ms = int(elapsed % 1000)
 			elapsed_f += '.' + str(ms)
-			w.writerow([elapsed_f, measure['mean_stdev'], measure['stdev_stdev'], measure['mean_freq'], int(measure['duration'])])
+			w.writerow([elapsed_f, measure['mean_amp'], measure['mean_freq'], measure['var'], int(measure['duration'])])
 		print('Successfully wrote summary file: '+REPORT_SUMMARY_OUTPUT_FILE)
 	with open(REPORT_SUMMARY_CHANNEL_OUTPUT_FILE, 'wb') as f:
 		w = csv.writer(f)
