@@ -1,5 +1,6 @@
 2000 => int padding;
 2 => int instrument_buffers;
+0 => int start; // 120000
 
 // instrument object
 class Instrument { 
@@ -50,6 +51,7 @@ while( instruments_fio.more() )
 
 // Add padding
 padding::ms => now;
+padding => int elapsed_ms;
 
 // read sequence from file
 while( sequence_fio.more() ) {    
@@ -58,6 +60,12 @@ while( sequence_fio.more() ) {
     Std.atof(sequence_fio.readLine()) => float gain;
     Std.atof(sequence_fio.readLine()) => float rate;
     Std.atoi(sequence_fio.readLine()) => int milliseconds;
+    
+    elapsed_ms + milliseconds => elapsed_ms;
+    if (start > elapsed_ms)
+    {        
+        continue;
+    }
     
     // wait duration
 	if (milliseconds > 0)

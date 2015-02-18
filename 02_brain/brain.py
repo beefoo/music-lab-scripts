@@ -18,10 +18,9 @@ BPM = 75 # Beats per minute, e.g. 60, 75, 100, 120, 150
 DIVISIONS_PER_BEAT = 16 # e.g. 4 = quarter notes, 8 = eighth notes, etc
 VARIANCE_MS = 10 # +/- milliseconds an instrument note should be off by to give it a little more "natural" feel
 PRECISION = 6 # decimal places after 0 for reading value
-MIN_GAIN = 0.5
-MAX_GAIN = 2.0
-MIN_TEMPO = 0.25
-MAX_TEMPO = 0.25
+MIN_GAIN = 2.0
+MAX_GAIN = 10.0
+TEMPO = 0.25
 MIN_PHASE = 12
 MAX_PHASE = 36
 LABELS = ['Time', 'FP1-F7', 'F7-T7', 'T7-P7', 'P7-O1', 'FP1-F3', 'F3-C3', 'C3-P3', 'P3-O1', 'FP2-F4', 'F4-C4', 'C4-P4', 'P4-O2', 'FP2-F8', 'F8-T8', 'T8-P8', 'P8-O2', 'FZ-CZ', 'CZ-PZ']
@@ -39,7 +38,7 @@ INSTRUMENTS_DIR = 'instruments/'
 
 # Output options
 WRITE_SEQUENCE = True
-WRITE_REPORT = False
+WRITE_REPORT = True
 WRITE_JSON = False
 
 # Calculations
@@ -118,7 +117,7 @@ def roundToNearest(n, nearest):
 with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 	r = csv.reader(f, delimiter='\t')
 	next(r, None) # remove header
-	for name,channel,amp_min,amp_max,freq_min,freq_max,var_min,var_max,file,tempo_offset,interval_phase,interval,interval_offset,active in r:
+	for name,channel,amp_min,amp_max,freq_min,freq_max,var_min,var_max,file,gain,tempo,tempo_offset,interval_phase,interval,interval_offset,active in r:
 		if int(active):
 			index = len(instruments)
 			# build instrument object
@@ -133,6 +132,8 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 				'var_min': float(var_min),
 				'var_max': float(var_max),
 				'file': INSTRUMENTS_DIR + file,
+				'gain': float(gain),
+				'tempo': float(tempo),
 				'tempo_offset': float(tempo_offset),
 				'interval_ms': int(int(interval_phase)*BEAT_MS),
 				'interval': int(interval),
@@ -299,26 +300,16 @@ for mindex, measure in enumerate(measures):
 	measures[mindex]["mean_freq"] = 1.0 * (measure["mean_freq"]-min_mean_freq) / freq_mean_delta
 	measures[mindex]["var"] = 1.0 * (measure["var"]-min_var) / var_delta
 	measures[mindex]["gain"] = measures[mindex]["mean_amp"] * (MAX_GAIN-MIN_GAIN) + MIN_GAIN
-	measures[mindex]["tempo"] = measures[mindex]["mean_amp"] * (MAX_TEMPO-MIN_TEMPO) + MIN_TEMPO
 	for cindex, channel in enumerate(measure["channels"]):
 		measures[mindex]["channels"][cindex]["amp"] = 1.0 * (channel["amp"]-min_amp) / amp_delta
 		measures[mindex]["channels"][cindex]["freq"] = 1.0 * (channel["freq"]-min_freq) / freq_delta
-
-# Retrieve tempo/gain properties based on amplitude/frequency/variance
-def getInstrumentProperties(_amp, _freq, _var):
-	properties = {}
-	properties['gain'] = _amp * (MAX_GAIN-MIN_GAIN) + MIN_GAIN
-	properties['tempo'] = _amp * (MAX_TEMPO-MIN_TEMPO) + MIN_TEMPO
-	return properties
 
 # Returns list of valid instruments given measure data
 def getInstruments(_instruments, _measure):
 	valid_instruments = []
 	for instrument in _instruments:
 		if instrument["channel"]=="all" and _measure["mean_amp"]>=instrument["amp_min"] and _measure["mean_amp"]<instrument["amp_max"] and _measure["mean_freq"]>=instrument["freq_min"] and _measure["mean_freq"]<instrument["freq_max"] and _measure["var"]>=instrument["var_min"] and _measure["var"]<instrument["var_max"]:
-			properties = getInstrumentProperties(_measure["mean_amp"], _measure["mean_freq"], _measure["var"])
 			_instrument = instrument.copy()
-			_instrument.update(properties)
 			valid_instruments.append(_instrument)
 	return valid_instruments
 
@@ -327,9 +318,7 @@ def getChannelInstruments(_instruments, _channel):
 	valid_instruments = []
 	for instrument in _instruments:
 		if instrument["channel"]==_channel["name"] and _channel["amp"]>=instrument["amp_min"] and _channel["amp"]<instrument["amp_max"] and _channel["freq"]>=instrument["freq_min"] and _channel["freq"]<instrument["freq_max"]:
-			properties = getInstrumentProperties(_channel["amp"], _channel["freq"], 0)
 			_instrument = instrument.copy()
-			_instrument.update(properties)
 			valid_instruments.append(_instrument)
 	return valid_instruments
 
@@ -382,9 +371,10 @@ def addBeatsToSequence(_instrument, _duration, _ms, _beat_ms, _round_to):
 # Build main sequence
 ms = 0
 for measure in measures:
-	instrument_gain = measure['gain'] / len(measure['instruments'])
+	measure_gain = sum(instrument['gain'] for instrument in measure['instruments'])
 	for instrument in measure['instruments']:
-		instrument['gain'] = instrument_gain
+		instrument['gain'] = instrument['gain'] / measure_gain
+		instrument['tempo'] = 1.0 * instrument['tempo'] * TEMPO
 		addBeatsToSequence(instrument, measure['duration'], ms, BEAT_MS, ROUND_TO_NEAREST)
 	ms += measure['duration']
 
