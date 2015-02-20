@@ -18,8 +18,7 @@ BPM = 75 # Beats per minute, e.g. 60, 75, 100, 120, 150
 DIVISIONS_PER_BEAT = 16 # e.g. 4 = quarter notes, 8 = eighth notes, etc
 VARIANCE_MS = 10 # +/- milliseconds an instrument note should be off by to give it a little more "natural" feel
 PRECISION = 6 # decimal places after 0 for reading value
-MIN_GAIN = 2.0
-MAX_GAIN = 10.0
+GAIN = 0.25
 TEMPO = 0.25
 MIN_PHASE = 12
 MAX_PHASE = 36
@@ -299,7 +298,7 @@ for mindex, measure in enumerate(measures):
 	measures[mindex]["mean_amp"] = 1.0 * (measure["mean_amp"]-min_mean_amp) / amp_mean_delta
 	measures[mindex]["mean_freq"] = 1.0 * (measure["mean_freq"]-min_mean_freq) / freq_mean_delta
 	measures[mindex]["var"] = 1.0 * (measure["var"]-min_var) / var_delta
-	measures[mindex]["gain"] = measures[mindex]["mean_amp"] * (MAX_GAIN-MIN_GAIN) + MIN_GAIN
+	# measures[mindex]["gain"] = measures[mindex]["mean_amp"] * (MAX_GAIN-MIN_GAIN) + MIN_GAIN
 	for cindex, channel in enumerate(measure["channels"]):
 		measures[mindex]["channels"][cindex]["amp"] = 1.0 * (channel["amp"]-min_amp) / amp_delta
 		measures[mindex]["channels"][cindex]["freq"] = 1.0 * (channel["freq"]-min_freq) / freq_delta
@@ -371,9 +370,9 @@ def addBeatsToSequence(_instrument, _duration, _ms, _beat_ms, _round_to):
 # Build main sequence
 ms = 0
 for measure in measures:
-	measure_gain = sum(instrument['gain'] for instrument in measure['instruments'])
+	# measure_gain = sum(instrument['gain'] for instrument in measure['instruments'])
 	for instrument in measure['instruments']:
-		instrument['gain'] = instrument['gain'] / measure_gain
+		instrument['gain'] = 1.0 * instrument['gain'] * GAIN
 		instrument['tempo'] = 1.0 * instrument['tempo'] * TEMPO
 		addBeatsToSequence(instrument, measure['duration'], ms, BEAT_MS, ROUND_TO_NEAREST)
 	ms += measure['duration']
@@ -420,13 +419,13 @@ if WRITE_SEQUENCE and len(sequence) > 0:
 if WRITE_REPORT:
 	with open(REPORT_SUMMARY_OUTPUT_FILE, 'wb') as f:
 		w = csv.writer(f)
-		w.writerow(['Time', 'Amplitude', 'Frequency', 'Variance', 'Duration'])
+		w.writerow(['Time', 'Amplitude', 'Frequency', 'Synchrony', 'Duration'])
 		for mindex, measure in enumerate(measures):
 			elapsed = mindex * MEASURE_MS
 			elapsed_f = time.strftime('%M:%S', time.gmtime(int(elapsed/1000)))
 			ms = int(elapsed % 1000)
 			elapsed_f += '.' + str(ms)
-			w.writerow([elapsed_f, measure['mean_amp'], measure['mean_freq'], measure['var'], int(measure['duration'])])
+			w.writerow([elapsed_f, measure['mean_amp'], measure['mean_freq'], 1.0-measure['var'], int(measure['duration'])])
 		print('Successfully wrote summary file: '+REPORT_SUMMARY_OUTPUT_FILE)
 	with open(REPORT_SUMMARY_CHANNEL_OUTPUT_FILE, 'wb') as f:
 		w = csv.writer(f)
@@ -438,7 +437,7 @@ if WRITE_REPORT:
 			elapsed_f += '.' + str(ms)
 			channels = [elapsed_f]
 			for channel in measure["channels"]:
-				channels.append(channel["freq"])
+				channels.append(channel["amp"])
 			w.writerow(channels)
 		print('Successfully wrote channel summary file: '+REPORT_SUMMARY_CHANNEL_OUTPUT_FILE)
 
