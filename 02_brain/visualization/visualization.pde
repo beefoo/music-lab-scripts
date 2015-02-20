@@ -53,8 +53,8 @@ PFont font = createFont("OpenSans-Semibold", fontSize, true);
 float pixelsPerMs = 90.0 / 1000;
 float msBefore = markerX / pixelsPerMs;
 float msAfter = 1.0 * (canvasW - markerX - labelW) / pixelsPerMs;
-float startMs = 0; // 120000
-float stopMs = 280000; // 160000
+float startMs = 0;
+float stopMs = 224000;
 float elapsedMs = startMs;
 
 // scale
@@ -68,8 +68,23 @@ float scaleMarginY = 30;
 float scaleY = 1.0 * canvasH - scaleH - scaleMarginY;
 float scaleYRatio = 1;
 float scaleLineWeight = 1;
-float scaleFontSize = 16;
+int scaleFontSize = 16;
 PFont scaleFont = createFont("OpenSans-Regular", scaleFontSize, true);
+
+// status
+float statusW = 60;
+float statusH = 60;
+float statusX = statusW/2 + 10;
+float statusY = statusH/2 + 10;
+float statusTextW = 150;
+float statusTextH = statusH;
+float statusTextX = statusX + statusW/2 + 10;
+float statusTextY = 10;
+int statusFontSize = 22;
+int statusFontLeading = statusFontSize + 4;
+PFont statusFont = createFont("OpenSans-Regular", statusFontSize, true);
+JSONArray eventsJSON;
+ArrayList<Event> events;
 
 void setup() {  
   // set the stage
@@ -77,6 +92,14 @@ void setup() {
   colorMode(RGB, 255, 255, 255, 100);
   frameRate(fps);
   smooth();
+  
+  // load status messages
+  eventsJSON = loadJSONArray("eeg_events.json");
+  events = new ArrayList<Event>(eventsJSON.size());
+  for (int i = 0; i < eventsJSON.size(); i++) {  
+    JSONObject event = eventsJSON.getJSONObject(i);
+    events.add(new Event(event.getFloat("start"), event.getFloat("duration"), event.getString("text")));
+  }
   
   // load data
   eegJSON = loadJSONArray("eeg.json");
@@ -122,9 +145,6 @@ void setup() {
     text(label, x, y, labelW - textIndent, labelH);
     y += labelH;
   }
-  
-  // scale fonts
-  textFont(scaleFont, scaleFontSize);
   
   // noLoop();
 }
@@ -228,6 +248,7 @@ void draw(){
   }
   
   // draw scale
+  textFont(scaleFont, scaleFontSize);
   strokeWeight(scaleLineWeight);
   stroke(textColor);
   fill(textColor);
@@ -239,6 +260,37 @@ void draw(){
   text(xlabel, scaleX, scaleY+scaleH-5, scaleW, scaleMarginY);
   textAlign(LEFT, CENTER);
   text(ylabel, scaleX + 5, scaleY + scaleH/2);
+  
+  // draw status
+  if (events.size() > 0) {  
+    
+    // look for current event
+    Event statusEvent = events.get(0);
+    float statusPercent = 0;
+    for(int i=0; i<events.size(); i++) {
+      Event e = events.get(i);
+      float percent = e.getPercent(elapsedMs);
+      if (percent >= 0) {
+        statusEvent = e;
+        statusPercent = percent;
+      }
+    }
+    
+    // draw status arc
+    noStroke();
+    fill(pointColor);
+    arc(statusX, statusY, statusW, statusH, statusPercent*2.0*PI - PI/2.0, 1.5*PI);
+    
+    // draw status text
+    textFont(statusFont, statusFontSize);
+    textLeading(statusFontLeading);
+    textAlign(LEFT, CENTER);
+    fill(textColor);
+    text(statusEvent.getText(), statusTextX, statusTextY, statusTextW, statusTextH);
+    
+  }
+  
+  
   
   // increment time
   elapsedMs += (1.0/fps) * 1000;
@@ -293,5 +345,32 @@ class Reading
     return value;
   }
   
+}
+
+class Event
+{
+  float start, duration, end;
+  String text;
+  
+  Event (float _start, float _duration, String _text) {
+    start = _start;
+    end = start + _duration;
+    duration = _duration;
+    text = _text;
+  }
+  
+  float getPercent(float ms){
+    float percent = -1;
+    
+    if (ms >= start && ms < end) {
+      percent = (ms - start) / duration;
+    }
+    
+    return percent;
+  }
+  
+  String getText(){
+    return text;
+  } 
 }
 

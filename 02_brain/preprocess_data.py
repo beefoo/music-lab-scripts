@@ -5,18 +5,39 @@
 
 # Library dependancies
 import csv
+import json
 import math
 import os
 
 INPUT_FILE = 'data/chb01_15_data.txt'
 OUTPUT_FILE = 'data/eeg.csv'
+OUTPUT_EVENTS_FILE = 'visualization/data/eeg_events.json'
 SEIZURE_START = 1732 # in seconds
 SEIZURE_END = 1772 # in seconds
+SEIZURE_LENGTH = SEIZURE_END - SEIZURE_START
 SONG_START = SEIZURE_START - 92 # in seconds
 SONG_END = SEIZURE_END + 92 # in seconds
 SONG_LENGTH = SONG_END - SONG_START
 UNIT = 10 # in milliseconds
 PRECISION = 6 # decimal places in seconds
+
+# Specify seizure events
+events = []
+events.append({								
+	"start": 0,
+	"duration": (SEIZURE_START - SONG_START) * 1000,
+	"text": "Phase 1: Pre-Seizure State"
+})
+events.append({								
+	"start": (SEIZURE_START - SONG_START) * 1000,
+	"duration": SEIZURE_LENGTH * 1000,
+	"text": "Phase 2: Seizure Event"
+})
+events.append({								
+	"start": (SEIZURE_START - SONG_START) * 1000 + SEIZURE_LENGTH * 1000,
+	"duration": (SONG_END - SEIZURE_END) * 1000,
+	"text": "Phase 3: Post-Seizure State"
+})
 
 def floorToNearest(n, nearest):
 	return 1.0 * math.floor(1.0*n/nearest) * nearest
@@ -53,6 +74,7 @@ with open(INPUT_FILE, 'rb') as f:
 		elif time > SONG_END:
 			break
 
+# Write eeg data to csv
 with open(OUTPUT_FILE, 'wb') as f:
 	w = csv.writer(f)
 	w.writerow(['Time','S1','S2','S3','S4','S5','S6','S7','S8','S9','S10','S11','S12','S13','S14','S15','S16','S17','S18','S19','S20','S21','S22','S23'])
@@ -62,4 +84,9 @@ with open(OUTPUT_FILE, 'wb') as f:
 		w.writerow(row)
 	f.seek(-2, os.SEEK_END) # remove newline
 	f.truncate()
-	print('Successfully wrote to file: '+OUTPUT_FILE)
+	print('Successfully wrote eeg data to file: '+OUTPUT_FILE)
+
+# Write events json to file
+with open(OUTPUT_EVENTS_FILE, 'w') as outfile:
+	json.dump(events, outfile)
+	print('Successfully wrote events to file: '+OUTPUT_EVENTS_FILE)
