@@ -1,6 +1,6 @@
-2000 => int padding;
+4000 => int padding;
 2 => int instrument_buffers;
-0 => int start; // 60000
+0 => int start;
 
 // instrument object
 class Instrument { 

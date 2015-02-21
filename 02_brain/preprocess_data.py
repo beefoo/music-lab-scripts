@@ -26,17 +26,17 @@ events = []
 events.append({								
 	"start": 0,
 	"duration": (SEIZURE_START - SONG_START) * 1000,
-	"text": "Phase 1: Pre-Seizure State"
+	"text": "Phase 1 of 3: Pre-Seizure State"
 })
 events.append({								
 	"start": (SEIZURE_START - SONG_START) * 1000,
 	"duration": SEIZURE_LENGTH * 1000,
-	"text": "Phase 2: Seizure Event"
+	"text": "Phase 2 of 3: Seizure Event"
 })
 events.append({								
 	"start": (SEIZURE_START - SONG_START) * 1000 + SEIZURE_LENGTH * 1000,
 	"duration": (SONG_END - SEIZURE_END) * 1000,
-	"text": "Phase 3: Post-Seizure State"
+	"text": "Phase 3 of 3: Post-Seizure State"
 })
 
 def floorToNearest(n, nearest):

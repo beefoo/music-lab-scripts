@@ -116,7 +116,7 @@ def roundToNearest(n, nearest):
 with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 	r = csv.reader(f, delimiter='\t')
 	next(r, None) # remove header
-	for name,channel,amp_min,amp_max,freq_min,freq_max,var_min,var_max,file,gain,tempo,tempo_offset,interval_phase,interval,interval_offset,active in r:
+	for name,channel,amp_min,amp_max,freq_min,freq_max,sync_min,sync_max,file,from_gain,to_gain,tempo,tempo_offset,interval_phase,interval,interval_offset,active in r:
 		if int(active):
 			index = len(instruments)
 			# build instrument object
@@ -128,10 +128,11 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 				'amp_max': float(amp_max),
 				'freq_min': float(freq_min),
 				'freq_max': float(freq_max),
-				'var_min': float(var_min),
-				'var_max': float(var_max),
+				'sync_min': float(sync_min),
+				'sync_max': float(sync_max),
 				'file': INSTRUMENTS_DIR + file,
-				'gain': float(gain),
+				'from_gain': float(from_gain),
+				'to_gain': float(to_gain),
 				'tempo': float(tempo),
 				'tempo_offset': float(tempo_offset),
 				'interval_ms': int(int(interval_phase)*BEAT_MS),
@@ -223,8 +224,8 @@ min_freq = None
 max_freq = None
 min_mean_freq = None
 max_mean_freq = None
-min_var = None
-max_var = None
+min_sync = None
+max_sync = None
 			
 # Go through each measure
 for mindex, measure in enumerate(measures):
@@ -267,12 +268,12 @@ for mindex, measure in enumerate(measures):
 		})
 	# Calculate max/means/stdevs
 	mean_amp = mean(amps)
-	var = (stdev(amps) + stdev(freqs))/2.0
+	sync = (stdev(amps) + stdev(freqs))/2.0
 	mean_freq = mean(freqs)
 	measures[mindex]["max"] = max(maxs)
 	measures[mindex]["mean_amp"] = mean_amp
 	measures[mindex]["mean_freq"] = mean_freq
-	measures[mindex]["var"] = var
+	measures[mindex]["sync"] = sync
 	# Keep track of min/max
 	if mean_amp > max_mean_amp or max_mean_amp is None:
 		max_mean_amp = mean_amp
@@ -282,10 +283,10 @@ for mindex, measure in enumerate(measures):
 		max_mean_freq = mean_freq
 	if mean_freq < min_mean_freq or min_mean_freq is None:
 		min_mean_freq = mean_freq
-	if var > max_var or max_var is None:
-		max_var = var
-	if var < min_var or min_var is None:
-		min_var = var
+	if sync > max_sync or max_sync is None:
+		max_sync = sync
+	if sync < min_sync or min_sync is None:
+		min_sync = sync
 
 # Normalize all values in measures
 for mindex, measure in enumerate(measures):
@@ -293,11 +294,11 @@ for mindex, measure in enumerate(measures):
 	amp_mean_delta = max_mean_amp - min_mean_amp
 	freq_delta = max_freq - min_freq
 	freq_mean_delta = max_mean_freq - min_mean_freq
-	var_delta = max_var - min_var	
+	sync_delta = max_sync - min_sync	
 	# Normalize all values to between 0 and 1
 	measures[mindex]["mean_amp"] = 1.0 * (measure["mean_amp"]-min_mean_amp) / amp_mean_delta
 	measures[mindex]["mean_freq"] = 1.0 * (measure["mean_freq"]-min_mean_freq) / freq_mean_delta
-	measures[mindex]["var"] = 1.0 * (measure["var"]-min_var) / var_delta
+	measures[mindex]["sync"] = 1.0 - 1.0 * (measure["sync"]-min_sync) / sync_delta
 	# measures[mindex]["gain"] = measures[mindex]["mean_amp"] * (MAX_GAIN-MIN_GAIN) + MIN_GAIN
 	for cindex, channel in enumerate(measure["channels"]):
 		measures[mindex]["channels"][cindex]["amp"] = 1.0 * (channel["amp"]-min_amp) / amp_delta
@@ -307,7 +308,7 @@ for mindex, measure in enumerate(measures):
 def getInstruments(_instruments, _measure):
 	valid_instruments = []
 	for instrument in _instruments:
-		if instrument["channel"]=="all" and _measure["mean_amp"]>=instrument["amp_min"] and _measure["mean_amp"]<instrument["amp_max"] and _measure["mean_freq"]>=instrument["freq_min"] and _measure["mean_freq"]<instrument["freq_max"] and _measure["var"]>=instrument["var_min"] and _measure["var"]<instrument["var_max"]:
+		if instrument["channel"]=="all" and _measure["mean_amp"]>=instrument["amp_min"] and _measure["mean_amp"]<instrument["amp_max"] and _measure["mean_freq"]>=instrument["freq_min"] and _measure["mean_freq"]<instrument["freq_max"] and _measure["sync"]>=instrument["sync_min"] and _measure["sync"]<instrument["sync_max"]:
 			_instrument = instrument.copy()
 			valid_instruments.append(_instrument)
 	return valid_instruments
@@ -337,6 +338,27 @@ def isValidInterval(instrument, elapsed_ms):
 	interval_offset = instrument['interval_offset']	
 	return int(math.floor(1.0*elapsed_ms/interval_ms)) % interval == interval_offset
 
+# Multiplier based on sine curve
+def getMultiplier(percent_complete):
+	radians = percent_complete * (math.pi / 2.0)
+	multiplier = math.sin(radians)
+	if multiplier < 0:
+		multiplier = 0.0
+	elif multiplier > 1:
+		multplier = 1.0
+	return multiplier
+
+# Retrieve gain based on current beat
+def getGain(instrument, total_ms, elapsed_ms):
+	percent_complete = elapsed_ms / total_ms
+	multiplier = getMultiplier(percent_complete)
+	from_gain = instrument['from_gain']
+	to_gain = instrument['to_gain']
+	min_gain = min(from_gain, to_gain)
+	gain = multiplier * (to_gain - from_gain) + from_gain
+	gain = max(min_gain, round(gain, 2))
+	return gain
+	
 # Add beats to sequence
 def addBeatsToSequence(_instrument, _duration, _ms, _beat_ms, _round_to):
 	global sequence
@@ -358,7 +380,7 @@ def addBeatsToSequence(_instrument, _duration, _ms, _beat_ms, _round_to):
 				'instrument_index': _instrument['index'],
 				'instrument': _instrument,
 				'position': 0,
-				'gain': _instrument['gain'],
+				'gain': getGain(_instrument, _duration, elapsed_ms),
 				'rate': 1,
 				'elapsed_ms': elapsed_ms + variance
 			})
@@ -372,7 +394,8 @@ ms = 0
 for measure in measures:
 	# measure_gain = sum(instrument['gain'] for instrument in measure['instruments'])
 	for instrument in measure['instruments']:
-		instrument['gain'] = 1.0 * instrument['gain'] * GAIN
+		instrument['from_gain'] = 1.0 * instrument['from_gain'] * GAIN
+		instrument['to_gain'] = 1.0 * instrument['to_gain'] * GAIN
 		instrument['tempo'] = 1.0 * instrument['tempo'] * TEMPO
 		addBeatsToSequence(instrument, measure['duration'], ms, BEAT_MS, ROUND_TO_NEAREST)
 	ms += measure['duration']
@@ -425,7 +448,7 @@ if WRITE_REPORT:
 			elapsed_f = time.strftime('%M:%S', time.gmtime(int(elapsed/1000)))
 			ms = int(elapsed % 1000)
 			elapsed_f += '.' + str(ms)
-			w.writerow([elapsed_f, measure['mean_amp'], measure['mean_freq'], 1.0-measure['var'], int(measure['duration'])])
+			w.writerow([elapsed_f, measure['mean_amp'], measure['mean_freq'], measure['sync'], int(measure['duration'])])
 		print('Successfully wrote summary file: '+REPORT_SUMMARY_OUTPUT_FILE)
 	with open(REPORT_SUMMARY_CHANNEL_OUTPUT_FILE, 'wb') as f:
 		w = csv.writer(f)
