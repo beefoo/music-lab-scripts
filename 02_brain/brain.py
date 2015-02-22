@@ -18,7 +18,7 @@ BPM = 75 # Beats per minute, e.g. 60, 75, 100, 120, 150
 DIVISIONS_PER_BEAT = 16 # e.g. 4 = quarter notes, 8 = eighth notes, etc
 VARIANCE_MS = 10 # +/- milliseconds an instrument note should be off by to give it a little more "natural" feel
 PRECISION = 6 # decimal places after 0 for reading value
-GAIN = 0.25
+GAIN = 0.2
 TEMPO = 0.25
 MIN_PHASE = 12
 MAX_PHASE = 36

@@ -43,6 +43,7 @@ float lineWeight = 1;
 float lineStartWeight = 2;
 float lineStopWeight = 0.05;
 float readingPadding = 40;
+boolean nakedMode = false;
 
 // text
 int fontSize = 18;
@@ -72,15 +73,16 @@ int scaleFontSize = 16;
 PFont scaleFont = createFont("OpenSans-Regular", scaleFontSize, true);
 
 // status
+float statusMargin = 10;
 float statusW = 60;
 float statusH = 60;
-float statusX = statusW/2 + 10;
-float statusY = statusH/2 + 10;
-float statusTextW = 170;
-float statusTextH = statusH;
-float statusTextX = statusX + statusW/2 + 10;
-float statusTextY = 10;
-int statusFontSize = 22;
+float statusX = statusW/2 + statusMargin;
+float statusY = statusH/2 + statusMargin;
+float statusTextW = statusW * 3 + statusMargin * 2;
+float statusTextH = 300;
+float statusTextX = statusMargin;
+float statusTextY = statusY + statusH/2 + statusMargin;
+int statusFontSize = 26;
 int statusFontLeading = statusFontSize + 4;
 PFont statusFont = createFont("OpenSans-Regular", statusFontSize, true);
 JSONArray eventsJSON;
@@ -207,6 +209,13 @@ void draw(){
     float x1 = getVertexX(markerX, elapsedMs, r.getMs());
     float y1 = getVertexY(i, labelH, readingPadding, r.getValue());
     
+    if (nakedMode) {
+      lineStopWeight = lineWeight;
+      lineStartWeight = lineWeight;
+      lineColor = lineStartColor;
+      lineStopColor = lineStartColor;
+    }
+    
     // loop through each point
     for(int j=1; j<line.size(); j++) {
       r = line.get(j);
@@ -235,58 +244,69 @@ void draw(){
     }
   }
   
-  // draw marker
-  noStroke();
-  fill(textColor, 30);
-  rect(markerX-markerW/2, 0, markerW, canvasH);
+  if (!nakedMode) {
   
-  // draw points
-  fill(pointColor);
-  for(int i=0; i<points.size(); i++) {
-    float y = getVertexY(i, labelH, readingPadding, points.get(i));
-    ellipse(markerX, y, pointD, pointD);
+    // draw marker
+    noStroke();
+    fill(textColor, 30);
+    rect(markerX-markerW/2, 0, markerW, canvasH);
+    
+    // draw points
+    fill(pointColor);
+    for(int i=0; i<points.size(); i++) {
+      float y = getVertexY(i, labelH, readingPadding, points.get(i));
+      ellipse(markerX, y, pointD, pointD);
+    }
+    
+    // draw scale
+    textFont(scaleFont, scaleFontSize);
+    strokeWeight(scaleLineWeight);
+    stroke(textColor);
+    fill(textColor);
+    line(scaleX, scaleY+scaleH, scaleX+scaleW, scaleY+scaleH); // x-axis
+    line(scaleX, scaleY, scaleX, scaleY+scaleH); // y-axis
+    String xlabel = Integer.toString(scaleXUnit) + " s";
+    String ylabel = Integer.toString(scaleYUnitDisplay) + " uV";
+    textAlign(CENTER, CENTER);
+    text(xlabel, scaleX, scaleY+scaleH-5, scaleW, scaleMarginY);
+    textAlign(LEFT, CENTER);
+    text(ylabel, scaleX + 5, scaleY + scaleH/2);
+  
   }
   
-  // draw scale
-  textFont(scaleFont, scaleFontSize);
-  strokeWeight(scaleLineWeight);
-  stroke(textColor);
-  fill(textColor);
-  line(scaleX, scaleY+scaleH, scaleX+scaleW, scaleY+scaleH); // x-axis
-  line(scaleX, scaleY, scaleX, scaleY+scaleH); // y-axis
-  String xlabel = Integer.toString(scaleXUnit) + " s";
-  String ylabel = Integer.toString(scaleYUnitDisplay) + " uV";
-  textAlign(CENTER, CENTER);
-  text(xlabel, scaleX, scaleY+scaleH-5, scaleW, scaleMarginY);
-  textAlign(LEFT, CENTER);
-  text(ylabel, scaleX + 5, scaleY + scaleH/2);
-  
   // draw status
-  if (events.size() > 0) {  
+  if (events.size() > 0 && !nakedMode) {
     
-    // look for current event
-    Event statusEvent = events.get(0);
-    float statusPercent = 0;
+    // draw status arcs
+    noStroke();
+
+    float sx = statusX;
+    Event currentEvent = events.get(0);
+    boolean currentFound = false;
     for(int i=0; i<events.size(); i++) {
       Event e = events.get(i);
       float percent = e.getPercent(elapsedMs);
-      if (percent >= 0) {
-        statusEvent = e;
-        statusPercent = percent;
+      // check for current event
+      if (percent >= 0 && percent < 1 && !currentFound) {
+        currentEvent = e;
+        currentFound = true;
       }
-    }
-    
-    // draw status arc
-    noStroke();
-    fill(pointColor);
-    arc(statusX, statusY, statusW, statusH, statusPercent*2.0*PI - PI/2.0, 1.5*PI);
+      // empty circle
+      fill(lineColor);
+      ellipse(sx, statusY, statusW, statusH);
+      // colored arc
+      fill(pointColor);
+      arc(sx, statusY, statusW, statusH, percent*2.0*PI - PI/2.0, 1.5*PI);
+      // increment
+      sx += (statusW + statusMargin);
+    }    
     
     // draw status text
     textFont(statusFont, statusFontSize);
     textLeading(statusFontLeading);
-    textAlign(LEFT, CENTER);
+    textAlign(CENTER, TOP);
     fill(textColor);
-    text(statusEvent.getText(), statusTextX, statusTextY, statusTextW, statusTextH);
+    text(currentEvent.getText(), statusTextX, statusTextY, statusTextW, statusTextH);
     
   }
   
@@ -360,11 +380,9 @@ class Event
   }
   
   float getPercent(float ms){
-    float percent = -1;
+    float percent = (ms - start) / duration;
     
-    if (ms >= start && ms < end) {
-      percent = (ms - start) / duration;
-    }
+    percent = min(1.0, max(0.0, percent));
     
     return percent;
   }
