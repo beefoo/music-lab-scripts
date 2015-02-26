@@ -10,7 +10,6 @@ import csv
 import json
 import math
 import os
-import random
 import time
 
 # Config
@@ -18,10 +17,8 @@ BPM = 75 # Beats per minute, e.g. 60, 75, 100, 120, 150
 DIVISIONS_PER_BEAT = 16 # e.g. 4 = quarter notes, 8 = eighth notes, etc
 VARIANCE_MS = 10 # +/- milliseconds an instrument note should be off by to give it a little more "natural" feel
 PRECISION = 6 # decimal places after 0 for reading value
-GAIN = 0.2
-TEMPO = 0.25
-MIN_PHASE = 12
-MAX_PHASE = 36
+GAIN = 0.2 # base gain
+TEMPO = 0.25 # base tempo
 LABELS = ['Time', 'FP1-F7', 'F7-T7', 'T7-P7', 'P7-O1', 'FP1-F3', 'F3-C3', 'C3-P3', 'P3-O1', 'FP2-F4', 'F4-C4', 'C4-P4', 'P4-O2', 'FP2-F8', 'F8-T8', 'T8-P8', 'P8-O2', 'FZ-CZ', 'CZ-PZ']
 
 # Files

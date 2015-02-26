@@ -19,6 +19,8 @@ DIVISIONS_PER_BEAT = 16 # e.g. 4 = quarter notes, 8 = eighth notes, etc
 VARIANCE_MS = 10 # +/- milliseconds an instrument note should be off by to give it a little more "natural" feel
 GAIN = 1.0 # base gain
 TEMPO = 1.0 # base tempo
+DATE_FORMAT = "%Y-%m-%d" # %Y-%m-%d %H:%M
+DATE_FORMAT_DISPLAY = "%b %d, %Y"
 
 # Files
 INSTRUMENTS_INPUT_FILE = 'data/instruments.csv'
@@ -27,13 +29,13 @@ REPORT_SUMMARY_OUTPUT_FILE = 'data/report_summary.csv'
 REPORT_SEQUENCE_OUTPUT_FILE = 'data/report_sequence.csv'
 INSTRUMENTS_OUTPUT_FILE = 'data/ck_instruments.csv'
 SEQUENCE_OUTPUT_FILE = 'data/ck_sequence.csv'
-VISUALIZATION_OUTPUT_FILE = 'visualization/data/pm25_readings.json'
+VISUALIZATION_OUTPUT_FILE = 'visualization/data/pm25_data.json'
 INSTRUMENTS_DIR = 'instruments/'
 
 # Output options
 WRITE_SEQUENCE = False
 WRITE_REPORT = False
-WRITE_JSON = False
+WRITE_JSON = True
 
 # Calculations
 BEAT_MS = round(60.0 / BPM * 1000)
@@ -108,13 +110,12 @@ with open(PM25_INPUT_FILE, 'rb') as f:
 	pm25_min = int(next(r, None)[-1])
 	pm25_max = int(next(r, None)[-1])
 	pm25_count = int(next(r, None)[-1])
-	if False:
-		for _datetime, _value in r:
-			datetime = time.strptime(_datetime, "%Y-%m-%d %H:%M") # 2009-01-01 00:00
-			pm25.append({
-				'datetime': _datetime,
-				'value': int(_value)
-			})
+	for _datetime, _value in r:
+		datetime = time.strptime(_datetime, DATE_FORMAT)
+		pm25.append({
+			'date': time.strftime(DATE_FORMAT_DISPLAY, datetime).replace(' 0', ' '),
+			'val': int(_value)
+		})
 
 # Report PM2.5 data
 print('Retrieved PM2.5 data with '+ str(pm25_count) + ' data points')
@@ -124,6 +125,7 @@ print('ug/m^3 range: ['+str(pm25_min)+','+str(pm25_max)+']')
 total_beats = 1.0 * pm25_count / READINGS_PER_BEAT
 total_ms = total_beats * BEAT_MS
 total_seconds = int(1.0*total_ms/1000)
+readings_per_second = READINGS_PER_BEAT
 print('Total sequence time: '+time.strftime('%M:%S', time.gmtime(total_seconds)) + '(' + str(total_seconds) + 's, '+str(total_beats)+' beats)')
 
 # Sort sequence
@@ -195,6 +197,7 @@ if WRITE_JSON:
 		'pm25_min': pm25_min,
 		'pm25_max': pm25_max,
 		'pm25_count': pm25_count,
+		'total_ms': total_ms,
 		'pm25_readings': pm25
 	}
 	with open(VISUALIZATION_OUTPUT_FILE, 'w') as outfile:
