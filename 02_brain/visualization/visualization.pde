@@ -127,7 +127,9 @@ void setup() {
   // calculate scale ratio
   scaleYRatio = (maxUV - minUV) / scaleYUnit;
   
-  // println(minUV, maxUV, scaleYRatio);
+  if (nakedMode) {
+    labelW = 0;
+  }
   
   // draw label bg
   noStroke();
@@ -140,13 +142,16 @@ void setup() {
   fill(textColor);
   
   // draw labels
-  float y = 0;
-  float x = canvasW - labelW + textIndent;
-  for (int i=1; i < labelsJSON.size(); i++) {
-    String label = labelsJSON.getString(i);
-    text(label, x, y, labelW - textIndent, labelH);
-    y += labelH;
+  if (!nakedMode) {
+    float y = 0;
+    float x = canvasW - labelW + textIndent;
+    for (int i=1; i < labelsJSON.size(); i++) {
+      String label = labelsJSON.getString(i);
+      text(label, x, y, labelW - textIndent, labelH);
+      y += labelH;
+    }
   }
+  
   
   // noLoop();
 }
@@ -210,10 +215,7 @@ void draw(){
     float y1 = getVertexY(i, labelH, readingPadding, r.getValue());
     
     if (nakedMode) {
-      lineStopWeight = lineWeight;
-      lineStartWeight = lineWeight;
       lineColor = lineStartColor;
-      lineStopColor = lineStartColor;
     }
     
     // loop through each point
@@ -233,8 +235,13 @@ void draw(){
       // if it's before the marker, reverse the gradient and keep a unified weight
       } else {
         float inter = 1.0 * x1 / markerX;
+        float lw = inter * (lineStartWeight - lineStopWeight) + lineStopWeight;
         color lc = lerpColor(lineStopColor, lineColor, inter);
-        strokeWeight(lineWeight);
+        if (nakedMode) {
+          strokeWeight(lw);
+        } else {
+          strokeWeight(lineWeight);
+        }        
         stroke(lc);
       }
       

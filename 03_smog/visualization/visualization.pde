@@ -11,8 +11,8 @@ boolean captureFrames = false;
 
 // data
 JSONObject pm25JSON;
-float pm25Min = 0;
-float pm25Max = 0;
+int pm25Min = 0;
+int pm25Max = 0;
 int pm25Count = 0;
 ArrayList<Reading> pm25Readings;
 
@@ -40,6 +40,12 @@ float elapsedMs = startMs;
 // define levels
 ArrayList<Level> levels = new ArrayList<Level>();
 
+// init particles
+ArrayList<Particle> particleBacklog = new ArrayList<Particle>();
+int particleLifeThreshold = 50;
+int particleLifeUnit = 2;
+float particleMoveUnit = 2;
+
 void setup() {  
   // set the stage
   size(canvasW, canvasH);  
@@ -62,8 +68,8 @@ void setup() {
   
   // load data
   pm25JSON = loadJSONObject("pm25_data.json");
-  pm25Min = pm25JSON.getFloat("pm25_min");
-  pm25Max = pm25JSON.getFloat("pm25_max");
+  pm25Min = pm25JSON.getInt("pm25_min");
+  pm25Max = pm25JSON.getInt("pm25_max");
   pm25Count = pm25JSON.getInt("pm25_count");
   stopMs = pm25JSON.getFloat("total_ms");
   JSONArray pm25ValuesJSON = pm25JSON.getJSONArray("pm25_readings");
@@ -96,10 +102,22 @@ void draw(){
   }
   
   // draw bg
-  fill(bgColor, 100);
-  rect(0, 0, canvasW, canvasH);
+  background(bgColor); 
   
-  // draw particles
+  // draw particles in backlog
+  for(int i = particleBacklog.size()-1; i >= 0; i--) {
+    Particle p = particleBacklog.get(i);
+    float lifePercentage = float(p.getLife() - particleLifeThreshold) / float(pm25Max - particleLifeThreshold) * 100;
+    fill(textColor, lifePercentage);
+    ellipse(p.getX(), p.getY(), particleW, particleW);
+    p.take(particleLifeUnit);
+    p.move(particleMoveUnit);
+    if (p.getLife() <= particleLifeThreshold) {
+      particleBacklog.remove(i);
+    }
+  }  
+  
+  // draw current particles
   int level_i = 0;
   Level level = levels.get(0);
   int ring = 0;
@@ -126,7 +144,7 @@ void draw(){
     y += cy;   
    
     // draw dot
-    fill(level.getColor());
+    fill(level.getColor(), 100);
     float[] p = rotatePoint(x, y, cx, cy, angleOffset);
     ellipse(p[0], p[1], particleW, particleW);       
     
@@ -140,6 +158,12 @@ void draw(){
       
     } else {
       angleOffset += angleStep;
+    }
+    
+    // add to particle backlog if over threshold
+    if (i > particleLifeThreshold) {
+      float a = angleBetweenPoints(cx, cy, p[0], p[1]) + random(-15, 15);
+      particleBacklog.add(new Particle(p[0], p[1], a, i));
     }
   }
   
@@ -171,8 +195,10 @@ void mousePressed() {
   exit();
 }
 
-float logBase(int x, int base) {
-  return (log(x) / log(base));
+float angleBetweenPoints(float x1, float y1, float x2, float y2){
+  float deltaX = x2 - x1,
+        deltaY = y2 - y1;  
+  return atan2(deltaY, deltaX) * 180 / PI;
 }
 
 float[] rotatePoint(float x, float y, float cx, float cy, float angle) {
@@ -193,6 +219,16 @@ float[] rotatePoint(float x, float y, float cx, float cy, float angle) {
   
   float[] p = {x, y};
   return p;
+}
+
+float[] translatePoint(float x, float y, float angle, float distance){
+  float[] newPoint = new float[2];
+  float r = radians(angle);
+  
+  newPoint[0] = x + distance*cos(r);
+  newPoint[1] = y + distance*sin(r);
+  
+  return newPoint;
 }
 
 class Level
@@ -217,6 +253,42 @@ class Level
   color getColor(){
     return myColor;
   }
+}
+
+class Particle
+{
+  float x, y, a;
+  int life;
+  
+  Particle(float _x, float _y, float _a, int _value){
+    x = _x;
+    y = _y;
+    a = _a;
+    life = _value;
+  }
+  
+  int getLife() {
+    return life;
+  }
+  
+  float getX(){
+    return x;
+  }
+  
+  float getY(){
+    return y;
+  }
+  
+  void move(float distance) {
+    float[] p = translatePoint(x, y, a, distance);
+    x = p[0];
+    y = p[1];
+  }
+  
+  void take(int amount) {
+    life -= amount;    
+  }  
+  
 }
 
 class Reading
