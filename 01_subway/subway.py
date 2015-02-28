@@ -1,7 +1,7 @@
 ##
 # TRACK 1
-# Two Trains (datadrivendj.com/tracks/subway)
-# Brian Foo (brianfoo.com)
+# TWO TRAINS
+# From Data-Driven DJ (datadrivendj.com) by Brian Foo (brianfoo.com)
 # This file builds the sequence file for use with ChucK from the data supplied
 ##
 
@@ -282,7 +282,7 @@ def addBeatsToSequence(instrument, duration, ms, beat_ms, round_to):
 				'position': 0,
 				'gain': getGain(instrument, elapsed_beat),
 				'rate': 1.0 + rate_variance,
-				'elapsed_ms': elapsed_ms + variance
+				'elapsed_ms': max([elapsed_ms + variance, 0])
 			})
 			hindex += 1
 		remaining_duration -= this_beat_ms

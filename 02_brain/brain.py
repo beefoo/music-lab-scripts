@@ -1,7 +1,7 @@
 ##
 # TRACK 2
-# RHAPSODY IN GREY (datadrivendj.com/tracks/brain)
-# Brian Foo (brianfoo.com)
+# RHAPSODY IN GREY
+# From Data-Driven DJ (datadrivendj.com) by Brian Foo (brianfoo.com)
 # This file builds the sequence file for use with ChucK from the data supplied
 ##
 
@@ -379,7 +379,7 @@ def addBeatsToSequence(_instrument, _duration, _ms, _beat_ms, _round_to):
 				'position': 0,
 				'gain': getGain(_instrument, _duration, elapsed_ms),
 				'rate': 1,
-				'elapsed_ms': elapsed_ms + variance
+				'elapsed_ms': max([elapsed_ms + variance, 0])
 			})
 			hindex += 1
 		remaining_duration -= beat_ms
