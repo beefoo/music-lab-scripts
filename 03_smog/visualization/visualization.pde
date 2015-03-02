@@ -1,7 +1,7 @@
 /*
  * Data-Driven DJ (https://datadrivendj.com)
  * Author: Brian Foo (http://brianfoo.com)
- * This is a visualization of the song "Air Play" (https://datadrivendj.com/tracks/smog)
+ * This is a visualization of the song "Air Play"
  */
  
 // output
@@ -31,6 +31,8 @@ float particleW = 12;
 // text
 int fontSize = 48;
 PFont font = createFont("OpenSans-Semibold", fontSize, true);
+int fontSizeSmall = 30;
+PFont fontSmall = createFont("OpenSans-Semibold", fontSizeSmall, true);
 
 // time
 float startMs = 0;
@@ -43,8 +45,9 @@ ArrayList<Level> levels = new ArrayList<Level>();
 // init particles
 ArrayList<Particle> particleBacklog = new ArrayList<Particle>();
 int particleLifeThreshold = 50;
-int particleLifeUnit = 2;
-float particleMoveUnit = 2;
+int particleLifeUnit = 1;
+float particleMoveUnit = 1;
+float particleAngleVariance = 15;
 
 void setup() {  
   // set the stage
@@ -54,12 +57,11 @@ void setup() {
   smooth();
   noStroke();
   noFill();
-  textFont(font, fontSize);
   
   // init levels
-  levels.add(new Level(#d6ffb2, 0, 35));
-  levels.add(new Level(#aedb87, 36, 50));
-  levels.add(new Level(#eeef8b, 51, 100));
+  levels.add(new Level(#aedb87, 0, 35));
+  levels.add(new Level(#d6ffb2, 36, 50));
+  levels.add(new Level(#ffef66, 51, 100));
   levels.add(new Level(#e5a757, 101, 150));
   levels.add(new Level(#e56e57, 151, 200));
   levels.add(new Level(#ce3939, 201, 300));
@@ -162,18 +164,43 @@ void draw(){
     
     // add to particle backlog if over threshold
     if (i > particleLifeThreshold) {
-      float a = angleBetweenPoints(cx, cy, p[0], p[1]) + random(-15, 15);
+      float a = angleBetweenPoints(cx, cy, p[0], p[1]) + random(-particleAngleVariance, particleAngleVariance);
       particleBacklog.add(new Particle(p[0], p[1], a, i));
     }
   }
   
-  // draw value text
-  /* fill(level.getColor());
-  textAlign(LEFT, TOP);
-  text(Integer.toString(reading.getValue()), componentMargin, canvasH - componentMargin - fontSize, 0.5 * canvasW - componentMargin, 2.0 * fontSize); */
+  // draw bar
+  level_i = 0;
+  level = levels.get(0);
+  Level pLevel = levels.get(0);
+  float lh = 0.8 * fontSize;
+  float lw = 1;
+  float lx = componentMargin;
+  float ly = canvasH - componentMargin - lh;  
+  for(int i = 1; i <= reading.getValue(); i++) {
+    float lp = float(i-level.getMin()) / float(level.getMax()-level.getMin());
+    color lc = lerpColor(pLevel.getColor(), level.getColor(), lp);
+    fill(lc);
+    rect(lx, ly, lw, lh);
+    if (i >= level.getMax()) {
+      pLevel = level;
+      level_i++;
+      level = levels.get(level_i);
+    }
+    lx += lw;
+  }
   
-  // draw data text
+  // draw value text
+  textFont(fontSmall, fontSizeSmall);
+  textAlign(LEFT, CENTER);
+  text(Integer.toString(reading.getValue()), lx + 10, ly, 200, lh);
+  
+  // draw label
   fill(textColor);
+  text("Air Quality Index", componentMargin, ly - 2.0 * fontSizeSmall, 0.5 * canvasW, 2.0 * fontSizeSmall);
+  
+  // draw date text
+  textFont(font, fontSize);  
   textAlign(RIGHT, TOP);
   text(reading.getDate(), 0.5 * canvasW, canvasH - componentMargin - fontSize, 0.5 * canvasW - componentMargin, 2.0 * fontSize);
   
@@ -248,6 +275,10 @@ class Level
   
   int getMax(){
     return max;
+  }
+  
+  int getMin(){
+    return min;
   }
   
   color getColor(){

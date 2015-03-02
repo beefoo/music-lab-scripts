@@ -1,7 +1,7 @@
 /*
  * Data-Driven DJ (https://datadrivendj.com)
  * Author: Brian Foo (http://brianfoo.com)
- * This is a visualization of the song "Rhapsody In Grey" (https://datadrivendj.com/tracks/brain)
+ * This is a visualization of the song "Rhapsody In Grey"
  */
  
 // output

@@ -1,7 +1,7 @@
 /*
  * Data-Driven DJ (https://datadrivendj.com)
  * Author: Brian Foo (http://brianfoo.com)
- * This is a visualization of the song "Two Trains" (https://datadrivendj.com/tracks/subway)
+ * This is a visualization of the song "Two Trains"
  */
 
 // output
