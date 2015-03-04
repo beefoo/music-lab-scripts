@@ -45,8 +45,8 @@ ArrayList<Level> levels = new ArrayList<Level>();
 // init particles
 ArrayList<Particle> particleBacklog = new ArrayList<Particle>();
 int particleLifeThreshold = 50;
-int particleLifeUnit = 1;
-float particleMoveUnit = 1;
+float particleLifeUnit = 0.5;
+float particleMoveUnit = 0.4;
 float particleAngleVariance = 15;
 
 void setup() {  
@@ -109,7 +109,7 @@ void draw(){
   // draw particles in backlog
   for(int i = particleBacklog.size()-1; i >= 0; i--) {
     Particle p = particleBacklog.get(i);
-    float lifePercentage = float(p.getLife() - particleLifeThreshold) / float(pm25Max - particleLifeThreshold) * 100;
+    float lifePercentage = (p.getLife() - particleLifeThreshold) / float(pm25Max - particleLifeThreshold) * 100;
     fill(textColor, lifePercentage);
     ellipse(p.getX(), p.getY(), particleW, particleW);
     p.take(particleLifeUnit);
@@ -165,7 +165,7 @@ void draw(){
     // add to particle backlog if over threshold
     if (i > particleLifeThreshold) {
       float a = angleBetweenPoints(cx, cy, p[0], p[1]) + random(-particleAngleVariance, particleAngleVariance);
-      particleBacklog.add(new Particle(p[0], p[1], a, i));
+      particleBacklog.add(new Particle(p[0], p[1], a, float(i)));
     }
   }
   
@@ -288,17 +288,16 @@ class Level
 
 class Particle
 {
-  float x, y, a;
-  int life;
+  float life, x, y, a;
   
-  Particle(float _x, float _y, float _a, int _value){
+  Particle(float _x, float _y, float _a, float _value){
     x = _x;
     y = _y;
     a = _a;
     life = _value;
   }
   
-  int getLife() {
+  float getLife() {
     return life;
   }
   
@@ -316,7 +315,7 @@ class Particle
     y = p[1];
   }
   
-  void take(int amount) {
+  void take(float amount) {
     life -= amount;    
   }  
   
