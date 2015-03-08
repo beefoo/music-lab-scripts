@@ -46,8 +46,13 @@ ArrayList<Level> levels = new ArrayList<Level>();
 ArrayList<Particle> particleBacklog = new ArrayList<Particle>();
 int particleLifeThreshold = 50;
 float particleLifeUnit = 0.5;
-float particleMoveUnit = 0.4;
+float particleMoveUnit = 0.5;
 float particleAngleVariance = 15;
+float particleBBX = 260;
+float particleBBY = particleW * 2;
+float particleBBW = canvasW - particleBBX - particleW * 2;
+float particleBBH = canvasH - particleW * 2;
+float backlogMax = 0;
 
 void setup() {  
   // set the stage
@@ -57,17 +62,7 @@ void setup() {
   smooth();
   noStroke();
   noFill();
-  
-  // init levels
-  levels.add(new Level(#aedb87, 0, 35));
-  levels.add(new Level(#d6ffb2, 36, 50));
-  levels.add(new Level(#ffef66, 51, 100));
-  levels.add(new Level(#e5a757, 101, 150));
-  levels.add(new Level(#e56e57, 151, 200));
-  levels.add(new Level(#ce3939, 201, 300));
-  levels.add(new Level(#934870, 301, 500));
-  levels.add(new Level(#683867, 501, 9999));
-  
+
   // load data
   pm25JSON = loadJSONObject("pm25_data.json");
   pm25Min = pm25JSON.getInt("pm25_min");
@@ -75,6 +70,24 @@ void setup() {
   pm25Count = pm25JSON.getInt("pm25_count");
   stopMs = pm25JSON.getFloat("total_ms");
   JSONArray pm25ValuesJSON = pm25JSON.getJSONArray("pm25_readings");
+  
+  // init levels
+  levels.add(new Level("Good", #aedb87, 0, 50));
+  levels.add(new Level("Moderate", #ffef66, 51, 100));
+  levels.add(new Level("Unhealthy", #e5a757, 101, 200));
+  levels.add(new Level("Very Unhealthy", #ce3939, 201, 300));
+  levels.add(new Level("Hazardous", #934870, 301, 500));
+  levels.add(new Level("Beyond Index", #683867, 501, pm25Max));
+  
+  // calculate level bounds
+  float ly = particleBBY;
+  for(int i = levels.size()-1; i>=0; i--) {
+    Level level = levels.get(i);
+    float lh = float(level.getMax()-level.getMin())/pm25Max*particleBBH;
+    level.setMinY(ly);
+    level.setMaxY(ly+lh);
+    ly += lh;
+  }
   
   // create a list of readings
   pm25Readings = new ArrayList<Reading>(pm25Count);
@@ -106,6 +119,22 @@ void draw(){
   // draw bg
   background(bgColor); 
   
+  // draw levels
+  textFont(fontSmall, fontSizeSmall);
+  float lx = componentMargin;
+  for(int i = levels.size()-1; i>=0; i--) {
+    Level level = levels.get(i);
+    // draw line
+    if (i < levels.size()-1) {
+      fill(textColor, 20);
+      rect(lx, level.getMinY(), canvasW - lx*2, 1);
+    }
+    // draw label
+    fill(level.getColor(), 100);
+    textAlign(LEFT, CENTER);
+    text(level.getLabel(), lx, level.getMinY(), 0.5 * canvasW, level.getHeight());
+  }
+  
   // draw particles in backlog
   for(int i = particleBacklog.size()-1; i >= 0; i--) {
     Particle p = particleBacklog.get(i);
@@ -113,18 +142,15 @@ void draw(){
     fill(textColor, lifePercentage);
     ellipse(p.getX(), p.getY(), particleW, particleW);
     p.take(particleLifeUnit);
-    p.move(particleMoveUnit);
+    p.move(particleMoveUnit);  
     if (p.getLife() <= particleLifeThreshold) {
       particleBacklog.remove(i);
     }
   }  
   
-  // draw current particles
+  // draw current particle  
   int level_i = 0;
   Level level = levels.get(0);
-  int ring = 0;
-  int ringCapacity = 1;
-  float cx = 0.5 * canvasW, cy = 0.5 * canvasH, radius = 2, angleOffset = 0, angleStep = 180;
   for(int i = 1; i <= reading.getValue(); i++) {
     
     if (i > level.getMax() && level_i < levels.size()-1) {
@@ -132,77 +158,31 @@ void draw(){
       level = levels.get(level_i);
     }
     
-    float offset = i * 1000;
-    //Calculate x and y as values between -1 and 1
-    float x = sin((elapsedMs+offset) * 0.001);
-    float y = cos((elapsedMs+offset) * 0.001);  
-    
-    // Multiply x and y by the ellipses width/height
-    x *= radius * 2;
-    y *= radius / 2;
-    
-    // center it
-    x += cx;
-    y += cy;   
+    // calculate particle x and y
+    float px = random(0,particleBBW) + particleBBX;
+    float py = particleBBH - i;
    
     // draw dot
     fill(level.getColor(), 100);
-    float[] p = rotatePoint(x, y, cx, cy, angleOffset);
-    ellipse(p[0], p[1], particleW, particleW);       
-    
-    // next ring layer
-    if (i >= ringCapacity) {
-      ring++;
-      ringCapacity += pow(2, ring);
-      radius += 20;
-      angleOffset = 0;
-      angleStep = 0.5 * angleStep;
-      
-    } else {
-      angleOffset += angleStep;
-    }
+    ellipse(px, py, particleW, particleW);
     
     // add to particle backlog if over threshold
     if (i > particleLifeThreshold) {
-      float a = angleBetweenPoints(cx, cy, p[0], p[1]) + random(-particleAngleVariance, particleAngleVariance);
-      particleBacklog.add(new Particle(p[0], p[1], a, float(i)));
+      float pa = angleBetweenPoints(0.5 * canvasW, 0, px, py) + random(-particleAngleVariance, particleAngleVariance);
+      particleBacklog.add(new Particle(px, py, float(i), pa));
     }
   }
   
-  // draw bar
-  level_i = 0;
-  level = levels.get(0);
-  Level pLevel = levels.get(0);
-  float lh = 0.8 * fontSize;
-  float lw = 1;
-  float lx = componentMargin;
-  float ly = canvasH - componentMargin - lh;  
-  for(int i = 1; i <= reading.getValue(); i++) {
-    float lp = float(i-level.getMin()) / float(level.getMax()-level.getMin());
-    color lc = lerpColor(pLevel.getColor(), level.getColor(), lp);
-    fill(lc);
-    rect(lx, ly, lw, lh);
-    if (i >= level.getMax()) {
-      pLevel = level;
-      level_i++;
-      level = levels.get(level_i);
-    }
-    lx += lw;
-  }
-  
-  // draw value text
-  textFont(fontSmall, fontSizeSmall);
-  textAlign(LEFT, CENTER);
-  text(Integer.toString(reading.getValue()), lx + 10, ly, 200, lh);
-  
-  // draw label
-  fill(textColor);
-  text("Air Quality Index", componentMargin, ly - 2.0 * fontSizeSmall, 0.5 * canvasW, 2.0 * fontSizeSmall);
+  /* if (particleBacklog.size() > backlogMax) {
+    backlogMax = particleBacklog.size();
+    print(reading.getDate(), backlogMax);
+  } */
   
   // draw date text
+  fill(textColor);
   textFont(font, fontSize);  
   textAlign(RIGHT, TOP);
-  text(reading.getDate(), 0.5 * canvasW, canvasH - componentMargin - fontSize, 0.5 * canvasW - componentMargin, 2.0 * fontSize);
+  text(reading.getDate(), 0.5 * canvasW, componentMargin, 0.5 * canvasW - componentMargin, 2.0 * fontSize);
   
   // increment time
   elapsedMs += (1.0/fps) * 1000;
@@ -228,24 +208,17 @@ float angleBetweenPoints(float x1, float y1, float x2, float y2){
   return atan2(deltaY, deltaX) * 180 / PI;
 }
 
-float[] rotatePoint(float x, float y, float cx, float cy, float angle) {
-  float s = sin(radians(angle));
-  float c = cos(radians(angle));
-
-  // translate point back to origin:
-  x -= cx;
-  y -= cy;
-
-  // rotate point
-  float xnew = x * c - y * s;
-  float ynew = x * s + y * c;
-
-  // translate point back:
-  x = xnew + cx;
-  y = ynew + cy;
-  
-  float[] p = {x, y};
-  return p;
+float halton(int hIndex, int hBase) {    
+  float result = 0;
+  float f = 1.0 / hBase;
+  int i = hIndex;
+  while(i > 0) {
+    result = result + f * float(i % hBase);
+    
+    i = floor(i / hBase);
+    f = f / float(hBase);
+  }
+  return result;
 }
 
 float[] translatePoint(float x, float y, float angle, float distance){
@@ -262,27 +235,56 @@ class Level
 {
   color myColor;
   int min, max;
+  String label;
+  float minY, maxY;
 
-  Level(color _color, int _min, int _max) {
+  Level(String _label, color _color, int _min, int _max) {
+    label = _label;
     myColor = _color;
     min = _min;
     max = _max;
+    minY = 0;
+    maxY = 0;
   }
   
   boolean contains(int value) {
     return value >= min && value <= max;
   }
   
+  color getColor(){
+    return myColor;
+  }
+  
   int getMax(){
     return max;
+  }
+  
+  float getMaxY(){
+    return maxY;
   }
   
   int getMin(){
     return min;
   }
   
-  color getColor(){
-    return myColor;
+  float getMinY(){
+    return minY;
+  }
+  
+  float getHeight(){
+    return maxY - minY;
+  }
+  
+  String getLabel(){
+    return label;
+  }
+  
+  void setMaxY(float _y){
+    maxY = _y;
+  }
+  
+  void setMinY(float _y){
+    minY = _y;
   }
 }
 
@@ -290,14 +292,14 @@ class Particle
 {
   float life, x, y, a;
   
-  Particle(float _x, float _y, float _a, float _value){
+  Particle(float _x, float _y, float _value, float _angle){
     x = _x;
     y = _y;
-    a = _a;
     life = _value;
+    a = _angle;
   }
   
-  float getLife() {
+  float getLife(){
     return life;
   }
   
@@ -311,8 +313,13 @@ class Particle
   
   void move(float distance) {
     float[] p = translatePoint(x, y, a, distance);
-    x = p[0];
-    y = p[1];
+    if (p[0] < 0 || p[1] < 0 || p[0] > canvasW || p[1] > canvasH) {
+      a = random(1, 360); 
+    } else {
+      x = p[0];
+      y = p[1];
+    }
+    
   }
   
   void take(float amount) {
