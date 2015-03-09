@@ -45,8 +45,8 @@ ArrayList<Level> levels = new ArrayList<Level>();
 // init particles
 ArrayList<Particle> particleBacklog = new ArrayList<Particle>();
 int particleLifeThreshold = 50;
-float particleLifeUnit = 0.5;
-float particleMoveUnit = 0.5;
+float particleLifeUnit = 0.2;
+float particleMoveUnit = 0.2;
 float particleAngleVariance = 15;
 float particleBBX = 260;
 float particleBBY = particleW * 2;
@@ -77,13 +77,13 @@ void setup() {
   levels.add(new Level("Unhealthy", #e5a757, 101, 200));
   levels.add(new Level("Very Unhealthy", #ce3939, 201, 300));
   levels.add(new Level("Hazardous", #934870, 301, 500));
-  levels.add(new Level("Beyond Index", #683867, 501, pm25Max));
+  levels.add(new Level("Beyond Index", #665f5f, 501, pm25Max));
   
   // calculate level bounds
   float ly = particleBBY;
   for(int i = levels.size()-1; i>=0; i--) {
     Level level = levels.get(i);
-    float lh = float(level.getMax()-level.getMin())/pm25Max*particleBBH;
+    float lh = 1.0*(level.getMax()-roundToNearest(level.getMin(), 10))/pm25Max*particleBBH;
     level.setMinY(ly);
     level.setMaxY(ly+lh);
     ly += lh;
@@ -160,7 +160,7 @@ void draw(){
     
     // calculate particle x and y
     float px = random(0,particleBBW) + particleBBX;
-    float py = particleBBH - i;
+    float py = particleBBH - (float(i)/pm25Max*particleBBH) + particleBBY;
    
     // draw dot
     fill(level.getColor(), 100);
@@ -219,6 +219,10 @@ float halton(int hIndex, int hBase) {
     f = f / float(hBase);
   }
   return result;
+}
+
+float roundToNearest(float n, float nearest) {
+  return 1.0 * round(n/nearest) * nearest;
 }
 
 float[] translatePoint(float x, float y, float angle, float distance){
@@ -313,8 +317,10 @@ class Particle
   
   void move(float distance) {
     float[] p = translatePoint(x, y, a, distance);
-    if (p[0] < 0 || p[1] < 0 || p[0] > canvasW || p[1] > canvasH) {
-      a = random(1, 360); 
+    if (p[1] < 0) {
+      a = random(180+particleAngleVariance, 360-particleAngleVariance);
+    } else if (p[0] < 0 || p[1] < 0 || p[0] > canvasW || p[1] > canvasH) {
+      a = random(particleAngleVariance, 180-particleAngleVariance);
     } else {
       x = p[0];
       y = p[1];
