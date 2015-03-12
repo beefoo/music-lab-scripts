@@ -1,4 +1,5 @@
-2000 => int padding;
+0 => int padding_start;
+2000 => int padding_end;
 2 => int instrument_buffers;
 0 => int start;
 
@@ -50,8 +51,8 @@ while( instruments_fio.more() )
 
 
 // Add padding
-padding::ms => now;
-padding => int elapsed_ms;
+padding_start::ms => now;
+padding_start => int elapsed_ms;
 
 // read sequence from file
 while( sequence_fio.more() ) {    
@@ -84,7 +85,7 @@ while( sequence_fio.more() ) {
 }
 
 // Add padding
-padding::ms => now;
+padding_end::ms => now;
 
 <<< "Done." >>>;
 

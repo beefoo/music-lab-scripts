@@ -99,7 +99,7 @@ def decrementList(list, amount, min_amount=0):
 with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 	r = csv.reader(f, delimiter='\t')
 	next(r, None) # remove header
-	for name,pm25_min,pm25_max,residue_min,residue_max,file,from_gain,to_gain,gain_var,from_tempo,to_tempo,tempo_offset,interval_phase,interval,interval_offset,active in r:
+	for name,pm25_min,pm25_max,residue_min,residue_max,file,from_gain,to_gain,round_to,from_tempo,to_tempo,tempo_offset,interval_phase,interval,interval_offset,active in r:
 		if int(active):
 			index = len(instruments)
 			# build instrument object
@@ -113,7 +113,7 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 				'file': INSTRUMENTS_DIR + file,
 				'from_gain': float(from_gain) * GAIN,
 				'to_gain': float(to_gain) * GAIN,
-				'gain_var': float(gain_var) * GAIN,
+				'round_to_ms': float(round_to) * BEAT_MS,
 				'from_tempo': float(from_tempo) * TEMPO,
 				'to_tempo': float(to_tempo) * TEMPO,
 				'tempo_offset': float(tempo_offset),
@@ -210,6 +210,8 @@ def addBeatsToSequence(instrument, duration, ms, beat_ms, round_to):
 	global hindex
 	offset_ms = int(instrument['tempo_offset'] * beat_ms)
 	ms += offset_ms
+	if instrument['round_to_ms'] > 0:
+		ms = roundToNearest(ms, instrument['round_to_ms'])
 	previous_ms = int(ms)
 	from_beat_ms = instrument['from_beat_ms']
 	to_beat_ms = instrument['to_beat_ms']
@@ -218,19 +220,19 @@ def addBeatsToSequence(instrument, duration, ms, beat_ms, round_to):
 	elapsed_duration = offset_ms
 	while remaining_duration >= min_ms:
 		elapsed_ms = int(ms)
+		elapsed_beat = int((elapsed_ms-previous_ms) / beat_ms)
 		percent_complete = 1.0 * elapsed_duration / duration
 		this_beat_ms = getBeatMs(instrument, percent_complete, round_to)
 		# add to sequence if in valid interval
 		if isValidInterval(instrument, elapsed_ms):
 			h = halton(hindex, 3)
 			variance = int(h * VARIANCE_MS * 2 - VARIANCE_MS)
-			gain_var = int(h * instrument['gain_var'] * 2 - instrument['gain_var'])
 			sequence.append({
 				'instrument_index': instrument['index'],
 				'instrument': instrument,
 				'position': 0,
 				'rate': 1,
-				'gain': max([getGain(instrument, percent_complete) + gain_var, 0]),
+				'gain': getGain(instrument, percent_complete),
 				'elapsed_ms': max([elapsed_ms + variance, 0])
 			})
 			hindex += 1
