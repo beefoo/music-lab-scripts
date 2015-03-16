@@ -2,6 +2,13 @@
 2000 => int padding_end;
 2 => int instrument_buffers;
 0 => int start;
+me.sourceDir() => string base_dir;
+
+// normalize base directory
+if (base_dir.charAt(base_dir.length()-1) != '/')
+{
+    "/" +=> base_dir;
+}
 
 // instrument object
 class Instrument { 
@@ -11,8 +18,8 @@ class Instrument {
 }
 
 // data files
-me.sourceDir() + "/data/ck_instruments.csv" => string instruments_file;
-me.sourceDir() + "/data/ck_sequence.csv" => string sequence_file;
+base_dir + "data/ck_instruments.csv" => string instruments_file;
+base_dir + "data/ck_sequence.csv" => string sequence_file;
 
 // read data files
 FileIO instruments_fio;
@@ -36,7 +43,7 @@ while( instruments_fio.more() )
 {
     // read instrument index and filename
     Std.atoi(instruments_fio.readLine()) => int instrument_index;
-    me.sourceDir() + "/" + instruments_fio.readLine() => instruments[instrument_index].filename;
+    base_dir + instruments_fio.readLine() => instruments[instrument_index].filename;
     0 => instruments[instrument_index].plays;
     // create buffers from filename
     for( 0 => int i; i < instrument_buffers; i++ )

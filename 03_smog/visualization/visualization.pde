@@ -132,7 +132,7 @@ void draw(){
     // draw label
     fill(level.getColor(), 100);
     textAlign(LEFT, CENTER);
-    text(level.getLabel(), lx, level.getMinY(), 0.5 * canvasW, level.getHeight());
+    text(level.getLabel(), lx, level.getMinY()-(levels.size()-i), 0.5 * canvasW, level.getHeight());
   }
   
   // draw particles in backlog

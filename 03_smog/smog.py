@@ -14,15 +14,15 @@ import time
 
 # Config
 BPM = 120 # Beats per minute, e.g. 60, 75, 100, 120, 150
-READINGS_PER_BEAT = 2
+READINGS_PER_BEAT = 2 # pm2.5 readings per beat
 DIVISIONS_PER_BEAT = 4 # e.g. 4 = quarter notes, 8 = eighth notes, etc
 VARIANCE_MS = 10 # +/- milliseconds an instrument note should be off by to give it a little more "natural" feel
 GAIN = 0.4 # base gain
 TEMPO = 1.0 # base tempo
-DATE_FORMAT = "%Y-%m-%d" # %Y-%m-%d %H:%M
-DATE_FORMAT_DISPLAY = "%b %d, %Y"
-PM_THRESHOLD = 50
-PM_UNIT = 1
+DATE_FORMAT = "%Y-%m-%d" # e.g. 2012-01-01
+DATE_FORMAT_DISPLAY = "%b %d, %Y" # e.g. Jan 1, 2012
+PM_THRESHOLD = 50 # any value above this will generate "residue"
+PM_UNIT = 1 # the lower this number, the longer residue lasts
 
 # Files
 INSTRUMENTS_INPUT_FILE = 'data/instruments.csv'
