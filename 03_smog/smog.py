@@ -1,6 +1,6 @@
 ##
 # TRACK 3
-# AIR PLAY (datadrivendj.com/tracks/smog)
+# AIR PLAY
 # Brian Foo (brianfoo.com)
 # This file builds the sequence file for use with ChucK from the data supplied
 ##

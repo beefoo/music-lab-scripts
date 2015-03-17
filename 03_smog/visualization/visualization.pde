@@ -44,9 +44,9 @@ ArrayList<Level> levels = new ArrayList<Level>();
 
 // init particles
 ArrayList<Particle> particleBacklog = new ArrayList<Particle>();
-int particleLifeThreshold = 50;
-float particleLifeUnit = 0.2;
-float particleMoveUnit = 0.2;
+int particleLifeThreshold = 50; // pm2.5 values above this number will generate particle residue
+float particleLifeUnit = 0.2; // the smaller this number, the longer the particle residue will last
+float particleMoveUnit = 0.2; // the greater this number, the faster the particles move
 float particleAngleVariance = 15;
 float particleBBX = 260;
 float particleBBY = particleW * 2;
