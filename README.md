@@ -5,7 +5,7 @@ Data-Driven DJ
 
 Click through to each track's sub-folder for individual README documents for how to setup and configure each song.
 
-* [Track 1: Two Trains](tree/master/01_subway)
-* [Track 2: Rhapsody In Grey](tree/master/02_brain)
-* [Track 3: Airplay](tree/master/03_smog)
+* [Track 1: Two Trains](https://github.com/beefoo/music-lab-scripts/tree/master/01_subway)
+* [Track 2: Rhapsody In Grey](https://github.com/beefoo/music-lab-scripts/tree/master/02_brain)
+* [Track 3: Airplay](https://github.com/beefoo/music-lab-scripts/tree/master/03_smog)
 * Track 4: ?? (under construction, coming soon, ETA April 2015)
