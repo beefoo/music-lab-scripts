@@ -14,6 +14,9 @@ if (base_dir.charAt(base_dir.length()-1) != '/')
 class Instrument {    
     string filename;
     SndBuf buf[8];
+    //JCRev rvb;
+    //NRev rvb;
+    PRCRev rvb;
     int plays;
 }
 
@@ -36,7 +39,7 @@ if( !instruments_fio.good() || !sequence_fio.good() )
 }
 
 // create instruments array
-Instrument instruments[128];
+Instrument instruments[256];
 
 // read instruments file
 while( instruments_fio.more() )
@@ -45,13 +48,14 @@ while( instruments_fio.more() )
     Std.atoi(instruments_fio.readLine()) => int instrument_index;
     base_dir + instruments_fio.readLine() => instruments[instrument_index].filename;
     0 => instruments[instrument_index].plays;
+    0 => instruments[instrument_index].rvb.mix;
     // create buffers from filename
     for( 0 => int i; i < instrument_buffers; i++ )
     {
         instruments[instrument_index].filename => instruments[instrument_index].buf[i].read;
         // set position to end, so it won't play immediately upon open
         instruments[instrument_index].buf[i].samples() => instruments[instrument_index].buf[i].pos;
-        instruments[instrument_index].buf[i] => dac;
+        instruments[instrument_index].buf[i] => instruments[instrument_index].rvb => dac;
     }
          
 }
@@ -67,6 +71,7 @@ while( sequence_fio.more() ) {
     Std.atoi(sequence_fio.readLine()) => int position;
     Std.atof(sequence_fio.readLine()) => float gain;
     Std.atof(sequence_fio.readLine()) => float rate;
+    Std.atof(sequence_fio.readLine()) => float reverb;
     Std.atoi(sequence_fio.readLine()) => int milliseconds;
     
     elapsed_ms + milliseconds => elapsed_ms;
@@ -86,7 +91,7 @@ while( sequence_fio.more() ) {
     instruments[instrument_index].plays++;
     
     // set reverb
-    // reverb => instruments[instrument_index].rvb.mix;
+    reverb => instruments[instrument_index].rvb.mix;
 	
     // play the instrument    
     position => instruments[instrument_index].buf[buffer_index].pos;

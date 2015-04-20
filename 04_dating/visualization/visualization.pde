@@ -9,16 +9,25 @@ int fps = 30;
 String outputFrameFile = "output/frames/frames-#####.png";
 boolean captureFrames = false;
 
-// data
+// data  
+JSONObject dataJSON;
 JSONArray pairsJSON;
 ArrayList<Pair> pairs;
+int minPercent;
+int maxPercent;
+int minYear;
+int maxYear;
+int years;
+int races = 4;
 
 // resolution
 int canvasW = 1280;
 int canvasH = 720;
+float cx = 0.5 * canvasW;
+float cy = 0.5 * canvasH;
 
 // color palette
-color bgColor = #262222;
+color bgColor = #3f3b3b;
 color textColor = #f8f3f3;
 
 // text
@@ -34,23 +43,36 @@ float startMs = 0;
 float stopMs = 0;
 float elapsedMs = startMs;
 
-// components
+// figures
 PShape fShape;
 PShape mShape;
 float fShapeW;
 float mShapeW;
 float shapeH = 500;
-float shapePadding = 30;
+float shapePadding = 10;
+float shapeOffset = 0.7;
+float transitionMs = 800;
+
+// arrows
 PShape arrow_l;
 PShape arrow_r;
 float arrowW = 160;
 float arrowH = 160;
-float arrowOffset = 100;
+float arrowOffset = 200;
+float textPadding = 12;
+
+// year
+
+// turntable
+float ttRadius = 0.5 * canvasW;
+float ttXOffset = ttRadius + 130;
+float ttY = 0.5 * canvasH;
+color ttColor = #262222;
 
 void setup() {  
   // set the stage
   size(canvasW, canvasH);  
-  colorMode(RGB, 255, 255, 255, 100);
+  colorMode(RGB, 255, 255, 255, 100);  
   frameRate(fps);
   smooth();
   noStroke();
@@ -71,7 +93,13 @@ void setup() {
   arrow_l.disableStyle();
 
   // load data
-  pairsJSON = loadJSONArray("pairs.json");
+  dataJSON = loadJSONObject("pairs.json");
+  minPercent = dataJSON.getInt("min_percent");
+  maxPercent = dataJSON.getInt("max_percent");
+  minYear = dataJSON.getInt("min_year");
+  maxYear = dataJSON.getInt("max_year");
+  years = maxYear - minYear + 1;
+  pairsJSON = dataJSON.getJSONArray("pairs");
   pairs = new ArrayList<Pair>();
   for (int i = 0; i < pairsJSON.size(); i++) {  
     JSONObject pair = pairsJSON.getJSONObject(i);
@@ -83,63 +111,96 @@ void setup() {
 }
 
 void draw(){
-  
+
   background(bgColor);
   
-  // retrieve current pair
-  Pair pair = pairs.get(0);
-  for (int i = 0; i < pairsJSON.size(); i++) {  
-    pair = pairs.get(i);
+  // draw turntable
+  fill(ttColor);
+  ellipseMode(CENTER);
+  ellipse(cx - ttXOffset, ttY, ttRadius*2, ttRadius*2);
+  ellipse(cx + ttXOffset, ttY, ttRadius*2, ttRadius*2);
+  
+  int phase = races * years;
+  
+  // draw pairs
+  for (int i = 0; i < pairsJSON.size(); i++) {
+    Pair pair = pairs.get(i);
+    boolean isCurrent = false;
+    
+    // pair is current
     if (pair.isCurrent(elapsedMs)) {
-      break; 
+      isCurrent = true;
+      
+      // year
+      fill(textColor, 50);
+      textFont(fontBig);
+      textAlign(CENTER, CENTER);
+      text(pair.getYear(), cx, cy - 12);
+      
+      // female arrow
+      shapeMode(CENTER);
+      fill(pair.getFColor(minPercent, maxPercent));
+      shape(arrow_r, cx - arrowW*0.5, cy - arrowOffset, arrowW, arrowH);
+      
+      // male arrow
+      shapeMode(CENTER);
+      fill(pair.getMColor(minPercent, maxPercent));
+      shape(arrow_l, cx - arrowW*0.5, cy + arrowOffset - arrowH*0.25, arrowW, arrowH);
+      
+      // female percent      
+      fill(textColor);
+      textFont(font);
+      textAlign(CENTER, TOP);
+      text(pair.getFPercent() + "%", cx - 0.5*arrowW - textPadding, cy - arrowOffset - textPadding, arrowW, arrowH);
+      
+      // male percent
+      text(pair.getMPercent() + "%", cx - 0.5*arrowW + textPadding, cy + arrowOffset - textPadding - arrowH*0.25, arrowW, arrowH);
+    }
+    
+    // pair is visible
+    if (pair.isInview(elapsedMs, transitionMs)) {     
+      
+      // draw female
+      shapeMode(CENTER);
+      pushMatrix();
+        
+        // female pivot point, rotate
+        translate(cx - ttXOffset, ttY);
+        if (!isCurrent && i%phase == 0 || isCurrent && i%phase == phase-1) {
+          rotate(radians(pair.getRotation(elapsedMs, transitionMs, 90, -90, 0)));
+        }
+      
+        // female figure
+        fill(pair.getFRaceColor());
+        shape(fShape, shapeOffset * ttRadius, 0, fShapeW, shapeH);
+        
+        // female race
+        fill(textColor);
+        textAlign(CENTER, TOP);
+        textFont(font);
+        text(pair.getFRace(), shapeOffset * ttRadius, 0.5 * shapeH + shapePadding);        
+      popMatrix();
+      
+      // draw male
+      shapeMode(CENTER);
+      pushMatrix();
+      
+        // male pivot point, rotate
+        translate(cx + ttXOffset, ttY);
+        if (isCurrent && pair.getYear() == maxYear || !isCurrent && pair.getYear() == minYear) {
+          rotate(radians(pair.getRotation(elapsedMs, transitionMs, 90, -90, 0)));
+        }
+      
+        // male figure
+        fill(pair.getMRaceColor());
+        shape(mShape, -shapeOffset * ttRadius, 0, mShapeW, shapeH);
+        
+        // male race
+        fill(textColor);
+        text(pair.getMRace(), -shapeOffset * ttRadius, 0.5 * shapeH + shapePadding);
+      popMatrix();  
     }
   }
-  
-  float cx = 0.5 * canvasW;
-  float cy = 0.5 * canvasH;
-  float cxf = 0.25 * canvasW;
-  float cxm = 0.75 * canvasW;
-  float offsetY = 0.5 * (canvasH - (shapeH + shapePadding + fontSize));
-  
-  // female figure
-  fill(pair.getFRaceColor());
-  shape(fShape, cxf - 0.5*fShapeW, offsetY, fShapeW, shapeH);
-  
-  // female race
-  textAlign(CENTER, TOP);
-  textFont(font);
-  text(pair.getFRace(), cxf, offsetY + shapeH + shapePadding);
-  
-  // male figure
-  fill(pair.getMRaceColor());
-  shape(mShape, cxm - 0.5*mShapeW, offsetY, mShapeW, shapeH);
-  
-  // male race
-  text(pair.getMRace(), cxm, offsetY + shapeH + shapePadding);
-  
-  // year
-  fill(textColor, 50);
-  textFont(fontBig);
-  textAlign(CENTER, CENTER);
-  text(pair.getYear(), cx, cy);
-  
-  // female arrow
-  fill(pair.getFColor());
-  shape(arrow_r, cx - arrowW, arrowOffset, arrowW, arrowH);
-  
-  // male arrow
-  fill(pair.getMColor());
-  shape(arrow_l, cx - arrowW, canvasH - arrowOffset - arrowH - 20, arrowW, arrowH);  
-  
-  // female percent
-  float textPadding = 12;
-  fill(textColor);
-  textFont(font);
-  textAlign(CENTER, CENTER);
-  text(pair.getFPercent() + "%", cx - 0.5*arrowW - textPadding, arrowOffset + textPadding, arrowW, arrowH);
-  
-  // male percent
-  text(pair.getMPercent() + "%", cx - 0.5*arrowW + textPadding, canvasH - arrowOffset - arrowH - 20 + textPadding, arrowW, arrowH);
   
   // increment time
   elapsedMs += (1.0/fps) * 1000;
@@ -175,21 +236,47 @@ class Pair
     stop_ms = _pair.getInt("stop_ms");
   }
   
-  color getColor(int percent){
+  color getColor(int percent, int min_percent, int max_percent){
     color green = #63d138;
+    color yellow = #e59c00;
     color red = #e03333;
-    int d = 30;    
-    float amt = 1.0*(percent+d)/(2.0*d);
-    color c = lerpColor(red, green, amt);    
+    float amt = 0;
+    color c;
+    
+    if (percent >= 0) {
+      amt = 1.0 * percent / max_percent;
+      c = lerpColor(yellow, green, amt);
+      
+    } else {
+      amt = 1.0 * percent / min_percent;
+      c = lerpColor(yellow, red, amt);
+    }
+        
     return c;
   }
   
-  color getFColor(){
-    return getColor(f_percent);
+  color getFColor(int min_percent, int max_percent){
+    return getColor(f_percent, min_percent, max_percent);
   }
   
-  color getMColor(){
-    return getColor(m_percent);
+  color getMColor(int min_percent, int max_percent){
+    return getColor(m_percent, min_percent, max_percent);
+  }
+  
+  float getRotation(float ms, float transition_ms, float from_angle, float to_angle, float via_angle) {
+    float ts = transition_ms;
+    float angle = 0, percent_transition = 0;
+    
+    if (ms < start_ms) {
+      percent_transition = (ts - (start_ms - ms)) / ts;
+      angle = percent_transition * (via_angle-from_angle) + from_angle;
+      
+    } else if (ms > stop_ms - ts) {
+      percent_transition = (ts - (stop_ms - ms)) / ts;
+      angle = percent_transition * (to_angle-via_angle) + via_angle;
+    }
+    
+    return angle;
   }
   
   color getRaceColor(String race){
@@ -210,6 +297,10 @@ class Pair
   
   boolean isCurrent(float ms) {
     return (ms >= start_ms && ms < stop_ms);
+  }
+  
+  boolean isInview(float ms, float transition_ms) {
+    return (ms >= (start_ms-transition_ms) && ms < stop_ms);
   }
 
   String getFRace(){ return f_race; }
