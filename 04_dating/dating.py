@@ -308,6 +308,7 @@ if WRITE_SEQUENCE and len(instruments) > 0:
 		w = csv.writer(f)	
 		for index, instrument in enumerate(instruments):
 			w.writerow([index])
+			w.writerow([instrument['rvb_max']])
 			w.writerow([instrument['file']])
 		f.seek(-2, os.SEEK_END) # remove newline
 		f.truncate()

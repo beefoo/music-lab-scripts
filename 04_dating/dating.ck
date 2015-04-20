@@ -46,6 +46,7 @@ while( instruments_fio.more() )
 {
     // read instrument index and filename
     Std.atoi(instruments_fio.readLine()) => int instrument_index;
+    Std.atof(instruments_fio.readLine()) => float rvb_max;
     base_dir + instruments_fio.readLine() => instruments[instrument_index].filename;
     0 => instruments[instrument_index].plays;
     0 => instruments[instrument_index].rvb.mix;
@@ -55,7 +56,14 @@ while( instruments_fio.more() )
         instruments[instrument_index].filename => instruments[instrument_index].buf[i].read;
         // set position to end, so it won't play immediately upon open
         instruments[instrument_index].buf[i].samples() => instruments[instrument_index].buf[i].pos;
-        instruments[instrument_index].buf[i] => instruments[instrument_index].rvb => dac;
+        if (rvb_max > 0)
+        {
+           instruments[instrument_index].buf[i] => instruments[instrument_index].rvb => dac;
+        }
+        else
+        {
+           instruments[instrument_index].buf[i] => dac; 
+        }        
     }
          
 }
