@@ -192,24 +192,30 @@ void draw(){
       
       // female heart
       float prevFHeartW = 0;
+      color prevFColor = #ffffff;
       if (i > 0) {
         Pair prev = pairs.get(i-1);
         prevFHeartW = prev.getFWidth(-1, -1, -1);
+        prevFColor = prev.getFColor(prevFColor, -1, -1);
       }
       float fheartW = pair.getFWidth(prevFHeartW, elapsedMs, heartTransitionMs);
+      color fcolor = pair.getFColor(prevFColor, elapsedMs, heartTransitionMs);
       shapeMode(CENTER);
-      fill(pair.getFColor());
+      fill(fcolor);
       shape(heart_f, cx - heartOffset, cy, fheartW, fheartW);
       
       // male heart
       float prevMHeartW = 0;
+      color prevMColor = #ffffff;
       if (i > 0) {
         Pair prev = pairs.get(i-1);
         prevMHeartW = prev.getMWidth(-1, -1, -1);
+        prevMColor = prev.getMColor(prevMColor, -1, -1);
       }
       float mheartW = pair.getMWidth(prevMHeartW, elapsedMs, heartTransitionMs);
+      color mcolor = pair.getMColor(prevMColor, elapsedMs, heartTransitionMs);
       shapeMode(CENTER);
-      fill(pair.getMColor());
+      fill(mcolor);
       shape(heart_m, cx + heartOffset, cy, mheartW, mheartW);
       
       break;
@@ -252,10 +258,10 @@ class Pair
     max_percent = _max_percent;
   }
   
-  color getColor(int percent){
+  color getColor(int percent, color prev_c, float ms, float transition_ms){
     color high = #ff2828;
-    color low = #3a86af;
-    color med = #c4967b;
+    color low = #5b5454;
+    color med = #dba8a8;
     float amt = 0;
     color c;
     
@@ -267,16 +273,21 @@ class Pair
       amt = 1.0 * percent / min_percent;
       c = lerpColor(med, low, amt);
     }
+    
+    if (ms >= 0 && transition_ms >= 0 && (ms-start_ms) < transition_ms) {
+      float tamt = (ms-start_ms) / transition_ms;
+      c = lerpColor(prev_c, c, tamt);
+    } 
         
     return c;
   }
   
-  color getFColor(){
-    return getColor(f_percent);
+  color getFColor(color prev_c, float ms, float transition_ms){
+    return getColor(f_percent, prev_c, ms, transition_ms);
   }
   
-  color getMColor(){
-    return getColor(m_percent);
+  color getMColor(color prev_c, float ms, float transition_ms){
+    return getColor(m_percent, prev_c, ms, transition_ms);
   }
   
   float getRotation(float ms, float transition_ms, float from_angle, float to_angle, float via_angle) {
