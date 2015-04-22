@@ -1,7 +1,7 @@
 /*
  * Data-Driven DJ (https://datadrivendj.com)
  * Author: Brian Foo (http://brianfoo.com)
- * This is a visualization of the song "Air Play"
+ * This is a visualization of the song "Mixed Attraction"
  */
  
 // output
@@ -31,7 +31,7 @@ color bgColor = #3f3b3b;
 color textColor = #f8f3f3;
 
 // text
-int fontSizeBig = 72;
+int fontSizeBig = 60;
 PFont fontBig = createFont("OpenSans-Extrabold", fontSizeBig, true);
 int fontSize = 48;
 PFont font = createFont("OpenSans-Semibold", fontSize, true);
@@ -50,18 +50,18 @@ float fShapeW;
 float mShapeW;
 float shapeH = 500;
 float shapePadding = 10;
-float shapeOffset = 0.7;
+float shapeOffset = 0.6;
 float transitionMs = 800;
 
-// arrows
-PShape arrow_l;
-PShape arrow_r;
-float arrowW = 160;
-float arrowH = 160;
-float arrowOffset = 200;
-float textPadding = 12;
-
-// year
+// hearts
+PShape heart_f;
+PShape heart_m;
+float heartW = 100;
+float heartH = 100;
+float heartOffset = 160;
+float heartMaxW = 360;
+float heartMinW = 30;
+float heartTransitionMs = 1000;
 
 // turntable
 float ttRadius = 0.5 * canvasW;
@@ -86,11 +86,11 @@ void setup() {
   fShape.disableStyle();
   mShape.disableStyle();
   
-  // load arrow shape
-  arrow_r = loadShape("arrow_right.svg");
-  arrow_l = loadShape("arrow_left.svg");
-  arrow_r.disableStyle();
-  arrow_l.disableStyle();
+  // load heart shape
+  heart_f = loadShape("heart.svg");
+  heart_m = loadShape("heart.svg");
+  heart_f.disableStyle();
+  heart_m.disableStyle();
 
   // load data
   dataJSON = loadJSONObject("pairs.json");
@@ -103,7 +103,7 @@ void setup() {
   pairs = new ArrayList<Pair>();
   for (int i = 0; i < pairsJSON.size(); i++) {  
     JSONObject pair = pairsJSON.getJSONObject(i);
-    pairs.add(new Pair(pair));
+    pairs.add(new Pair(pair, minPercent, maxPercent));
   }
   stopMs = pairs.get(pairs.size()-1).getStopMs();
   
@@ -129,32 +129,7 @@ void draw(){
     
     // pair is current
     if (pair.isCurrent(elapsedMs)) {
-      isCurrent = true;
-      
-      // year
-      fill(textColor, 50);
-      textFont(fontBig);
-      textAlign(CENTER, CENTER);
-      text(pair.getYear(), cx, cy - 12);
-      
-      // female arrow
-      shapeMode(CENTER);
-      fill(pair.getFColor(minPercent, maxPercent));
-      shape(arrow_r, cx - arrowW*0.5, cy - arrowOffset, arrowW, arrowH);
-      
-      // male arrow
-      shapeMode(CENTER);
-      fill(pair.getMColor(minPercent, maxPercent));
-      shape(arrow_l, cx - arrowW*0.5, cy + arrowOffset - arrowH*0.25, arrowW, arrowH);
-      
-      // female percent      
-      fill(textColor);
-      textFont(font);
-      textAlign(CENTER, TOP);
-      text(pair.getFPercent() + "%", cx - 0.5*arrowW - textPadding, cy - arrowOffset - textPadding, arrowW, arrowH);
-      
-      // male percent
-      text(pair.getMPercent() + "%", cx - 0.5*arrowW + textPadding, cy + arrowOffset - textPadding - arrowH*0.25, arrowW, arrowH);
+      isCurrent = true;     
     }
     
     // pair is visible
@@ -202,6 +177,45 @@ void draw(){
     }
   }
   
+  // draw hearts
+  for (int i = 0; i < pairsJSON.size(); i++) {
+    Pair pair = pairs.get(i);
+    
+    // pair is current
+    if (pair.isCurrent(elapsedMs)) {
+      
+      // year
+      fill(textColor, 50);
+      textFont(fontBig);
+      textAlign(CENTER, CENTER);
+      text(pair.getYear(), cx, 0.86 * canvasH);
+      
+      // female heart
+      float prevFHeartW = 0;
+      if (i > 0) {
+        Pair prev = pairs.get(i-1);
+        prevFHeartW = prev.getFWidth(-1, -1, -1);
+      }
+      float fheartW = pair.getFWidth(prevFHeartW, elapsedMs, heartTransitionMs);
+      shapeMode(CENTER);
+      fill(pair.getFColor());
+      shape(heart_f, cx - heartOffset, cy, fheartW, fheartW);
+      
+      // male heart
+      float prevMHeartW = 0;
+      if (i > 0) {
+        Pair prev = pairs.get(i-1);
+        prevMHeartW = prev.getMWidth(-1, -1, -1);
+      }
+      float mheartW = pair.getMWidth(prevMHeartW, elapsedMs, heartTransitionMs);
+      shapeMode(CENTER);
+      fill(pair.getMColor());
+      shape(heart_m, cx + heartOffset, cy, mheartW, mheartW);
+      
+      break;
+    }
+  }
+  
   // increment time
   elapsedMs += (1.0/fps) * 1000;
   // elapsedMs += 100;
@@ -224,9 +238,9 @@ void mousePressed() {
 class Pair
 {
   String f_race, m_race;
-  int f_percent, m_percent, year, start_ms, stop_ms;
+  int f_percent, m_percent, year, start_ms, stop_ms, min_percent, max_percent;
 
-  Pair(JSONObject _pair) {
+  Pair(JSONObject _pair, int _min_percent, int _max_percent) {
     f_race = _pair.getString("f_race");
     m_race = _pair.getString("m_race");
     f_percent = _pair.getInt("f_percent");
@@ -234,33 +248,35 @@ class Pair
     year = _pair.getInt("year");
     start_ms = _pair.getInt("start_ms");
     stop_ms = _pair.getInt("stop_ms");
+    min_percent = _min_percent;
+    max_percent = _max_percent;
   }
   
-  color getColor(int percent, int min_percent, int max_percent){
-    color green = #63d138;
-    color yellow = #e59c00;
-    color red = #e03333;
+  color getColor(int percent){
+    color high = #ff2828;
+    color low = #3a86af;
+    color med = #c4967b;
     float amt = 0;
     color c;
     
     if (percent >= 0) {
       amt = 1.0 * percent / max_percent;
-      c = lerpColor(yellow, green, amt);
+      c = lerpColor(med, high, amt);
       
     } else {
       amt = 1.0 * percent / min_percent;
-      c = lerpColor(yellow, red, amt);
+      c = lerpColor(med, low, amt);
     }
         
     return c;
   }
   
-  color getFColor(int min_percent, int max_percent){
-    return getColor(f_percent, min_percent, max_percent);
+  color getFColor(){
+    return getColor(f_percent);
   }
   
-  color getMColor(int min_percent, int max_percent){
-    return getColor(m_percent, min_percent, max_percent);
+  color getMColor(){
+    return getColor(m_percent);
   }
   
   float getRotation(float ms, float transition_ms, float from_angle, float to_angle, float via_angle) {
@@ -293,6 +309,24 @@ class Pair
   
   color getMRaceColor(){
     return getRaceColor(m_race);
+  }
+  
+  float getWidth(int percent, float prev_w, float ms, float transition_ms){
+    float amt = (1.0 * percent - min_percent) / (max_percent - min_percent);
+    float w = (1.0 * heartMaxW - heartMinW) * amt + heartMinW;
+    if (prev_w >=0 && ms >= 0 && transition_ms >= 0 && (ms-start_ms) < transition_ms) {
+      float tamt = (ms-start_ms) / transition_ms;
+      w = (1.0 * w - prev_w) * tamt + prev_w;
+    }    
+    return w;   
+  }
+  
+  float getFWidth(float prev_w, float ms, float transition_ms){
+    return getWidth(f_percent, prev_w, ms, transition_ms);
+  }
+  
+  float getMWidth(float prev_w, float ms, float transition_ms){
+    return getWidth(m_percent, prev_w, ms, transition_ms);
   }
   
   boolean isCurrent(float ms) {
