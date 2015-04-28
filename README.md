@@ -8,4 +8,5 @@ Click through to each track's sub-folder for individual README documents for how
 * [Track 1: Two Trains](https://github.com/beefoo/music-lab-scripts/tree/master/01_subway)
 * [Track 2: Rhapsody In Grey](https://github.com/beefoo/music-lab-scripts/tree/master/02_brain)
 * [Track 3: Airplay](https://github.com/beefoo/music-lab-scripts/tree/master/03_smog)
-* Track 4: ?? (under construction, coming soon, ETA April 2015)
+* [Track 4: Mixed Attraction](https://github.com/beefoo/music-lab-scripts/tree/master/04_dating)
+* Track 5: ??? - Coming Soon, ETA May 2015
