@@ -20,13 +20,14 @@ color bgColor = #262222;
 
 // data
 String paintings_file = "paintings.csv";
+String samples_file = "data/painting_samples.csv";
 Table paintings_table;
 ArrayList<Year> years;
 int totalWidth = 0;
 int maxWidth = -1;
 int minYear = -1;
 int maxYear = -1;
-int painting_segment_sample_size = 64;
+int painting_segment_sample_size = 128;
 int color_radius_h = 25;
 int color_radius_s = 15;
 int color_radius_b = 15;
@@ -90,6 +91,62 @@ void setup() {
     startPx = stopPx;
   }
   
+  // setup table for writing to file
+  Table samples_table = new Table();
+  
+  // painting columns
+  samples_table.addColumn("title");
+  samples_table.addColumn("artist");
+  samples_table.addColumn("position");
+  samples_table.addColumn("year");
+  samples_table.addColumn("file");
+  samples_table.addColumn("painting_width");
+  samples_table.addColumn("painting_height");
+  samples_table.addColumn("year_start_ms");
+  samples_table.addColumn("year_stop_ms");
+  
+  // sample columns
+  samples_table.addColumn("hue");
+  samples_table.addColumn("saturation");
+  samples_table.addColumn("brightness");
+  samples_table.addColumn("x");
+  samples_table.addColumn("y");
+  samples_table.addColumn("width");
+  samples_table.addColumn("height");
+  
+  // build table
+  for (Year year: years) {      
+      ArrayList<Painting> paintings = year.getPaintings();
+      for (Painting p: paintings) {        
+        ArrayList<PaintingSample> samples = p.getSamples();
+        for (PaintingSample ps: samples) {
+          TableRow newRow = samples_table.addRow();
+          
+          newRow.setString("title", p.getTitle());
+          newRow.setString("artist", p.getArtist());
+          newRow.setInt("position", p.getPosition());
+          newRow.setInt("year", year.getYear());
+          newRow.setString("file", p.getFile());
+          newRow.setInt("painting_width", p.getWidth());
+          newRow.setInt("painting_height", p.getHeight());
+          newRow.setInt("year_start_ms", int(year.getStart()));
+          newRow.setInt("year_stop_ms", int(year.getStop()));
+          
+          color c = ps.getColor();
+          newRow.setInt("hue", int(hue(c)));
+          newRow.setInt("saturation", int(saturation(c)));
+          newRow.setInt("brightness", int(brightness(c)));
+          newRow.setInt("x", ps.getX());
+          newRow.setInt("y", ps.getY());
+          newRow.setInt("width", ps.getW());
+          newRow.setInt("height", ps.getH());
+        }
+      }
+  } 
+  
+  // save table
+  saveTable(samples_table, samples_file);
+  
   // noLoop();
 }
 
@@ -114,7 +171,8 @@ void draw(){
         
         ArrayList<PaintingSample> samples = p.getSamples();
         for (PaintingSample ps: samples) {
-          fill(ps.getColor(), 90);
+          color c = color(hue(ps.getColor()), 100, 100);
+          fill(c, 90);
           rect(x+ps.getX(), y+ps.getY(), ps.getW(), ps.getH());
         }
       }
@@ -226,7 +284,7 @@ class Painting
   }
   
   void doAnalysis() {
-    for(int i=0; i<painting_segment_sample_size; i++) {
+    for(int i=1; i<=painting_segment_sample_size; i++) {
       float hx = halton(i, 3),
             hy = halton(i, 5);    
       int x = floor(hx*w),
@@ -276,7 +334,7 @@ class Painting
    
     sample_w = x2 - x1;
     sample_h = y2 - y1;   
-    return new PaintingSample(c1, x1, y1, sample_w, sample_h);
+    return new PaintingSample(c1, max(x1,0), max(y1,0), sample_w, sample_h);
   }
   
   boolean isSameColor(color c1, color c2) {
@@ -298,12 +356,20 @@ class Painting
     return h_delta < color_radius_h && s_delta < color_radius_s && b_delta < color_radius_b;
   }
   
+  String getArtist(){
+    return artist;
+  }
+  
   int getBeats(){
     return beats;
   }
   
   float getDuration() {
     return msPerBeat * beats;
+  }
+  
+  String getFile(){
+    return file;
   }
   
   int getHeight() {
@@ -316,6 +382,10 @@ class Painting
   
   ArrayList<PaintingSample> getSamples(){
     return samples;
+  }
+  
+  String getTitle(){
+    return title;
   }
   
   int getWidth() {
@@ -357,6 +427,14 @@ class Year
       }
     }
     return d;
+  }
+  
+  float getStart() {
+    return start; 
+  }
+  
+  float getStop() {
+    return stop; 
   }
   
   int getWidth() {
