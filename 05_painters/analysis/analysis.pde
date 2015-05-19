@@ -21,13 +21,14 @@ color bgColor = #262222;
 // data
 String paintings_file = "paintings.csv";
 String samples_file = "data/painting_samples.csv";
+Boolean SAVE_TABLE = true;
 Table paintings_table;
 ArrayList<Year> years;
 int totalWidth = 0;
 int maxWidth = -1;
 int minYear = -1;
 int maxYear = -1;
-int painting_segment_sample_size = 128;
+int painting_segment_sample_size = 512;
 int color_radius_h = 25;
 int color_radius_s = 15;
 int color_radius_b = 15;
@@ -145,7 +146,9 @@ void setup() {
   } 
   
   // save table
-  saveTable(samples_table, samples_file);
+  if (SAVE_TABLE) {
+    saveTable(samples_table, samples_file);
+  }  
   
   // noLoop();
 }
@@ -169,6 +172,10 @@ void draw(){
         fill(#ffffff);
         rect(x, y, p.getWidth(), p.getHeight());
         
+        // place image
+        image(p.getImg(), x, y);
+        
+        // place samples
         ArrayList<PaintingSample> samples = p.getSamples();
         for (PaintingSample ps: samples) {
           color c = color(hue(ps.getColor()), 100, 100);
@@ -374,6 +381,10 @@ class Painting
   
   int getHeight() {
     return h;
+  }
+  
+  PImage getImg() {
+    return img; 
   }
   
   int getPosition() {
