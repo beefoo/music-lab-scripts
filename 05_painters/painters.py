@@ -117,7 +117,7 @@ def roundToNearest(n, nearest):
 with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 	r = csv.reader(f, delimiter=',')
 	next(r, None) # remove header
-	for file,artist,size_min,size_max,bri_min,bri_max,var_min,var_max,note,from_gain,to_gain,from_tempo,to_tempo,tempo_offset,interval_phase,interval,interval_offset,active in r:
+	for file,artist,size_min,size_max,bri_min,bri_max,var_min,var_max,year_min,year_max,note,from_gain,to_gain,from_tempo,to_tempo,tempo_offset,interval_phase,interval,interval_offset,active in r:
 		if int(active):
 			index = len(instruments)
 			# build instrument object
@@ -132,6 +132,8 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 				'bri_max': float(bri_max),
 				'var_min': float(var_min),
 				'var_max': float(var_max),
+				'year_min': int(year_min),
+				'year_max': int(year_max),
 				'note': note,
 				'from_gain': float(from_gain) * GAIN,
 				'to_gain': float(to_gain) * GAIN,
@@ -399,7 +401,7 @@ for instrument in instruments:
 	# Go through each painting
 	for painting in paintings:
 	
-		is_valid = painting['artist']==instrument['artist'] and (instrument['note']==painting['primary_note']['note'] or instrument['note']=='any') and painting['mean_area_i'] >= instrument['size_min'] and painting['mean_area_i'] < instrument['size_max'] and painting['mean_brightness_i'] >= instrument['bri_min'] and painting['mean_brightness_i'] < instrument['bri_max'] and painting['variance_hue_i'] >= instrument['var_min'] and painting['variance_hue_i'] < instrument['var_max']
+		is_valid = (painting['artist']==instrument['artist'] or instrument['artist']=='any') and (instrument['note']==painting['primary_note']['note'] or instrument['note']=='any') and painting['mean_area_i'] >= instrument['size_min'] and painting['mean_area_i'] < instrument['size_max'] and painting['mean_brightness_i'] >= instrument['bri_min'] and painting['mean_brightness_i'] < instrument['bri_max'] and painting['variance_hue_i'] >= instrument['var_min'] and painting['variance_hue_i'] < instrument['var_max'] and painting['year'] >= instrument['year_min'] and painting['year'] <= instrument['year_max']
 		
 		# If note is valid, add it to sequence
 		if not is_valid and queue_duration > 0 and ms != None or is_valid and ms != None and painting['start_ms'] > (ms+queue_duration):
