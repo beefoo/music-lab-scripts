@@ -19,9 +19,9 @@ float cy = 0.5 * canvasH;
 color bgColor = #262222;
 
 // data
-String paintings_file = "paintings.csv";
-String samples_file = "data/painting_samples.csv";
-Boolean SAVE_TABLE = true;
+String paintings_file = "../data/paintings.csv";
+String samples_file = "../data/painting_samples.csv";
+Boolean SAVE_TABLE = false;
 Table paintings_table;
 ArrayList<Year> years;
 int totalWidth = 0;
