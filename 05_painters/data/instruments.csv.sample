@@ -75,10 +75,10 @@ viola_Ds3_025_pianissimo_arco-normal.wav,Lee Krasner,0,10,0,101,0,101,-1,9999,ds
 viola_E3_1_pianissimo_arco-normal.wav,Lee Krasner,0,70,0,101,0,101,-1,9999,e,0,0.4,1,1,0,1,1,0,1
 viola_E3_15_pianissimo_arco-normal.wav,Lee Krasner,0,101,0,101,0,101,-1,9999,e,0,0.6,0.5,1,0,1,1,0,1
 viola_E3_025_piano_arco-normal.wav,Lee Krasner,0,10,0,101,0,101,-1,9999,e,0,0.8,2,3,0,1,1,0,1
-viola_F3_1_pianissimo_arco-normal.wav,Lee Krasner,0,70,0,101,0,101,-1,9999,f,0,0.4,1,1,0,1,1,0,1
-viola_F3_15_pianissimo_arco-normal.wav,Lee Krasner,0,101,0,101,0,101,-1,9999,f,0,0.6,0.5,1,0,1,1,0,1
+viola_F3_15_pianissimo_arco-normal.wav,Lee Krasner,0,70,0,101,0,101,-1,9999,f,0,0.4,1,1,0,1,1,0,1
+viola_F3_1_pianissimo_arco-normal.wav,Lee Krasner,0,101,0,101,0,101,-1,9999,f,0,0.6,0.5,1,0,1,1,0,1
 viola_F3_025_pianissimo_arco-normal.wav,Lee Krasner,0,10,0,101,0,101,-1,9999,f,0,0.8,2,3,0,1,1,0,1
-viola_Fs3_1_pianissimo_arco-normal.wav,Lee Krasner,0,70,0,101,0,101,-1,9999,fs,0,0.4,1,1,0,1,1,0,1
+viola_Fs3_1_piano_arco-normal.wav,Lee Krasner,0,70,0,101,0,101,-1,9999,fs,0,0.4,1,1,0,1,1,0,1
 viola_Fs3_15_fortissimo_arco-normal.wav,Lee Krasner,0,101,0,101,0,101,-1,9999,fs,0,0.6,0.5,1,0,1,1,0,1
 viola_Fs3_025_piano_arco-normal.wav,Lee Krasner,0,10,0,101,0,101,-1,9999,fs,0,0.8,2,3,0,1,1,0,1
 viola_G3_1_pianissimo_arco-normal.wav,Lee Krasner,0,70,0,101,0,101,-1,9999,g,0,0.4,1,1,0,1,1,0,1
