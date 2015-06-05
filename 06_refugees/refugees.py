@@ -17,8 +17,8 @@ VISUALIZATION_OUTPUT_FILE = 'visualization/data/years_refugees.json'
 
 WRITE_VIS = True
 
-MS_PER_YEAR = 4000
-REFUGEE_UNIT = 1000
+MS_PER_YEAR = 6000
+REFUGEE_UNIT = 100000
 START_YEAR = 1983
 STOP_YEAR = 2012
 
@@ -26,6 +26,17 @@ country_codes = []
 countries = []
 refugees = []
 years = []
+
+# For creating pseudo-random numbers
+def halton(index, base):
+	result = 0.0
+	f = 1.0 / base
+	i = 1.0 * index
+	while(i > 0):
+		result += f * (i % base)	
+		i = math.floor(i / base)
+		f = f / base
+	return result
 
 # Read refugees from file
 with open(REFUGEES_INPUT_FILE, 'rb') as f:
@@ -95,18 +106,24 @@ for y in years:
 		'ms1': y['stop_ms'],
 		'r': []
 	}
-	for r in y['refugees']:
-		year['r'].append({
-			'ms0': y['start_ms'],
-			'ms1': y['start_ms'] + r['year_distance_n'] * MS_PER_YEAR,
-			# 'ms1': y['stop_ms'],
-			'x1': r['origin_x'],
-			'y1': r['origin_y'],
-			'x2': r['asylum_x'],
-			'y2': r['asylum_y'],
-			'd': r['distance'],
-			'c': r['count_n']
-		})
+	h = 0
+	for i,r in enumerate(y['refugees']):
+		count = r['count']
+		while count > 0:
+			wavelength = halton(h, 3)
+			year['r'].append({
+				'ms0': y['start_ms'],
+				'ms1': min([y['start_ms'] + r['year_distance_n'] * MS_PER_YEAR + wavelength * MS_PER_YEAR * 0.5, y['stop_ms']]),
+				'x1': r['origin_x'],
+				'y1': r['origin_y'],
+				'x2': r['asylum_x'],
+				'y2': r['asylum_y'],
+				'd': r['distance'],
+				'c': r['count_n'],
+				'w': wavelength
+			})
+			count -= REFUGEE_UNIT
+			h+=1
 	vis_data.append(year)
 
 if WRITE_VIS and len(vis_data)>0:

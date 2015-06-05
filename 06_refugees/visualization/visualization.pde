@@ -30,8 +30,9 @@ PImage img_map_overlay;
 String img_map_overlay_file = "map_overlay.png";
 
 // components
-float[] strokeWeightRange = {1, 4};
+float[] strokeWeightRange = {1, 1};
 float[] strokeAlphaRange = {20, 100};
+float[] wavelengthRange = {1, 40};
 
 // text
 color textC = #ede1e1;
@@ -115,7 +116,11 @@ void draw(){
       float alpha = count * (strokeAlphaRange[1]-strokeAlphaRange[0]) + strokeAlphaRange[0];
       strokeWeight(weight);
       stroke(c, alpha);
-      line(x1, y1, x2, y2);
+      pushMatrix();
+      translate(r.getX1(), r.getY1());
+      rotate(radians(r.getAngle()));
+      line(x1, y1, x2, y2);      
+      popMatrix();
     }    
   }
   
@@ -193,26 +198,31 @@ class Year
 class Refugee
 {
   
-  float start_ms, stop_ms, x, y, x1, y1, x2, y2, distance, angle, count_n, distance_step;
+  float start_ms, stop_ms, x, y, x1, y1, x2, y2, distance, angle, count_n, distance_step, wavelength;
   
   Refugee(JSONObject _refugee) {    
     start_ms = _refugee.getFloat("ms0");
     stop_ms = _refugee.getFloat("ms1");
-    x1 = round(_refugee.getFloat("x1"));
-    y1 = round(_refugee.getFloat("y1"));
-    x2 = round(_refugee.getFloat("x2"));
-    y2 = round(_refugee.getFloat("y2"));
+    x1 = _refugee.getFloat("x1");
+    y1 = _refugee.getFloat("y1");
+    x2 = _refugee.getFloat("x2");
+    y2 = _refugee.getFloat("y2");
     distance = _refugee.getFloat("d");
     angle = angleBetweenPoints(x1, y1, x2, y2);
     count_n = _refugee.getFloat("c");
+    wavelength = _refugee.getFloat("w") * (wavelengthRange[1]-wavelengthRange[0]) + wavelengthRange[0];
     
-    x = x1;
-    y = y1;
+    x = 0;
+    y = 0;
     distance_step = (1.0/fps) * 1000 / (stop_ms - start_ms) * distance;
   }
   
   boolean isActive(float ms) {
     return ms >= start_ms && ms < stop_ms; 
+  }
+  
+  float getAngle(){
+    return angle;
   }
   
   color getColor(float ms) {
@@ -238,11 +248,22 @@ class Refugee
     return y; 
   }
   
+  float getX1() {
+    return x1; 
+  }
+  
+  float getY1() {
+    return y1; 
+  }
+  
   void move() {
-    angle = angleBetweenPoints(x, y, x2, y2);
-    float[] newPoint = translatePoint(x, y, angle, distance_step);
-    x = round(newPoint[0]);
-    y = round(newPoint[1]);    
+    float x2 = x + distance_step;
+    float y2 = 1.0 * sin(-x2/distance*PI) * wavelength;
+    if (angle>90 || angle<-45) {
+      y2 = 1.0 * sin(x2/distance*PI) * wavelength;
+    }
+    x = x2;
+    y = y2;
   }
   
 }
