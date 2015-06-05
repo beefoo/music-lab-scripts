@@ -1,5 +1,5 @@
 ##
-# TRACK 6
+# TRACK 5
 # LEE AND JACKSON
 # Brian Foo (brianfoo.com)
 # This file builds the sequence file for use with ChucK from the data supplied
