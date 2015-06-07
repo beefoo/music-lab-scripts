@@ -12,15 +12,16 @@ import math
 import os
 import time
 
+COUNTRIES_INPUT_FILE = 'data/countrycodes.json'
 REFUGEES_INPUT_FILE = 'data/refugees_processed.csv'
 VISUALIZATION_OUTPUT_FILE = 'visualization/data/years_refugees.json'
 
 WRITE_VIS = True
 
 MS_PER_YEAR = 6000
-REFUGEE_UNIT = 100000
 START_YEAR = 1983
 STOP_YEAR = 2012
+COUNTRIES_DISPLAY = 5
 
 country_codes = []
 countries = []
@@ -38,6 +39,10 @@ def halton(index, base):
 		f = f / base
 	return result
 
+# Read countries from file
+with open(COUNTRIES_INPUT_FILE) as data_file:    
+	countries = json.load(data_file)
+
 # Read refugees from file
 with open(REFUGEES_INPUT_FILE, 'rb') as f:
 	lines = csv.reader(f, delimiter=',')
@@ -47,6 +52,7 @@ with open(REFUGEES_INPUT_FILE, 'rb') as f:
 		if year >= START_YEAR and year <= STOP_YEAR:
 			refugees.append({
 				'origin': origin,
+				'origin_name': (country['name'] for country in countries if country['code'] == origin).next(),
 				'asylum': asylum,
 				'count': int(count),
 				'year': year,
@@ -88,12 +94,17 @@ for r in refugees:
 # Report year stats
 ms = 0
 for i,y in enumerate(years):
-	years[i]['max_distance'] = max([r['distance'] for r in y['refugees']])
-	years[i]['start_ms'] = ms
-	years[i]['stop_ms'] = ms + MS_PER_YEAR
+	# Order refugees in each year
+	years[i]['refugees'] = sorted(y['refugees'], key=lambda k: k['count'], reverse=True)
+	
 	# Normalize distances
+	years[i]['max_distance'] = max([r['distance'] for r in y['refugees']])	
 	for j,r in enumerate(y['refugees']):
 		years[i]['refugees'][j]['year_distance_n'] = 1.0 * r['distance'] / years[i]['max_distance']
+	
+	# Determine start/stop times
+	years[i]['start_ms'] = ms
+	years[i]['stop_ms'] = ms + MS_PER_YEAR
 	ms += MS_PER_YEAR
 	# print(str(y['year']) + ': ' + str(len(y['refugees'])) + ', ' + str(sum([r['count'] for r in y['refugees']])))
 
@@ -106,24 +117,20 @@ for y in years:
 		'ms1': y['stop_ms'],
 		'r': []
 	}
-	h = 0
 	for i,r in enumerate(y['refugees']):
-		count = r['count']
-		while count > 0:
-			wavelength = halton(h, 3)
-			year['r'].append({
-				'ms0': y['start_ms'],
-				'ms1': min([y['start_ms'] + r['year_distance_n'] * MS_PER_YEAR + wavelength * MS_PER_YEAR * 0.5, y['stop_ms']]),
-				'x1': r['origin_x'],
-				'y1': r['origin_y'],
-				'x2': r['asylum_x'],
-				'y2': r['asylum_y'],
-				'd': r['distance'],
-				'c': r['count_n'],
-				'w': wavelength
-			})
-			count -= REFUGEE_UNIT
-			h+=1
+		rand = halton(i, 3)
+		year['r'].append({
+			'on': r['origin_name'],
+			'ms0': y['start_ms'],
+			'ms1': y['start_ms'] + r['year_distance_n'] * MS_PER_YEAR,
+			'x1': r['origin_x'],
+			'y1': r['origin_y'],
+			'x2': r['asylum_x'],
+			'y2': r['asylum_y'],
+			'd': r['distance'],
+			'c': r['count'], # "{:,}".format(r['count'])
+			'cn': r['count_n']
+		})
 	vis_data.append(year)
 
 if WRITE_VIS and len(vis_data)>0:
