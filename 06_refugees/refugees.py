@@ -18,15 +18,24 @@ VISUALIZATION_OUTPUT_FILE = 'visualization/data/years_refugees.json'
 
 WRITE_VIS = True
 
-MS_PER_YEAR = 6000
-START_YEAR = 1983
+MS_PER_YEAR = 4000
+START_YEAR = 1975
 STOP_YEAR = 2012
-COUNTRIES_DISPLAY = 5
 
 country_codes = []
 countries = []
 refugees = []
 years = []
+
+# Mean of list
+def mean(data):
+    if iter(data) is data:
+		data = list(data)
+    n = len(data)
+    if n < 1:
+		return 0
+    else:
+		return sum(data)/n
 
 # For creating pseudo-random numbers
 def halton(index, base):
@@ -91,22 +100,48 @@ for r in refugees:
 	else:
 		years[-1]['refugees'].append(r.copy())
 
-# Report year stats
+# Process data
 ms = 0
 for i,y in enumerate(years):
 	# Order refugees in each year
-	years[i]['refugees'] = sorted(y['refugees'], key=lambda k: k['count'], reverse=True)
+	years[i]['refugees'] = sorted(y['refugees'], key=lambda k: k['count'], reverse=True)	
+	
+	# Generate origin countries
+	origin_codes = set([r['origin'] for r in y['refugees']])
+	origin_countries = []
+	for code in origin_codes:
+		origin_refugees = [r for r in y['refugees'] if r['origin']==code]
+		ref = origin_refugees[0]
+		origin_countries.append({
+			'code': code,
+			'name': ref['origin_name'],
+			'count': sum([r['count'] for r in origin_refugees]),
+			'x': ref['origin_x'],
+			'y': ref['origin_y'],
+			'avg_distance': mean([r['distance'] for r in origin_refugees])
+		})
 	
 	# Normalize distances
 	years[i]['max_distance'] = max([r['distance'] for r in y['refugees']])	
 	for j,r in enumerate(y['refugees']):
 		years[i]['refugees'][j]['year_distance_n'] = 1.0 * r['distance'] / years[i]['max_distance']
 	
+	# Sort country counts
+	years[i]['countries'] = sorted(origin_countries, key=lambda k: k['count'], reverse=True)
+	
 	# Determine start/stop times
 	years[i]['start_ms'] = ms
 	years[i]['stop_ms'] = ms + MS_PER_YEAR
 	ms += MS_PER_YEAR
 	# print(str(y['year']) + ': ' + str(len(y['refugees'])) + ', ' + str(sum([r['count'] for r in y['refugees']])))
+
+# Normalize country counts
+year_countries = [y['countries'] for y in years]
+year_countries = [item for sublist in year_countries for item in sublist]
+max_country_count = max([c['count'] for c in year_countries])
+for i,y in enumerate(years):	
+	for j,c in enumerate(y['countries']):
+		years[i]['countries'][j]['count_n'] = 1.0 * c['count'] / max_country_count
 
 # Build visualization data
 vis_data = []
@@ -115,12 +150,20 @@ for y in years:
 		'y': y['year'],
 		'ms0': y['start_ms'],
 		'ms1': y['stop_ms'],
-		'r': []
+		'r': [],
+		'c': []
 	}
+	for c in y['countries']:
+		year['c'].append({
+			'n': c['name'],
+			'x': c['x'],
+			'y': c['y'],
+			'c': "{:,}".format(c['count']),
+			'cn': c['count_n']
+		})
 	for i,r in enumerate(y['refugees']):
 		rand = halton(i, 3)
 		year['r'].append({
-			'on': r['origin_name'],
 			'ms0': y['start_ms'],
 			'ms1': y['start_ms'] + r['year_distance_n'] * MS_PER_YEAR,
 			'x1': r['origin_x'],
@@ -128,7 +171,7 @@ for y in years:
 			'x2': r['asylum_x'],
 			'y2': r['asylum_y'],
 			'd': r['distance'],
-			'c': r['count'], # "{:,}".format(r['count'])
+			'c': r['count'],
 			'cn': r['count_n']
 		})
 	vis_data.append(year)
