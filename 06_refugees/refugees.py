@@ -13,6 +13,7 @@ import os
 import time
 
 COUNTRIES_INPUT_FILE = 'data/countrycodes.json'
+POPULATIONS_INPUT_FILE = 'data/populations.json'
 REFUGEES_INPUT_FILE = 'data/refugees_processed.csv'
 VISUALIZATION_OUTPUT_FILE = 'visualization/data/years_refugees.json'
 
@@ -22,8 +23,9 @@ MS_PER_YEAR = 4000
 START_YEAR = 1975
 STOP_YEAR = 2012
 
-country_codes = []
 countries = []
+populations = []
+world_populations = {}
 refugees = []
 years = []
 
@@ -52,6 +54,11 @@ def halton(index, base):
 with open(COUNTRIES_INPUT_FILE) as data_file:    
 	countries = json.load(data_file)
 
+# Read populations from file
+with open(POPULATIONS_INPUT_FILE) as data_file:    
+	populations = json.load(data_file)
+	world_populations = (p for p in populations if p['code'] == 'WLD').next()
+
 # Read refugees from file
 with open(REFUGEES_INPUT_FILE, 'rb') as f:
 	lines = csv.reader(f, delimiter=',')
@@ -76,12 +83,15 @@ with open(REFUGEES_INPUT_FILE, 'rb') as f:
 # Calc min/max
 min_refugees = min([r['count'] for r in refugees])
 max_refugees = max([r['count'] for r in refugees])
+min_distance = min([r['distance'] for r in refugees])
+max_distance = max([r['distance'] for r in refugees])
 min_year = min([r['year'] for r in refugees])
 max_year = max([r['year'] for r in refugees])
 
 # Normalize data
 for i,r in enumerate(refugees):
 	refugees[i]['count_n'] = (1.0 * r['count'] - min_refugees) / (max_refugees - min_refugees)
+	refugees[i]['distance_n'] = (1.0 * r['distance'] - min_distance) / (max_distance - min_distance)
 
 # Report stats
 print(str(max_year-min_year) + ' years: [' + str(min_year) + ',' + str(max_year) + ']')
@@ -93,7 +103,8 @@ for r in refugees:
 	if r['year'] != current_year:
 		year = {
 			'year': r['year'],
-			'refugees': [r.copy()]
+			'refugees': [r.copy()],
+			'population': world_populations[str(r['year'])]
 		}
 		years.append(year)
 		current_year = r['year']
@@ -104,7 +115,8 @@ for r in refugees:
 ms = 0
 for i,y in enumerate(years):
 	# Order refugees in each year
-	years[i]['refugees'] = sorted(y['refugees'], key=lambda k: k['count'], reverse=True)	
+	years[i]['refugees'] = sorted(y['refugees'], key=lambda k: k['count'], reverse=True)
+	years[i]['count'] = sum([r['count'] for r in y['refugees']])
 	
 	# Generate origin countries
 	origin_codes = set([r['origin'] for r in y['refugees']])
@@ -150,6 +162,9 @@ for y in years:
 		'y': y['year'],
 		'ms0': y['start_ms'],
 		'ms1': y['stop_ms'],
+		'rc': "{:,}".format(y['count']),
+		'p': "{:,}".format(y['population']),
+		'cp': "{:,}".format(int(round(y['population']/y['count']))),
 		'r': [],
 		'c': []
 	}
@@ -158,7 +173,7 @@ for y in years:
 			'n': c['name'],
 			'x': c['x'],
 			'y': c['y'],
-			'c': "{:,}".format(c['count']),
+			'c': c['count'],
 			'cn': c['count_n']
 		})
 	for i,r in enumerate(y['refugees']):
@@ -171,6 +186,7 @@ for y in years:
 			'x2': r['asylum_x'],
 			'y2': r['asylum_y'],
 			'd': r['distance'],
+			'dn': r['distance_n'],
 			'c': r['count'],
 			'cn': r['count_n']
 		})

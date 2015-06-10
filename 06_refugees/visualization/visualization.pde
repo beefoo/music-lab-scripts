@@ -17,7 +17,7 @@ float cy = 0.5 * canvasH;
 // config
 float REFUGEE_UNIT = 100000;
 int COUNTRY_LABEL_COUNT = 30;
-float YEAR_FADE_TIME = 2000;
+float YEAR_FADE_TIME = 1000;
 
 // colors
 color bgColor = #000000;
@@ -32,17 +32,17 @@ Year previous_year;
 PImage img_map;
 String img_map_file = "map.png";
 PImage img_map_overlay;
-String img_map_overlay_file = "map_overlay.png";
 PGraphics g_map, g_labels, g_key;
 
 // key
 float yearX = 20;
-float yearY = 30;
+float yearY = 20;
 
 // lines
 float[] strokeWeightRange = {1, 1};
 float[] strokeAlphaRange = {20, 100};
-float[] wavelengthRange = {1, 40};
+float[] wavelengthRange = {1, 100};
+float wavelengthVariance = 10;
 
 // labels
 float[] labelCircleRange = {5, 120};
@@ -51,10 +51,11 @@ float labelCircleWeight = 0.5;
 
 // text
 color textC = #ede1e1;
+color textC2 = #aa9898;
 color textNumberC = #ea2525;
 int fontSizeLarge = 36;
 PFont fontLarge = createFont("OpenSans-Semibold", fontSizeLarge, true);
-int fontSize = 28;
+int fontSize = 24;
 PFont font = createFont("OpenSans-Semibold", fontSize, true);
 int fontSizeSmall = 16;
 PFont fontSmall = createFont("OpenSans-Semibold", fontSizeSmall, true);
@@ -75,7 +76,6 @@ void setup() {
   noFill();
   
   img_map = loadImage(img_map_file);
-  img_map_overlay = loadImage(img_map_overlay_file);
   
   // load the data
   yearsJSON = loadJSONArray(years_file);
@@ -93,17 +93,11 @@ void setup() {
   
   // Key layer
   g_key = createGraphics(canvasW, canvasH);  
-  g_key.noStroke();
-  g_key.fill(textC);
-  g_key.textFont(fontLarge);
-  g_key.textAlign(LEFT, TOP);  
+  g_key.noStroke();   
   
   // Init drawing
   previous_year = years.get(0);
-  stopMs = years.get(years.size()-1).getStopMs();  
-  g_key.beginDraw();
-  g_key.text(previous_year.getYear(), yearX, yearY);
-  g_key.endDraw();
+  stopMs = years.get(years.size()-1).getStopMs();
   
   // noLoop();
 }
@@ -132,10 +126,21 @@ void draw(){
   } 
   
   // new year, draw year 
-  if (isNewYear) {
-    g_key.clear();
+  if (isNewYear || frameCount==1) {
+    if (frameCount > 1) {
+      g_key.clear();
+    }    
     g_key.beginDraw();
+    g_key.textAlign(LEFT, TOP); 
+    g_key.fill(textC);
+    g_key.textFont(fontLarge);
     g_key.text(current_year.getYear(), yearX, yearY);
+    g_key.textFont(font);
+    g_key.text(current_year.getPopulation(), yearX + 196, yearY + 45);
+    g_key.text(current_year.getCount() + " (1 in " + current_year.getCountPer()+")", yearX + 196, yearY + 75);
+    g_key.fill(textC2);    
+    g_key.text("World Population: ", yearX, yearY + 45);
+    g_key.text("World Refugees: ", yearX, yearY + 75);    
     g_key.endDraw();
   }
   
@@ -218,6 +223,7 @@ void draw(){
   
   // check if we should exit
   if (elapsedMs > stopMs) {
+    saveFrame("output/frame.png");
     exit(); 
   }
 }
@@ -262,12 +268,16 @@ class Year
   ArrayList<Country> countries;
   float start_ms, stop_ms;
   int year;
+  String population, count, count_per;
   PGraphics g_lines;
   
   Year(JSONObject _year) {    
     year = _year.getInt("y");
     start_ms = _year.getFloat("ms0");
     stop_ms = _year.getFloat("ms1");
+    population = _year.getString("p");
+    count = _year.getString("rc");
+    count_per = _year.getString("cp");
     refugees = new ArrayList<Refugee>();
     countries = new ArrayList<Country>();
     
@@ -299,12 +309,24 @@ class Year
     return alpha;
   }
   
+  String getCount(){
+    return count;
+  }
+  
+  String getCountPer(){
+    return count_per;
+  }
+  
   ArrayList<Country> getCountries(){
     return countries;
   }
   
   PGraphics getGraphics(){
     return g_lines;
+  }
+  
+  String getPopulation(){
+    return population;
   }
   
   ArrayList<Refugee> getRefugees(){
@@ -330,19 +352,20 @@ class Year
 
 class Country
 {
-  String name, count;
+  String name;
   float count_n, x, y;
+  int count;
   
   Country(JSONObject _country) {
     name = _country.getString("n");
-    count = _country.getString("c");
+    count = _country.getInt("c");
     count_n = _country.getFloat("cn");
     x = _country.getFloat("x");
     y = _country.getFloat("y");
   }
   
   String getCount() {
-    return count; 
+    return nfc(count); 
   }
   
   float getCountN() {
@@ -365,7 +388,7 @@ class Country
 
 class RefugeeLine
 {
-  float start_ms, stop_ms, x, y, x1, y1, x2, y2, distance, angle, count_n, distance_step, wavelength;
+  float start_ms, stop_ms, x, y, x1, y1, x2, y2, distance, distance_n, angle, count_n, distance_step, wavelength;
   
   RefugeeLine(JSONObject _refugee, JSONObject _year, int hindex) {
     start_ms = _refugee.getFloat("ms0");
@@ -375,6 +398,7 @@ class RefugeeLine
     x2 = _refugee.getFloat("x2");
     y2 = _refugee.getFloat("y2");
     distance = _refugee.getFloat("d");
+    distance_n = _refugee.getFloat("dn");
     angle = angleBetweenPoints(x1, y1, x2, y2);
     count_n = _refugee.getFloat("cn");  
     
@@ -383,7 +407,8 @@ class RefugeeLine
     float year_stop_ms = _year.getFloat("ms1");
     float rand = halton(hindex, 3);
     stop_ms = min(stop_ms + rand * (year_stop_ms-year_start_ms) * 0.4, year_stop_ms);
-    wavelength = rand * (wavelengthRange[1]-wavelengthRange[0]) + wavelengthRange[0];
+    wavelength = distance_n * (wavelengthRange[1]-wavelengthRange[0]) + wavelengthRange[0];
+    wavelength = wavelength + rand * wavelengthVariance;
     
     x = 0;
     y = 0;
