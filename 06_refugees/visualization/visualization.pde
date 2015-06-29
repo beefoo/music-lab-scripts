@@ -6,7 +6,7 @@
 // output
 int fps = 30;
 String outputFrameFile = "output/frames/frames-#####.png";
-boolean captureFrames = false;
+boolean captureFrames = true;
 
 // resolution
 int canvasW = 1280;
@@ -15,12 +15,16 @@ float cx = 0.5 * canvasW;
 float cy = 0.5 * canvasH;
 
 // config
-float REFUGEE_UNIT = 100000;
-int COUNTRY_LABEL_COUNT = 30;
+float REFUGEE_UNIT = 40000;
+int COUNTRY_LABEL_COUNT = 10;
 float YEAR_FADE_TIME = 1000;
+int COUNTRY_COUNT_MIN = 400;
+int MAX_EVENT_DISPLAY = 3;
 
 // colors
 color bgColor = #000000;
+color refugeePathFrom = #ff3232; // red
+color refugeePathTo = #afef9b; // green
 
 // data
 String years_file = "years_refugees.json";
@@ -39,13 +43,13 @@ float yearX = 20;
 float yearY = 20;
 
 // lines
-float[] strokeWeightRange = {1, 1};
-float[] strokeAlphaRange = {20, 100};
+float[] strokeWeightRange = {0.4, 2.0};
+float[] strokeAlphaRange = {25, 255};
 float[] wavelengthRange = {1, 100};
-float wavelengthVariance = 10;
+float wavelengthVariance = 20;
 
 // labels
-float[] labelCircleRange = {5, 120};
+float[] labelCircleRange = {10, 200};
 color labelCircleC = #ffe900;
 float labelCircleWeight = 0.5;
 
@@ -57,8 +61,10 @@ int fontSizeLarge = 36;
 PFont fontLarge = createFont("OpenSans-Semibold", fontSizeLarge, true);
 int fontSize = 24;
 PFont font = createFont("OpenSans-Semibold", fontSize, true);
-int fontSizeSmall = 16;
+int fontSizeSmall = 20;
 PFont fontSmall = createFont("OpenSans-Semibold", fontSizeSmall, true);
+int fontSizeVSmall = 18;
+PFont fontVSmall = createFont("OpenSans-Semibold", fontSizeVSmall, true);
 
 // time
 float startMs = 0;
@@ -87,130 +93,178 @@ void setup() {
   }
   
   // Label layer
-  g_labels = createGraphics(canvasW, canvasH);
-  g_labels.textAlign(CENTER, BOTTOM); 
+  g_labels = createGraphics(canvasW, canvasH);  
   g_labels.textFont(fontSmall);
   
   // Key layer
   g_key = createGraphics(canvasW, canvasH);  
-  g_key.noStroke();   
+  g_key.noStroke();
+  g_key.rectMode(CORNER);
   
   // Init drawing
   previous_year = years.get(0);
-  stopMs = years.get(years.size()-1).getStopMs();
+  stopMs = years.get(years.size()-1).getRefugeeStopMs();
   
   // noLoop();
 }
 
 void draw(){
   
-  ArrayList<Year> previousYearsLines = new ArrayList<Year>();
-  
   // select current year
-  Year current_year = years.get(years.size()-1);  
+  Year current_year = years.get(years.size()-1);
+  int current_year_i = 0;
   for (int i = 0; i < years.size(); i++) {  
     Year y = years.get(i);
     if (y.isActive(elapsedMs)) {
       current_year = y;
+      current_year_i = i;
       break;
-    } else {
-      previousYearsLines.add(y);
     }
   }
   
   // check if this is a new year
   Boolean isNewYear = false;
+  Boolean isFirst = (frameCount<=1);
   if (current_year.getYear() != previous_year.getYear()) {
     isNewYear = true;
     previous_year = current_year;
   } 
   
   // new year, draw year 
-  if (isNewYear || frameCount==1) {
-    if (frameCount > 1) {
+  if (isNewYear || isFirst) {
+    if (!isFirst) {
       g_key.clear();
     }    
     g_key.beginDraw();
+    // top left
     g_key.textAlign(LEFT, TOP); 
     g_key.fill(textC);
     g_key.textFont(fontLarge);
     g_key.text(current_year.getYear(), yearX, yearY);
     g_key.textFont(font);
     g_key.text(current_year.getPopulation(), yearX + 196, yearY + 45);
-    g_key.text(current_year.getCount() + " (1 in " + current_year.getCountPer()+")", yearX + 196, yearY + 75);
+    g_key.text(current_year.getCount() + " (1 in " + current_year.getCountPer()+")", yearX + 196, yearY + 45 + 30);
+    g_key.text(current_year.getCountThousand(), yearX + 344, yearY + 45 + 30*2);
     g_key.fill(textC2);    
     g_key.text("World Population: ", yearX, yearY + 45);
-    g_key.text("World Refugees: ", yearX, yearY + 75);    
+    g_key.text("World Refugees: ", yearX, yearY + 45 + 30);
+    g_key.text("Countries with 1000+ refugees: ", yearX, yearY + 45 + 30*2);
+    // bottom left
+    g_key.textAlign(LEFT, BOTTOM);  
+    g_key.text("Country of Origin", yearX + 35, canvasH - yearY - 30);
+    g_key.text("Country of Asylum", yearX + 35, canvasH - yearY);
+    g_key.fill(refugeePathFrom);
+    g_key.rect(yearX, canvasH - yearY - 30 - 25, 20, 20);
+    g_key.fill(refugeePathTo);
+    g_key.rect(yearX, canvasH - yearY - 25, 20, 20);    
+    // top right
+    g_key.textAlign(RIGHT, TOP);
+    g_key.fill(textC2);
+    g_key.textFont(fontSmall);
+    /* g_key.text("Notable Events", canvasW - yearX, yearY);
+    ArrayList<Event> events = current_year.getEvents();
+    g_key.fill(textC);
+    g_key.textFont(fontVSmall);
+    float eventYH = 30;
+    float eventY = yearY + eventYH + 5;  
+    for (int i = 0; i < events.size(); i++) {
+      if (i >= MAX_EVENT_DISPLAY) {
+        break;
+      }
+      Event e = events.get(i);
+      g_key.text(e.getCountry() + ": " + e.getHeadline(), canvasW - yearX, eventY);
+      eventY += eventYH;      
+    } */
     g_key.endDraw();
   }
   
   // draw lines
-  ArrayList<Refugee> refugees = current_year.getRefugees();
-  PGraphics g_lines = current_year.getGraphics();
-  g_lines.beginDraw();
-  g_lines.noFill();
-  for (Refugee r : refugees) {
-    ArrayList<RefugeeLine> rlines = r.getLines();
-    for (RefugeeLine rl : rlines) {
-      if (rl.isActive(elapsedMs)) {
-        float x1 = rl.getX();
-        float y1 = rl.getY();
-        rl.move();
-        float x2 = rl.getX();
-        float y2 = rl.getY();      
-        float countn = rl.getCountN();
-        float weight = countn * (strokeWeightRange[1]-strokeWeightRange[0]) + strokeWeightRange[0];
-        float alpha = countn * (strokeAlphaRange[1]-strokeAlphaRange[0]) + strokeAlphaRange[0];
-        color c = rl.getColor(elapsedMs);
-        
-        g_lines.strokeWeight(weight);
-        g_lines.stroke(c, alpha);
-        g_lines.pushMatrix();
-        g_lines.translate(rl.getX1(), rl.getY1());
-        g_lines.rotate(radians(rl.getAngle()));
-        g_lines.line(x1, y1, x2, y2);      
-        g_lines.popMatrix();
-      }
-    }        
+  for (int i = 0; i < years.size(); i++) {  
+    Year y = years.get(i);
+    ArrayList<Refugee> refugees = y.getRefugees();
+    PGraphics g_lines = y.getGraphics();
+    g_lines.beginDraw();
+    g_lines.noFill();
+    for (Refugee r : refugees) {
+      ArrayList<RefugeeLine> rlines = r.getLines();
+      for (RefugeeLine rl : rlines) {
+        if (rl.isActive(elapsedMs)) {
+          float x1 = rl.getX();
+          float y1 = rl.getY();
+          rl.move();
+          float x2 = rl.getX();
+          float y2 = rl.getY();      
+          float countn = rl.getCountN();
+          // float weight = countn * (strokeWeightRange[1]-strokeWeightRange[0]) + strokeWeightRange[0];
+          float weight = rl.getStrokeWeight(elapsedMs);
+          float alpha = countn * (strokeAlphaRange[1]-strokeAlphaRange[0]) + strokeAlphaRange[0];
+          color c = rl.getColor(elapsedMs);
+          
+          g_lines.strokeWeight(weight);
+          g_lines.stroke(c, alpha);
+          g_lines.pushMatrix();
+          g_lines.translate(rl.getX1(), rl.getY1());
+          g_lines.rotate(radians(rl.getAngle()));
+          g_lines.line(x1, y1, x2, y2);      
+          g_lines.popMatrix();
+        }
+      }        
+    }
+    g_lines.endDraw();
+    if (y.getYear() >= current_year.getYear()) {
+      break; 
+    }
   }
-  g_lines.endDraw();
   
   // draw labels
-  ArrayList<Country> countries = current_year.getCountries();
+  ArrayList<Country> countries = current_year.getCountries();  
   g_labels.clear();
   g_labels.beginDraw();
-  for (int i = 0; i < COUNTRY_LABEL_COUNT; i++) {  
-    if (i < countries.size()) {
-      Country c = countries.get(i);
-      float w = c.getCountN() * (labelCircleRange[1]-labelCircleRange[0]) + labelCircleRange[0];
-      
-      // circle
-      g_labels.ellipseMode(CENTER);
-      g_labels.noFill();
-      g_labels.stroke(labelCircleC);
-      g_labels.strokeWeight(labelCircleWeight);
-      g_labels.ellipse(c.getX(), c.getY(), w, w);
-      
-      // text
-      //g_labels.fill(textC);
-      //g_labels.noStroke();
-      //g_labels.text(c.getCountryName(), c.getX() + 0.5*w, c.getY() + 0.5*w);
+  Year previousY = years.get(0);
+  if (current_year_i > 0) {
+    previousY = years.get(current_year_i-1);
+  }
+  
+  for (int i = 0; i < countries.size(); i++) {
+    Country c = countries.get(i);
+    // ArrayList<Event> c_events = c.getEvents(events);
+    /* if (i > COUNTRY_LABEL_COUNT) {
+      break;
+    } */
+    if (c.getCount() < COUNTRY_COUNT_MIN) {
+      continue; 
     }
+    // circle
+    /* float previousW = previousY.getCountryWidth(c.getCode());
+    float w = c.getWidth(elapsedMs, previousW);    
+    g_labels.ellipseMode(CENTER);
+    g_labels.noFill();
+    g_labels.stroke(labelCircleC, 100);
+    g_labels.strokeWeight(labelCircleWeight);
+    g_labels.ellipse(c.getX(), c.getY(), w, w); */
+    
+    // text
+    /* int[] pos = c.getLabelPosition(elapsedMs, previousW);
+    g_labels.fill(textC);
+    g_labels.noStroke();
+    g_labels.textAlign(pos[2], pos[3]);
+    g_labels.text(c.getCountryName(), pos[0], pos[1]); */
   }
   g_labels.endDraw();
   
   // draw layers
   image(img_map, 0, 0, canvasW, canvasH);  
-  for (Year y : previousYearsLines) {
+  for (Year y : years) {
     float alpha = y.getAlpha(elapsedMs);
     if (alpha > 0) {
       tint(255, alpha);
       image(y.getGraphics(), 0, 0, canvasW, canvasH);
-    }  
+    }
+    if (y.getYear() >= current_year.getYear()) {
+      break; 
+    }
   }
-  tint(255, 255);
-  image(g_lines, 0, 0, canvasW, canvasH);
-  //image(g_labels, 0, 0, canvasW, canvasH);
+  // image(g_labels, 0, 0, canvasW, canvasH);
   image(g_key, 0, 0, canvasW, canvasH);
   
   // increment time
@@ -252,12 +306,20 @@ float halton(int hIndex, int hBase) {
   return result;
 }
 
-float[] translatePoint(float x, float y, float angle, float distance){
-  float[] newPoint = new float[2];
+float normalizeAngle(float angle) {
+  angle = angle % 360;    
+  if (angle <= 0) {
+    angle += 360;
+  }
+  return angle;
+}
+
+int[] translatePoint(float x, float y, float angle, float distance){
+  int[] newPoint = new int[2];
   float r = radians(angle);
   
-  newPoint[0] = x + distance*cos(r);
-  newPoint[1] = y + distance*sin(r);
+  newPoint[0] = round(x + distance*cos(r));
+  newPoint[1] = round(y + distance*sin(r));
   
   return newPoint;
 }
@@ -266,31 +328,41 @@ class Year
 {
   ArrayList<Refugee> refugees;
   ArrayList<Country> countries;
-  float start_ms, stop_ms;
+  ArrayList<Event> events;
+  float start_ms, stop_ms, refugee_stop_ms;
   int year;
-  String population, count, count_per;
+  String population, count, count_per, count_thousand;
   PGraphics g_lines;
   
   Year(JSONObject _year) {    
     year = _year.getInt("y");
     start_ms = _year.getFloat("ms0");
     stop_ms = _year.getFloat("ms1");
+    refugee_stop_ms = _year.getFloat("rms1");
     population = _year.getString("p");
     count = _year.getString("rc");
     count_per = _year.getString("cp");
+    count_thousand = _year.getString("ct");
     refugees = new ArrayList<Refugee>();
     countries = new ArrayList<Country>();
+    events = new ArrayList<Event>();
     
     JSONArray countriesJSON = _year.getJSONArray("c");
     for (int i = 0; i < countriesJSON.size(); i++) {  
       JSONObject country = countriesJSON.getJSONObject(i);
-      countries.add(new Country(country));
+      countries.add(new Country(country, _year));
     }
     
     JSONArray refugeesJSON = _year.getJSONArray("r");
     for (int i = 0; i < refugeesJSON.size(); i++) {  
       JSONObject refugee = refugeesJSON.getJSONObject(i);
       refugees.add(new Refugee(refugee, _year));
+    }
+    
+    JSONArray eventsJSON = _year.getJSONArray("e");
+    for (int i = 0; i < eventsJSON.size(); i++) {  
+      JSONObject event = eventsJSON.getJSONObject(i);
+      events.add(new Event(event));
     }
     
     // Line layer  
@@ -302,8 +374,11 @@ class Year
   float getAlpha(float ms){
     float alpha = 0;
     
-    if ((ms-stop_ms) < YEAR_FADE_TIME) {
-      alpha = 255.0 * (1.0 - (ms-stop_ms) / YEAR_FADE_TIME);
+    if ((ms-refugee_stop_ms) < YEAR_FADE_TIME) {
+      alpha = 255.0 * (1.0 - (ms-refugee_stop_ms) / YEAR_FADE_TIME);
+    }
+    if (isActive(ms)) {
+      alpha = 255.0; 
     }
     
     return alpha;
@@ -317,8 +392,26 @@ class Year
     return count_per;
   }
   
+  String getCountThousand(){
+    return count_thousand;
+  }
+  
   ArrayList<Country> getCountries(){
     return countries;
+  }
+  
+  float getCountryWidth(String code) {
+    float w = 0;
+    for(Country c : countries) {
+      if (code.equals(c.getCode())) {
+        w = c.getW();
+      } 
+    }
+    return w;
+  }
+  
+  ArrayList<Event> getEvents(){
+    return events;
   }
   
   PGraphics getGraphics(){
@@ -331,6 +424,10 @@ class Year
   
   ArrayList<Refugee> getRefugees(){
     return refugees;
+  }
+  
+  float getRefugeeStopMs(){
+    return refugee_stop_ms;
   }
   
   float getStartMs(){
@@ -352,19 +449,31 @@ class Year
 
 class Country
 {
-  String name;
-  float count_n, x, y;
+  String name, code;
+  float count_n, x, y, w, start_ms, stop_ms;
   int count;
   
-  Country(JSONObject _country) {
+  Country(JSONObject _country, JSONObject _year) {
     name = _country.getString("n");
+    code = _country.getString("cc");
     count = _country.getInt("c");
     count_n = _country.getFloat("cn");
     x = _country.getFloat("x");
     y = _country.getFloat("y");
+    start_ms = _year.getFloat("ms0");
+    stop_ms = _year.getFloat("ms1");
+    w = count_n * (labelCircleRange[1]-labelCircleRange[0]) + labelCircleRange[0];
   }
   
-  String getCount() {
+  String getCode(){
+    return code;
+  }
+  
+  int getCount(){
+    return count;
+  }
+  
+  String getCountString() {
     return nfc(count); 
   }
   
@@ -376,12 +485,79 @@ class Country
     return name;
   }
   
+  int[] getLabelPosition(float ms, float w0){
+    float _w = getWidth(ms, w0),
+          angle = normalizeAngle(angleBetweenPoints(cx, cy, x, y));
+    int[] pos = translatePoint(x, y, angle, _w * 0.5 + 50);    
+    int[] pos2 = {CENTER, CENTER};
+    pos2[0] = CENTER;
+    if (angle > 315 || angle < 45) {
+      pos2[0] = LEFT;
+    } else if (angle > 135 && angle < 225) {
+      pos2[0] = RIGHT;
+    }
+    if (angle > 225 && angle < 315) {
+      pos2[1] = BOTTOM;
+    } else if (angle > 45 && angle < 135){
+      pos2[1] = TOP;
+    }
+    return concat(pos, pos2);
+  }
+  
+  float getW(){
+    return w;
+  }
+  
+  float getWidth(float ms, float w0){
+    float w1 = w,
+          d = 0.5 * (stop_ms - start_ms);
+    if (ms < (start_ms+d)) {
+       float p = (ms-start_ms)/ d;
+       w1 = (w1 - w0) * p + w0;
+    }
+    return w1;
+  }
+  
   float getX() {
     return x; 
   }
   
   float getY() {
     return y; 
+  }
+  
+  ArrayList<Event> getEvents(ArrayList<Event> _events) {
+    ArrayList<Event> events = new ArrayList<Event>();
+    for(Event e : _events) {
+      if (e.getCode().equals(code)) {
+        events.add(e);
+      }
+    }
+    return events;
+  }
+  
+}
+
+class Event
+{
+  String code, country, headline;
+  
+  Event(JSONObject _event) {
+    code = _event.getString("cc");
+    country = _event.getString("c");
+    headline = _event.getString("h");
+  }
+  
+  String getCode() {
+    return code; 
+  }
+  
+  String getCountry() {
+    return country; 
+  }
+  
+  String getHeadline() {
+    return headline;
   }
   
 }
@@ -406,7 +582,7 @@ class RefugeeLine
     float year_start_ms = _year.getFloat("ms0");
     float year_stop_ms = _year.getFloat("ms1");
     float rand = halton(hindex, 3);
-    stop_ms = min(stop_ms + rand * (year_stop_ms-year_start_ms) * 0.4, year_stop_ms);
+    // stop_ms = min(stop_ms + rand * (year_stop_ms-year_start_ms) * 0.4, year_stop_ms);
     wavelength = distance_n * (wavelengthRange[1]-wavelengthRange[0]) + wavelengthRange[0];
     wavelength = wavelength + rand * wavelengthVariance;
     
@@ -425,9 +601,7 @@ class RefugeeLine
   
   color getColor(float ms) {
     float lerp = getLerp(ms);
-    color from = #ff3232; // red
-    color to = #afef9b; // green
-    return lerpColor(from, to, lerp);
+    return lerpColor(refugeePathFrom, refugeePathTo, lerp);
   }
   
   float getCountN() {
@@ -436,6 +610,12 @@ class RefugeeLine
   
   float getLerp(float ms) {
     return (ms - start_ms) / (stop_ms - start_ms);
+  }
+  
+  float getStrokeWeight(float ms) {
+    float lerp = getLerp(ms);
+    lerp = 1.0 - 1.0 * sin(lerp*PI);
+    return (strokeWeightRange[1]-strokeWeightRange[0]) * lerp + strokeWeightRange[0]; 
   }
   
   float getX() {
@@ -475,7 +655,9 @@ class Refugee
     int hindex = 0;
     float c =  _refugee.getFloat("c");
     while(c > 0) {
-      lines.add(new RefugeeLine(_refugee, _year, hindex));
+      if (c > COUNTRY_COUNT_MIN) {
+        lines.add(new RefugeeLine(_refugee, _year, hindex)); 
+      }          
       c = c - REFUGEE_UNIT;
       hindex++;
     }
