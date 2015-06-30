@@ -1,3 +1,6 @@
 output/
 data/*.csv
 visualization/output/
+visualization_intro/output/
+visualization/data/
+visualization_intro/data/
