@@ -38,7 +38,7 @@ INSTRUMENTS_DIR = 'instruments/'
 # Output options
 WRITE_SEQUENCE = True
 WRITE_REPORT = True
-WRITE_VIS = True
+WRITE_VIS = False
 
 # Calculations
 BEAT_MS = round(60.0 / BPM * 1000)
