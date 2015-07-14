@@ -18,6 +18,7 @@ int canvasH = 720;
 String color_table_file = "land_loss.csv";
 String color_output_file = "../data/land_loss.json";
 Table color_table;
+int color_count;
 ArrayList<TimeRange> ranges;
 int min_year, max_year;
 
@@ -44,19 +45,20 @@ void setup() {
   
   // load the change data
   color_table = loadTable(color_table_file, "header");
+  color_count = color_table.getRowCount();
   ranges = new ArrayList<TimeRange>();
   for (TableRow row : color_table.rows()) {
-    Change c = new Change(row);
+    ChangeKey ck = new ChangeKey(row);
     boolean range_exists = false;
     for(int i=0; i<ranges.size(); i++) {
       TimeRange tr = ranges.get(i);
-      if (tr.equalsChange(c)) {
-        ranges.get(i).addChange(c);
+      if (tr.equalsChangeKey(ck)) {
+        ranges.get(i).addChangeKey(ck);
         range_exists = true;
       }      
     }
     if (!range_exists) {
-      ranges.add(new TimeRange(c)); 
+      ranges.add(new TimeRange(ck));
     }
   }
   Collections.sort(ranges);
@@ -68,42 +70,32 @@ void setup() {
   pg.loadPixels();
   img_colors = pg.pixels;
   
-  float[] distances = new float[canvasH*canvasW];
-  
   for (int y=0; y<canvasH; y++) {
     for (int x=0; x<canvasW; x++) {
       color c = img_colors[x+y*canvasW];
-      int h = (int) hue(c),
-          s = (int) saturation(c),
-          b = (int) brightness(c);
-      float[] tr_distances = new float[color_table.getRowCount()];
-      int i = 0;
-      for(TimeRange tr : ranges) {
-        for(Change trc : tr.getChanges()) {
-          float d = dist(h, s, b, trc.getHue(), trc.getSaturation(), trc.getBrightness());
-          tr_distances[i] = d;
-          i++;
+      float h = hue(c),
+          s = saturation(c),
+          b = brightness(c);
+      float min_distance = 99999;
+      int min_tr_i = 0;
+      int min_ck_i = 0;
+      for(int i=0; i<ranges.size(); i++) {
+        TimeRange tr = ranges.get(i);
+        ArrayList<ChangeKey> cks = tr.getChangeKeys();
+        for(int j=0; j<cks.size(); j++) {
+          ChangeKey ck = cks.get(j);
+          float d = dist(h, s, b, ck.getHue(), ck.getSaturation(), ck.getBrightness());
+          if (d < min_distance) {
+            min_distance = d;
+            min_tr_i = i;
+            min_ck_i = j;
+          }
         }
       }
-      tr_distances = sort(tr_distances);
-      distances[x+y*canvasW] = tr_distances[1] - tr_distances[0];
+      ChangeKey min_ck = ranges.get(min_tr_i).getChangeKeys().get(min_ck_i);
+      ranges.get(min_tr_i).addChange(new Change(x, y, min_ck.getChange()));
     }        
   }
-  
-  print(min(distances));
-  
-  // add gain/loss data to ranges
-  /* for(int i=0; i<ranges.size(); i++) {
-    TimeRange tr = ranges.get(i);
-    
-    for(Change c : tr.getChanges()) {
-      for (int y; y<canvasH; y++) {
-        for (int x; x<canvasW; x++) {
-          color c = img_colors[x+y*canvasW];
-        }        
-      }
-    }
-  } */
   
   noLoop();
 }
@@ -120,15 +112,21 @@ void mousePressed() {
 class TimeRange implements Comparable
 {
   int start, end;
+  ArrayList<ChangeKey> change_keys;
   ArrayList<Change> changes;
   
-  TimeRange(Change c) {
-    changes = new ArrayList<Change>();    
-    changes.add(c);
+  TimeRange(ChangeKey ck) {
+    change_keys = new ArrayList<ChangeKey>();
+    changes = new ArrayList<Change>();
+    change_keys.add(ck);
   }
   
   void addChange(Change c) {
     changes.add(c);
+  }
+  
+  void addChangeKey(ChangeKey ck) {
+    change_keys.add(ck);
   }
   
   int compareTo(Object o) {
@@ -136,6 +134,14 @@ class TimeRange implements Comparable
     int s1 = getStart();
     int s2 = tr.getStart();
     return s1 == s2 ? 0 : (s1 > s2 ? 1 : -1);
+  }
+  
+  boolean equalsChangeKey(ChangeKey ck) {
+    return ck.getYearStart() == start && ck.getYearEnd() == end;
+  }
+  
+  ArrayList<ChangeKey> getChangeKeys(){
+    return change_keys;
   }
   
   ArrayList<Change> getChanges(){
@@ -150,34 +156,39 @@ class TimeRange implements Comparable
     return start; 
   }
   
-  boolean equalsChange(Change c) {
-    return c.getYearStart() == start && c.getYearEnd() == end;
+  boolean isActive(int year) {
+    return year >= start && year < end;
   }
     
 }
 
-class Change
+class ChangeKey
 {
-  int h, s, b, year_start, year_end, change;
+  float h, s, b;
+  int year_start, year_end, change;
   
-  Change(TableRow _c) {    
-    h = _c.getInt("h");
-    s = _c.getInt("s");
-    b = _c.getInt("b");
-    year_start = _c.getInt("year_start");
-    year_end = _c.getInt("year_end");
-    change = _c.getInt("change");
+  ChangeKey(TableRow _ck) {    
+    h = _ck.getFloat("h");
+    s = _ck.getFloat("s");
+    b = _ck.getFloat("b");
+    year_start = _ck.getInt("year_start");
+    year_end = _ck.getInt("year_end");
+    change = _ck.getInt("change");
   }
   
-  int getBrightness() {
+  float getBrightness() {
     return b;
   }
   
-  int getHue() {
+  int getChange(){
+    return change;
+  }
+  
+  float getHue() {
     return h;
   }
   
-  int getSaturation() {
+  float getSaturation() {
     return s;
   }
   
@@ -188,12 +199,31 @@ class Change
   int getYearStart() {
     return year_start; 
   }
-  
-  
-
-  boolean isActive(int year) {
-    return year >= year_start && year < year_end;
-  }  
     
 }
+
+class Change
+{
+  int x, y, change;
+  
+  Change(int _x, int _y, int _c) {    
+    x = _x;
+    y = _y;
+    change = _c;
+  }
+  
+  int getChange() {
+    return change;
+  }
+  
+  int getX() {
+    return x;
+  }
+  
+  int getY() {
+    return y;
+  }
+  
+}
+
 
