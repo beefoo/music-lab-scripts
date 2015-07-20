@@ -20,6 +20,7 @@ String color_output_file = "../data/land_loss.json";
 Table color_table;
 int color_count;
 ArrayList<TimeRange> ranges;
+JSONArray ranges_json_array;
 int min_year, max_year;
 
 // images and graphics
@@ -70,6 +71,7 @@ void setup() {
   pg.loadPixels();
   img_colors = pg.pixels;
   
+  // classify image data
   for (int y=0; y<canvasH; y++) {
     for (int x=0; x<canvasW; x++) {
       color c = img_colors[x+y*canvasW];
@@ -96,6 +98,30 @@ void setup() {
       ranges.get(min_tr_i).addChange(new Change(x, y, min_ck.getChange()));
     }        
   }
+  
+  // save data to json file
+  ranges_json_array = new JSONArray();
+  for(int i=0; i<ranges.size(); i++) {
+    TimeRange tr = ranges.get(i);
+    JSONObject tr_json = new JSONObject();
+    tr_json.setInt("year_start", tr.getStart());
+    tr_json.setInt("year_end", tr.getEnd());
+    
+    JSONArray c_json_array = new JSONArray();
+    ArrayList<Change> changes = tr.getChanges();
+    for(int j=0; j<changes.size(); j++) {
+      Change c = changes.get(j);
+      JSONObject c_json = new JSONObject();
+      c_json.setInt("x", c.getX());
+      c_json.setInt("y", c.getY());
+      c_json.setInt("c", c.getChange());
+      c_json_array.setJSONObject(j, c_json);
+    }
+    tr_json.setJSONArray("c", c_json_array);
+    ranges_json_array.setJSONObject(i, tr_json);
+  }
+  saveJSONArray(ranges_json_array, color_output_file);
+  print("Wrote data to file: "+color_output_file);
   
   noLoop();
 }
