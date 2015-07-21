@@ -144,6 +144,9 @@ class TimeRange implements Comparable
   TimeRange(ChangeKey ck) {
     change_keys = new ArrayList<ChangeKey>();
     changes = new ArrayList<Change>();
+    
+    start = ck.getYearStart();
+    end = ck.getYearEnd();
     change_keys.add(ck);
   }
   

@@ -1,0 +1,4 @@
+output/
+data/*.csv
+visualization/output/
+analysis/output/
