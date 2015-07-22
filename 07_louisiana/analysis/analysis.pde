@@ -101,8 +101,13 @@ void setup() {
   
   // save data to json file
   ranges_json_array = new JSONArray();
-  for(int i=0; i<ranges.size(); i++) {
-    TimeRange tr = ranges.get(i);
+  int count=0;
+  for(TimeRange tr : ranges) {
+    
+    if (!tr.isChange()) {
+      continue;
+    }
+    
     JSONObject tr_json = new JSONObject();
     tr_json.setInt("year_start", tr.getStart());
     tr_json.setInt("year_end", tr.getEnd());
@@ -118,7 +123,8 @@ void setup() {
       c_json_array.setJSONObject(j, c_json);
     }
     tr_json.setJSONArray("c", c_json_array);
-    ranges_json_array.setJSONObject(i, tr_json);
+    ranges_json_array.setJSONObject(count, tr_json);
+    count++;
   }
   saveJSONArray(ranges_json_array, color_output_file);
   print("Wrote data to file: "+color_output_file);
@@ -187,6 +193,10 @@ class TimeRange implements Comparable
   
   boolean isActive(int year) {
     return year >= start && year < end;
+  }
+  
+  boolean isChange(){
+    return change_keys.size() > 1 || change_keys.size() == 1 && change_keys.get(0).getChange() != 0;
   }
     
 }
