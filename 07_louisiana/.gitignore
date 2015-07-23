@@ -1,4 +1,7 @@
 output/
 data/*.csv
+data/*.json
 visualization/output/
+visualization/build/
 analysis/output/
+analysis/build/
