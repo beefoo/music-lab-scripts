@@ -13,17 +13,13 @@ int canvasW = 1280;
 int canvasH = 720;
 
 // data
-ArrayList<TimeRange> ranges;
-JSONArray ranges_json_array;
-String ranges_file = "../data/land_loss.json";
+ArrayList<ImageYear> years;
+JSONArray years_json_array;
+String years_file = "changes.json";
 
 // images and graphics
-PGraphics pg_overlay;
 PImage img_bg;
 String img_bg_file = "bg_water.png";
-PImage img_overlay;
-String img_overlay_file = "overlay_land.png";
-color[] img_overlay_colors;
 
 // text
 color textC = #423535;
@@ -31,16 +27,13 @@ int fontSize = 36;
 PFont font = createFont("OpenSans-Semibold", fontSize, true);
 
 // components
-color lossColor= #db4e4e;
-color landColor = #e0edc3;
-color gainColor = #90a06a;
 
 // time
 float startMs = 0;
 float stopMs = 0;
 float elapsedMs = startMs;
 float frameMs = (1.0/fps) * 1000;
-float timeRangeMs = 8000;
+float yearMs = 8000;
 
 void setup() {
   // set the stage
@@ -52,60 +45,57 @@ void setup() {
   noFill();
 
   // load the change data
-  ranges = new ArrayList<TimeRange>();
-  ranges_json_array = loadJSONArray(ranges_file);
-  for (int i = 0; i < ranges_json_array.size(); i++) {
-    JSONObject tr_json = ranges_json_array.getJSONObject(i);
-    TimeRange tr = new TimeRange(tr_json, i, timeRangeMs);
-    ranges.add(tr);
+  years = new ArrayList<ImageYear>();
+  years_json_array = loadJSONArray(years_file);
+  for (int i = 0; i < years_json_array.size(); i++) {
+    JSONObject year_json = years_json_array.getJSONObject(i);
+    years.add(new ImageYear(year_json, i, yearMs));
   }
 
-  // load the images
+  // draw bg image
   img_bg = loadImage(img_bg_file);
-  img_overlay = loadImage(img_overlay_file);
-  pg_overlay = createGraphics(canvasW, canvasH);
+  image(img_bg, 0, 0, canvasW, canvasH);
 
-  stopMs = timeRangeMs * ranges.size();
+  // determine length
+  stopMs = yearMs * years.size();
 
   // noLoop();
 }
 
 void draw(){
 
-  // draw bg image
-  image(img_bg, 0, 0, canvasW, canvasH);
-
-  // get current time range
-  TimeRange current_tr = ranges.get(ranges.size()-1);
-  int current_tr_i = 0;
-  for (int i = 0; i < ranges.size(); i++) {
-    TimeRange tr = ranges.get(i);
-    if (tr.isActive(elapsedMs)) {
-      current_tr = tr;
-      current_tr_i = i;
+  // get current year
+  int current_year_i = years.size()-1;
+  ImageYear current_year = years.get(current_year_i);
+  for (int i = 0; i < years.size(); i++) {
+    ImageYear y = years.get(i);
+    if (y.isActive(elapsedMs)) {
+      current_year = y;
+      current_year_i = i;
       break;
     }
   }
 
+  // base image
+  PImage img_base = loadImage(current_year.getImageStart());
+  image(img_base, 0, 0, canvasW, canvasH);
+
   // update pixels in overlay
-  ArrayList<Change> changes = current_tr.getChanges();
-  img_overlay.loadPixels();
-  for(Change c : changes) {
-    int change = c.getChange();
-    int pixel_i = c.getX() + c.getY() * canvasW;
-    // color pc = img_overlay.pixels[pixel_i];
-    if (change != 0) {
-      color pc = current_tr.getColor(elapsedMs, c);
-      img_overlay.pixels[pixel_i] = pc;
+  ArrayList<ImageChange> changes = current_year.getChanges();
+  for(int i=0; i<changes.size(); i++) {
+    ImageChange change = changes.get(i);
+    if (change.isActive(elapsedMs)) {
+      float p = change.getProgress(elapsedMs);
+      color c = lerpColor(change.getC1(), change.getC2(), p);
+      fill(c);
+      rect(change.getX(), change.getY(), 1, 1);
     }
   }
-  img_overlay.updatePixels();
-  image(img_overlay, 0, 0, canvasW, canvasH);
 
   textAlign(LEFT, BOTTOM);
   fill(textC);
   textFont(font);
-  text(current_tr.getStart()+"-"+current_tr.getEnd(), 10, canvasH - 10);
+  text(current_year.getYearStart()+"-"+current_year.getYearEnd(), 10, canvasH - 10);
 
   // increment time
   elapsedMs += frameMs;
@@ -128,80 +118,71 @@ void mousePressed() {
   exit();
 }
 
-class TimeRange implements Comparable
+class ImageYear
 {
-  int start, end;
+  int start_year, end_year;
   float start_ms, end_ms;
-  ArrayList<Change> changes;
+  String start_img, end_img;
+  ArrayList<ImageChange> changes;
 
-  TimeRange(JSONObject _tr, int _i, float _ms_per_tr) {
-    start = _tr.getInt("year_start");
-    end = _tr.getInt("year_end");
-    start_ms = _ms_per_tr * _i;
-    end_ms = start_ms + _ms_per_tr;
-    changes = new ArrayList<Change>();
-    JSONArray changes_json_array = _tr.getJSONArray("c");
-    for (int i = 0; i < changes_json_array.size(); i++) {
-      JSONObject change_json = changes_json_array.getJSONObject(i);
-      Change c = new Change(change_json);
-      changes.add(c);
+  ImageYear(JSONObject _image_year, int _i, float _ms_per_year) {
+    start_year = _image_year.getInt("year_start");
+    end_year = _image_year.getInt("year_end");
+    start_img = _image_year.getString("img_start");
+    end_img = _image_year.getString("img_end");
+    start_ms = _ms_per_year * _i;
+    end_ms = start_ms + _ms_per_year;
+    changes = new ArrayList<ImageChange>();
+
+    PGraphics pg1, pg2;
+    PImage img1, img2;
+    color[] colors1, colors2;
+
+    pg1 = createGraphics(canvasW, canvasH);
+    pg2 = createGraphics(canvasW, canvasH);
+    img1 = loadImage(start_img);
+    img2 = loadImage(end_img);
+
+    pg1.image(img1, 0, 0);
+    pg2.image(img2, 0, 0);
+    pg1.loadPixels();
+    pg2.loadPixels();
+    colors1 = pg1.pixels;
+    colors2 = pg2.pixels;
+
+    JSONArray changes_json_array = _image_year.getJSONArray("changes");
+    int change_count = changes_json_array.size();
+    float change_duration = _ms_per_year / 10.0;
+    float ms_per_change = (_ms_per_year-change_duration) / change_count;
+    float change_ms = start_ms;
+    for (int i = 0; i < change_count; i++) {
+      JSONArray change_json = changes_json_array.getJSONArray(i);
+      int x = change_json.getInt(0);
+      int y = change_json.getInt(1);
+      change_ms = min(change_ms, end_ms-change_duration);
+      changes.add(new ImageChange(x, y, colors1[x+y*canvasW], colors2[x+y*canvasW], change_ms, change_ms + change_duration));
+      change_ms += ms_per_change;
     }
   }
 
-  int compareTo(Object o) {
-    TimeRange tr = (TimeRange) o;
-    int s1 = getStart();
-    int s2 = tr.getStart();
-    return s1 == s2 ? 0 : (s1 > s2 ? 1 : -1);
-  }
-
-  ArrayList<Change> getChanges(){
+  ArrayList<ImageChange> getChanges(){
     return changes;
   }
 
-  float getAlpha(float ms) {
-    float lerp = 1.0 * (ms-start_ms) / (end_ms-start_ms);
-    return 100.0 * sin(lerp*PI);
+  String getImageEnd() {
+    return end_img;
   }
 
-  color getColor(float ms, Change c) {
-    float lerp = 1.0 * (ms-start_ms) / (end_ms-start_ms);
-    color pc = landColor;
-    float pa = 100;
-
-    // loss
-    if (c.getChange() < 0) {
-
-      if (lerp < 0.5) {
-        pc = lerpColor(landColor, lossColor, lerp*2.0);
-
-      } else {
-        pc = lossColor;
-        pa = lerp(100, 0, (lerp-0.5)*2.0);
-      }
-
-    // gain
-    } else {
-
-      if (lerp < 0.5) {
-        pc = gainColor;
-        pa = lerp(0, 100, lerp*2.0);
-
-      } else {
-        pc = lerpColor(gainColor, landColor, (lerp-0.5)*2.0);
-      }
-
-    }
-
-    return color(red(pc), green(pc), blue(pc), pa);
+  String getImageStart() {
+    return start_img;
   }
 
-  int getEnd() {
-    return end;
+  int getYearEnd() {
+    return end_year;
   }
 
-  int getStart() {
-    return start;
+  int getYearStart() {
+    return start_year;
   }
 
   boolean isActive(float ms) {
@@ -210,18 +191,34 @@ class TimeRange implements Comparable
 
 }
 
-class Change
+class ImageChange
 {
-  int x, y, change;
+  int x, y;
+  color c1, c2;
+  float start_ms, end_ms;
 
-  Change(JSONObject _c) {
-    x = _c.getInt("x");
-    y = _c.getInt("y");
-    change = _c.getInt("c");
+  ImageChange(int _x, int _y, color _c1, color _c2, float _start_ms, float _end_ms) {
+    x = _x;
+    y = _y;
+    c1 = _c1;
+    c2 = _c2;
+    start_ms = _start_ms;
+    end_ms = _end_ms;
   }
 
-  int getChange() {
-    return change;
+  color getC1() {
+    return c1;
+  }
+
+  color getC2() {
+    return c2;
+  }
+
+  float getProgress(float ms){
+    float p = (ms - start_ms) / (end_ms - start_ms);
+    p = min(p, 1.0);
+    p = max(p, 0.0);
+    return p;
   }
 
   int getX() {
@@ -232,4 +229,7 @@ class Change
     return y;
   }
 
+  boolean isActive(float ms) {
+    return ms >= start_ms && ms < end_ms;
+  }
 }
