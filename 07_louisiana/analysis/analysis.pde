@@ -325,6 +325,8 @@ class ImageYear
   int year;
   String img;
   ArrayList<ImageChange> changes;
+  
+  float distThreshold = 10.0;
 
   ImageYear(int _year, String _img) {
     year = _year;
@@ -349,29 +351,19 @@ class ImageYear
     pg2.loadPixels();
     colors1 = pg1.pixels;
     colors2 = pg2.pixels;
-
-    // init spiral
-    int[][] vecs = {{0,1},{1,0},{0,-1},{-1,0}};
-    int vecIdx=0, i=0;
-    int curRow=0, curCol=0;
-    float distThreshold = 10.0;
-
-    // add changes as we iterate in a sprial
-    for(i=0; i<canvasH*canvasW; i++){
-      color c1 = colors1[i];
-      color c2 = colors2[i];
-      float cDistance = dist(hue(c1), saturation(c1), brightness(c1), hue(c2), saturation(c2), brightness(c2));
-
-      // only add change if above threshold
-      if (cDistance > distThreshold) {
-        changes.add(new ImageChange(curCol, curRow, c1, c2));
+    
+    // add changes as we iterate through image
+    for (int x=0; x<canvasW; x++) {
+      for (int y=0; y<canvasH; y++) {
+        color c1 = colors1[x+y*canvasW];
+        color c2 = colors2[x+y*canvasW];
+        float cDistance = dist(hue(c1), saturation(c1), brightness(c1), hue(c2), saturation(c2), brightness(c2));
+  
+        // only add change if above threshold
+        if (cDistance > distThreshold) {
+          changes.add(new ImageChange(x, y, c1, c2));
+        }
       }
-
-      if(_shouldTurn(curRow, curCol, canvasH, canvasW)){
-        vecIdx = (vecIdx+1)%4;
-      }
-      curRow += vecs[vecIdx][0];
-      curCol += vecs[vecIdx][1];
     }
   }
 

@@ -19,7 +19,7 @@ String years_file = "changes.json";
 
 // images and graphics
 PImage img_bg;
-String img_bg_file = "bg_water.png";
+String img_bg_file = "map_layer_bg.png";
 
 // text
 color textC = #423535;
@@ -200,7 +200,8 @@ class ImageChange
   ImageChange(int _x, int _y, color _c1, color _c2, float _start_ms, float _end_ms) {
     x = _x;
     y = _y;
-    c1 = _c1;
+    // c1 = _c1;
+    c1 = #f24646;
     c2 = _c2;
     start_ms = _start_ms;
     end_ms = _end_ms;
@@ -230,6 +231,6 @@ class ImageChange
   }
 
   boolean isActive(float ms) {
-    return ms >= start_ms && ms < end_ms;
+    return ms >= start_ms;
   }
 }
