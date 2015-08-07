@@ -196,13 +196,22 @@ class ImageChange
   int x, y;
   color c1, c2;
   float start_ms, end_ms;
+  
+  color loss_color = #f24646;
+  color gain_color = #b9f7b2;
 
   ImageChange(int _x, int _y, color _c1, color _c2, float _start_ms, float _end_ms) {
     x = _x;
     y = _y;
-    // c1 = _c1;
-    c1 = #f24646;
+    
+    // blue has a higher hue than green
+    if (hue(_c1) > hue(_c2)) {
+      c1 = _c1;
+    } else {
+      c1 = loss_color;
+    }
     c2 = _c2;
+    
     start_ms = _start_ms;
     end_ms = _end_ms;
   }
