@@ -22,18 +22,30 @@ PImage img_bg;
 String img_bg_file = "map_layer_bg.png";
 
 // text
-color textC = #423535;
-int fontSize = 36;
+color textC = #f4f3ef;
+int fontSize = 28;
+int fontSizeSmall = 14;
 PFont font = createFont("OpenSans-Semibold", fontSize, true);
+PFont fontSmall = createFont("OpenSans-Regular", fontSizeSmall, true);
 
 // components
+float legendW = 780;
+float legendH = 80;
+float legendX = 10;
+float legendY = canvasH - (40 + legendH);
+color legendColor = #f4f3ef;
+color legendColorHighlight = #edda7b;
+int legendStep = 10;
+int legendStart = 0;
+int legendEnd = 0;
+int legendSteps = 0;
 
 // time
 float startMs = 0;
 float stopMs = 0;
 float elapsedMs = startMs;
 float frameMs = (1.0/fps) * 1000;
-float yearMs = 8000;
+float yearMs = 2000;
 
 void setup() {
   // set the stage
@@ -50,6 +62,16 @@ void setup() {
   for (int i = 0; i < years_json_array.size(); i++) {
     JSONObject year_json = years_json_array.getJSONObject(i);
     years.add(new ImageYear(year_json, i, yearMs));
+  }
+
+  // get legend info
+  legendStart = years.get(0).getYearStart() / legendStep * legendStep;
+  legendEnd = ceil(1.0 * years.get(years.size()-1).getYearEnd() / legendStep) * legendStep;
+  legendSteps = (legendEnd - legendStart) / legendStep;
+
+  // update legend info for each year
+  for (int i = 0; i < years.size(); i++) {
+    years.get(i).setLegend(legendX, legendY, legendW, legendH, legendStart, legendEnd);
   }
 
   // draw bg image
@@ -92,10 +114,40 @@ void draw(){
     }
   }
 
-  textAlign(LEFT, BOTTOM);
+  // build legend
+  float[] lh = current_year.getLegend();
+  fill(legendColor, 20);
+  rect(legendX, legendY, legendW, legendH);
+  // legend highlight
+  fill(legendColorHighlight, 50);
+  rect(lh[0], lh[1], lh[2], lh[3]);
+  // legend highlight text
   fill(textC);
   textFont(font);
-  text(current_year.getYearStart()+"-"+current_year.getYearEnd(), 10, canvasH - 10);
+  textAlign(LEFT, BOTTOM);
+  text(current_year.getYearStart()+" - "+current_year.getYearEnd(), lh[0], legendY);
+  // legend ticks
+  float tickX = legendX;
+  float tickY = legendY;
+  float tickW = legendW / legendSteps;
+  textFont(fontSmall);
+  for(int i=legendStart; i<=legendEnd; i+=legendStep) {
+    // tick
+    fill(legendColor, 20);
+    rect(tickX, tickY, 1, legendH + 20);
+    // tick text
+    float progress = 1.0*(i-legendStart) / (legendEnd-legendStart);
+    if (progress > 0.75) {
+      textAlign(RIGHT, TOP);
+    } else if (progress > 0.5) {
+      textAlign(CENTER, TOP);
+    } else {
+      textAlign(LEFT, TOP);
+    }
+    fill(textC);
+    text(i, tickX + 5, tickY + legendH + 5);
+    tickX += tickW;
+  }
 
   // increment time
   elapsedMs += frameMs;
@@ -121,6 +173,7 @@ void mousePressed() {
 class ImageYear
 {
   int start_year, end_year;
+  float lx, ly, lw, lh;
   float start_ms, end_ms;
   String start_img, end_img;
   ArrayList<ImageChange> changes;
@@ -133,6 +186,10 @@ class ImageYear
     start_ms = _ms_per_year * _i;
     end_ms = start_ms + _ms_per_year;
     changes = new ArrayList<ImageChange>();
+    lx = 0;
+    ly = 0;
+    lw = 0;
+    lh = 0;
 
     PGraphics pg1, pg2;
     PImage img1, img2;
@@ -177,6 +234,11 @@ class ImageYear
     return start_img;
   }
 
+  float[] getLegend(){
+    float[] l = {lx, ly, lw, lh};
+    return l;
+  }
+
   int getYearEnd() {
     return end_year;
   }
@@ -189,6 +251,14 @@ class ImageYear
     return ms >= start_ms && ms < end_ms;
   }
 
+  void setLegend(float x, float y, float w, float h, int start, int end) {
+    float total = 1.0 * (end - start);
+    lx = 1.0 * (start_year - start) / total * w + x;
+    ly = y;
+    lw = 1.0 * (end_year - start_year) / total * w;
+    lh = h;
+  }
+
 }
 
 class ImageChange
@@ -196,14 +266,14 @@ class ImageChange
   int x, y;
   color c1, c2;
   float start_ms, end_ms;
-  
+
   color loss_color = #f24646;
   color gain_color = #b9f7b2;
 
   ImageChange(int _x, int _y, color _c1, color _c2, float _start_ms, float _end_ms) {
     x = _x;
     y = _y;
-    
+
     // blue has a higher hue than green
     if (hue(_c1) > hue(_c2)) {
       c1 = _c1;
@@ -211,7 +281,7 @@ class ImageChange
       c1 = loss_color;
     }
     c2 = _c2;
-    
+
     start_ms = _start_ms;
     end_ms = _end_ms;
   }
