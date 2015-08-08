@@ -122,28 +122,26 @@ void draw(){
   fill(legendColorHighlight, 50);
   rect(lh[0], lh[1], lh[2], lh[3]);
   // legend highlight text
+  float progress = 1.0*(current_year.getYearStart()-legendStart) / (legendEnd-legendStart);
+  if (progress > 0.75) {
+    textAlign(CENTER, BOTTOM);
+  } else {
+    textAlign(LEFT, BOTTOM);
+  }
   fill(textC);
   textFont(font);
-  textAlign(LEFT, BOTTOM);
   text(current_year.getYearStart()+" - "+current_year.getYearEnd(), lh[0], legendY);
   // legend ticks
   float tickX = legendX;
   float tickY = legendY;
   float tickW = legendW / legendSteps;
+  textAlign(LEFT, TOP);
   textFont(fontSmall);
   for(int i=legendStart; i<=legendEnd; i+=legendStep) {
     // tick
     fill(legendColor, 20);
     rect(tickX, tickY, 1, legendH + 20);
     // tick text
-    float progress = 1.0*(i-legendStart) / (legendEnd-legendStart);
-    if (progress > 0.75) {
-      textAlign(RIGHT, TOP);
-    } else if (progress > 0.5) {
-      textAlign(CENTER, TOP);
-    } else {
-      textAlign(LEFT, TOP);
-    }
     fill(textC);
     text(i, tickX + 5, tickY + legendH + 5);
     tickX += tickW;
