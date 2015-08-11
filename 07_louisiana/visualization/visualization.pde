@@ -30,7 +30,7 @@ PFont fontSmall = createFont("OpenSans-Regular", fontSizeSmall, true);
 
 // components
 float legendW = 780;
-float legendH = 80;
+float legendH = 30;
 float legendX = 10;
 float legendY = canvasH - (40 + legendH);
 color legendColor = #f4f3ef;
@@ -45,7 +45,7 @@ float startMs = 0;
 float stopMs = 0;
 float elapsedMs = startMs;
 float frameMs = (1.0/fps) * 1000;
-float yearMs = 2000;
+float yearMs = 8000;
 
 void setup() {
   // set the stage
@@ -123,14 +123,14 @@ void draw(){
   rect(lh[0], lh[1], lh[2], lh[3]);
   // legend highlight text
   float progress = 1.0*(current_year.getYearStart()-legendStart) / (legendEnd-legendStart);
-  if (progress > 0.75) {
+  if (progress > 0.5) {
     textAlign(CENTER, BOTTOM);
   } else {
     textAlign(LEFT, BOTTOM);
   }
   fill(textC);
   textFont(font);
-  text(current_year.getYearStart()+" - "+current_year.getYearEnd(), lh[0], legendY);
+  text(current_year.getYearStart()+" to "+current_year.getYearEnd(), lh[0], legendY - 3);
   // legend ticks
   float tickX = legendX;
   float tickY = legendY;
@@ -146,6 +146,14 @@ void draw(){
     text(i, tickX + 5, tickY + legendH + 5);
     tickX += tickW;
   }
+  
+  // key
+  fill(#f24646);
+  rect(canvasW-186, 20, 24, 24);
+  fill(textC);
+  textAlign(LEFT, TOP);
+  textFont(font);
+  text("Land Loss", canvasW-150, 14);
 
   // increment time
   elapsedMs += frameMs;
