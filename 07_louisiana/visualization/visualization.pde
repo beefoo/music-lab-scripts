@@ -146,7 +146,7 @@ void draw(){
     text(i, tickX + 5, tickY + legendH + 5);
     tickX += tickW;
   }
-  
+
   // key
   fill(#f24646);
   rect(canvasW-186, 20, 24, 24);
