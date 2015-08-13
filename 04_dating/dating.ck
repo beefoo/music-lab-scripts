@@ -11,7 +11,7 @@ if (base_dir.charAt(base_dir.length()-1) != '/')
 }
 
 // instrument object
-class Instrument {    
+class Instrument {
     string filename;
     SndBuf buf[8];
     //JCRev rvb;
@@ -47,7 +47,13 @@ while( instruments_fio.more() )
     // read instrument index and filename
     Std.atoi(instruments_fio.readLine()) => int instrument_index;
     Std.atof(instruments_fio.readLine()) => float rvb_max;
-    base_dir + instruments_fio.readLine() => instruments[instrument_index].filename;
+    instruments_fio.readLine() => string filename;
+    filename.find("\r") => int return_match;
+    if (return_match >= 0)
+    {
+        filename.erase(return_match, 1);
+    }
+    base_dir + filename => instruments[instrument_index].filename;
     0 => instruments[instrument_index].plays;
     0 => instruments[instrument_index].rvb.mix;
     // create buffers from filename
@@ -62,10 +68,10 @@ while( instruments_fio.more() )
         }
         else
         {
-           instruments[instrument_index].buf[i] => dac; 
-        }        
+           instruments[instrument_index].buf[i] => dac;
+        }
     }
-         
+
 }
 
 
@@ -74,34 +80,34 @@ padding_start::ms => now;
 padding_start => int elapsed_ms;
 
 // read sequence from file
-while( sequence_fio.more() ) {    
+while( sequence_fio.more() ) {
     Std.atoi(sequence_fio.readLine()) => int instrument_index;
     Std.atoi(sequence_fio.readLine()) => int position;
     Std.atof(sequence_fio.readLine()) => float gain;
     Std.atof(sequence_fio.readLine()) => float rate;
     Std.atof(sequence_fio.readLine()) => float reverb;
     Std.atoi(sequence_fio.readLine()) => int milliseconds;
-    
+
     elapsed_ms + milliseconds => elapsed_ms;
     if (start > elapsed_ms)
-    {        
+    {
         continue;
     }
-    
+
     // wait duration
 	if (milliseconds > 0)
     {
         milliseconds::ms => now;
     }
-    
+
     // choose buffer index
     instruments[instrument_index].plays % instrument_buffers => int buffer_index;
     instruments[instrument_index].plays++;
-    
+
     // set reverb
     reverb => instruments[instrument_index].rvb.mix;
-	
-    // play the instrument    
+
+    // play the instrument
     position => instruments[instrument_index].buf[buffer_index].pos;
     gain => instruments[instrument_index].buf[buffer_index].gain;
     rate => instruments[instrument_index].buf[buffer_index].rate;
@@ -111,4 +117,3 @@ while( sequence_fio.more() ) {
 padding_end::ms => now;
 
 <<< "Done." >>>;
-
