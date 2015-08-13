@@ -45,7 +45,7 @@ void analyzeData() {
   // read csv data
   for (TableRow row : year_table.rows()) {
     int year = row.getInt("year_start");
-    String img = image_dir + "map_layer_" + str(year) + ".png";
+    String img = image_dir + row.getString("image");
     years.add(new Year(year, img));
   }
 

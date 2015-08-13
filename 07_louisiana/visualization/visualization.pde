@@ -13,7 +13,7 @@ int canvasW = 1280;
 int canvasH = 720;
 
 // data
-ArrayList<ImageYear> years;
+ArrayList<Year> years;
 JSONArray years_json_array;
 String years_file = "changes.json";
 
@@ -57,11 +57,11 @@ void setup() {
   noFill();
 
   // load the change data
-  years = new ArrayList<ImageYear>();
+  years = new ArrayList<Year>();
   years_json_array = loadJSONArray(years_file);
   for (int i = 0; i < years_json_array.size(); i++) {
     JSONObject year_json = years_json_array.getJSONObject(i);
-    years.add(new ImageYear(year_json, i, yearMs));
+    years.add(new Year(year_json, i, yearMs));
   }
 
   // get legend info
@@ -88,9 +88,9 @@ void draw(){
 
   // get current year
   int current_year_i = years.size()-1;
-  ImageYear current_year = years.get(current_year_i);
+  Year current_year = years.get(current_year_i);
   for (int i = 0; i < years.size(); i++) {
-    ImageYear y = years.get(i);
+    Year y = years.get(i);
     if (y.isActive(elapsedMs)) {
       current_year = y;
       current_year_i = i;
@@ -103,9 +103,9 @@ void draw(){
   image(img_base, 0, 0, canvasW, canvasH);
 
   // update pixels in overlay
-  ArrayList<ImageChange> changes = current_year.getChanges();
+  ArrayList<Change> changes = current_year.getChanges();
   for(int i=0; i<changes.size(); i++) {
-    ImageChange change = changes.get(i);
+    Change change = changes.get(i);
     if (change.isActive(elapsedMs)) {
       float p = change.getProgress(elapsedMs);
       color c = lerpColor(change.getC1(), change.getC2(), p);
@@ -176,22 +176,22 @@ void mousePressed() {
   exit();
 }
 
-class ImageYear
+class Year
 {
   int start_year, end_year;
   float lx, ly, lw, lh;
   float start_ms, end_ms;
   String start_img, end_img;
-  ArrayList<ImageChange> changes;
+  ArrayList<Change> changes;
 
-  ImageYear(JSONObject _image_year, int _i, float _ms_per_year) {
-    start_year = _image_year.getInt("year_start");
-    end_year = _image_year.getInt("year_end");
-    start_img = _image_year.getString("img_start");
-    end_img = _image_year.getString("img_end");
+  Year(JSONObject _year, int _i, float _ms_per_year) {
+    start_year = _year.getInt("year_start");
+    end_year = _year.getInt("year_end");
+    start_img = _year.getString("img_start");
+    end_img = _year.getString("img_end");
     start_ms = _ms_per_year * _i;
     end_ms = start_ms + _ms_per_year;
-    changes = new ArrayList<ImageChange>();
+    changes = new ArrayList<Change>();
     lx = 0;
     ly = 0;
     lw = 0;
@@ -213,7 +213,7 @@ class ImageYear
     colors1 = pg1.pixels;
     colors2 = pg2.pixels;
 
-    JSONArray changes_json_array = _image_year.getJSONArray("changes");
+    JSONArray changes_json_array = _year.getJSONArray("changes");
     int change_count = changes_json_array.size();
     float change_duration = _ms_per_year / 10.0;
     float ms_per_change = (_ms_per_year-change_duration) / change_count;
@@ -223,12 +223,12 @@ class ImageYear
       int x = change_json.getInt(0);
       int y = change_json.getInt(1);
       change_ms = min(change_ms, end_ms-change_duration);
-      changes.add(new ImageChange(x, y, colors1[x+y*canvasW], colors2[x+y*canvasW], change_ms, change_ms + change_duration));
+      changes.add(new Change(x, y, colors1[x+y*canvasW], colors2[x+y*canvasW], change_ms, change_ms + change_duration));
       change_ms += ms_per_change;
     }
   }
 
-  ArrayList<ImageChange> getChanges(){
+  ArrayList<Change> getChanges(){
     return changes;
   }
 
@@ -267,7 +267,7 @@ class ImageYear
 
 }
 
-class ImageChange
+class Change
 {
   int x, y;
   color c1, c2;
@@ -276,7 +276,7 @@ class ImageChange
   color loss_color = #f24646;
   color gain_color = #b9f7b2;
 
-  ImageChange(int _x, int _y, color _c1, color _c2, float _start_ms, float _end_ms) {
+  Change(int _x, int _y, color _c1, color _c2, float _start_ms, float _end_ms) {
     x = _x;
     y = _y;
 
