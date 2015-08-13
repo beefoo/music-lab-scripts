@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##
 # TRACK 6
-# REFUGEES
+# DISTANCE FROM HOME
 # Brian Foo (brianfoo.com)
 # This file builds the sequence file for use with ChucK from the data supplied
 ##
@@ -72,7 +72,7 @@ def halton(index, base):
 	f = 1.0 / base
 	i = 1.0 * index
 	while(i > 0):
-		result += f * (i % base)	
+		result += f * (i % base)
 		i = math.floor(i / base)
 		f = f / base
 	return result
@@ -119,11 +119,11 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 			instruments.append(instrument)
 
 # Read countries from file
-with open(COUNTRIES_INPUT_FILE) as data_file:    
+with open(COUNTRIES_INPUT_FILE) as data_file:
 	countries = json.load(data_file)
 
 # Read populations from file
-with open(POPULATIONS_INPUT_FILE) as data_file:    
+with open(POPULATIONS_INPUT_FILE) as data_file:
 	populations = json.load(data_file)
 	world_populations = (p for p in populations if p['code'] == 'WLD').next()
 
@@ -199,7 +199,7 @@ for i,y in enumerate(years):
 	years[i]['refugees'] = sorted(y['refugees'], key=lambda k: k['count'], reverse=True)
 	years[i]['count'] = sum([r['count'] for r in y['refugees']])
 	years[i]['avg_distance'] = mean([r['distance'] for r in y['refugees']])
-	
+
 	# Generate origin countries
 	origin_codes = set([r['origin'] for r in y['refugees']])
 	origin_countries = []
@@ -214,17 +214,17 @@ for i,y in enumerate(years):
 			'y': ref['origin_y'],
 			'avg_distance': mean([r['distance'] for r in origin_refugees])
 		})
-	
+
 	# Normalize distances
-	years[i]['max_distance'] = max([r['distance'] for r in y['refugees']])	
+	years[i]['max_distance'] = max([r['distance'] for r in y['refugees']])
 	for j,r in enumerate(y['refugees']):
 		years[i]['refugees'][j]['year_distance_n'] = 1.0 * r['distance'] / years[i]['max_distance']
-	
+
 	# Sort country counts
 	years[i]['countries'] = sorted(origin_countries, key=lambda k: k['count'], reverse=True)
 	years[i]['events'] = [e for e in events if e['year']==y['year']]
 	years[i]['countries_1000'] = len([c for c in origin_countries if c['count'] >= 1000])
-	
+
 	# Determine start/stop times
 	years[i]['start_ms'] = ms
 	years[i]['stop_ms'] = ms + MS_PER_YEAR
@@ -279,7 +279,7 @@ def getGain(instrument, percent_complete):
 def getBeatMs(instrument, percent_complete, round_to):
 	multiplier = getMultiplier(percent_complete)
 	from_beat_ms = instrument['from_beat_ms']
-	to_beat_ms = instrument['to_beat_ms']	
+	to_beat_ms = instrument['to_beat_ms']
 	ms = multiplier * (to_beat_ms - from_beat_ms) + from_beat_ms
 	ms = int(roundToNearest(ms, round_to))
 	return ms
@@ -288,7 +288,7 @@ def getBeatMs(instrument, percent_complete, round_to):
 def isValidInterval(instrument, elapsed_ms):
 	interval_ms = instrument['interval_ms']
 	interval = instrument['interval']
-	interval_offset = instrument['interval_offset']	
+	interval_offset = instrument['interval_offset']
 	return int(math.floor(1.0*elapsed_ms/interval_ms)) % interval == interval_offset
 
 # Add beats to sequence
@@ -297,18 +297,18 @@ def addBeatsToSequence(instrument, duration, ms, round_to, year):
 	global hindex
 	beat_ms = int(roundToNearest(instrument['beat_ms'], round_to))
 	offset_ms = int(instrument['tempo_offset'] * beat_ms)
-	ms += offset_ms	
+	ms += offset_ms
 	previous_ms = int(ms)
 	from_beat_ms = instrument['from_beat_ms']
 	to_beat_ms = instrument['to_beat_ms']
-	min_ms = min(from_beat_ms, to_beat_ms)	
+	min_ms = min(from_beat_ms, to_beat_ms)
 	remaining_duration = int(duration)
 	elapsed_duration = offset_ms
 	while remaining_duration >= min_ms:
 		elapsed_ms = int(ms)
 		elapsed_beat = int((elapsed_ms-previous_ms) / beat_ms)
 		percent_complete = 1.0 * elapsed_duration / duration
-		this_beat_ms = getBeatMs(instrument, percent_complete, round_to)		
+		this_beat_ms = getBeatMs(instrument, percent_complete, round_to)
 		# add to sequence if in valid interval
 		if isValidInterval(instrument, elapsed_ms):
 			h = halton(hindex, 3)
@@ -330,26 +330,26 @@ def addBeatsToSequence(instrument, duration, ms, round_to, year):
 
 # Build sequence
 for instrument in instruments:
-	
+
 	ms = None
 	queue_duration = 0
-	
+
 	# Go through each year
 	for year in years:
-	
+
 		is_valid = year['count_n'] >= instrument['min_count'] and year['count_n'] < instrument['max_count'] and year['avg_distance_n'] >= instrument['min_dist'] and year['avg_distance_n'] < instrument['max_dist'] and year['countries_1000_n'] >= instrument['min_countries'] and year['countries_1000_n'] < instrument['max_countries']
-		
+
 		# If note is valid, add it to sequence
 		if not is_valid and queue_duration > 0 and ms != None or is_valid and ms != None and year['start_ms'] > (ms+queue_duration):
 			addBeatsToSequence(instrument.copy(), queue_duration, ms, ROUND_TO_NEAREST, year['year'])
 			ms = None
 			queue_duration = 0
-			
-		if is_valid:			
+
+		if is_valid:
 			if ms==None:
 				ms = year['start_ms']
 			queue_duration += (year['stop_ms'] - year['start_ms'])
-	
+
 	if queue_duration > 0 and ms != None:
 		addBeatsToSequence(instrument.copy(), queue_duration, ms, ROUND_TO_NEAREST, years[-1]['year'])
 
@@ -365,7 +365,7 @@ for i, step in enumerate(sequence):
 # Write instruments to file
 if WRITE_SEQUENCE and len(instruments) > 0:
 	with open(INSTRUMENTS_OUTPUT_FILE, 'wb') as f:
-		w = csv.writer(f)	
+		w = csv.writer(f)
 		for index, instrument in enumerate(instruments):
 			w.writerow([index])
 			w.writerow([instrument['file']])
@@ -376,7 +376,7 @@ if WRITE_SEQUENCE and len(instruments) > 0:
 # Write sequence to file
 if WRITE_SEQUENCE and len(sequence) > 0:
 	with open(SEQUENCE_OUTPUT_FILE, 'wb') as f:
-		w = csv.writer(f)	
+		w = csv.writer(f)
 		for step in sequence:
 			w.writerow([step['instrument_index']])
 			w.writerow([step['position']])
@@ -434,11 +434,11 @@ for y in years:
 		})
 	year_instruments = [step for step in sequence if step['elapsed_ms']>=y['start_ms'] and step['elapsed_ms']<y['stop_ms']]
 	year_instruments = sorted(year_instruments[:], key=lambda k: k['duration'])
-	year_refugees = sorted(y['refugees'], key=lambda k: k['distance'])	
+	year_refugees = sorted(y['refugees'], key=lambda k: k['distance'])
 	refugees_per_instrument = math.floor(1.0 * y['count'] / len(year_instruments))
 	current_instrument_i = 0
 	current_instrument = year_instruments[0]
-	current_instrument_refugee_count = refugees_per_instrument	
+	current_instrument_refugee_count = refugees_per_instrument
 	for i,r in enumerate(year_refugees):
 		current_refugee_count = r['count']
 		while current_refugee_count > 0:
@@ -457,7 +457,7 @@ for y in years:
 			})
 			current_refugee_count -= add_count
 			current_instrument_refugee_count -= add_count
-			if current_instrument_refugee_count <= 0:				
+			if current_instrument_refugee_count <= 0:
 				current_instrument_i += 1
 				if current_instrument_i >= len(year_instruments):
 					current_instrument_i = len(year_instruments)-1
