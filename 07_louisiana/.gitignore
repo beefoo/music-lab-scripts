@@ -1,7 +1,7 @@
 output/
-data/*.csv
 data/*.json
 visualization/output/
 visualization/build/
+visualization/data/*.json
 analysis/output/
 analysis/build/
