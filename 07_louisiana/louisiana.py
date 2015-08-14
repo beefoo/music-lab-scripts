@@ -38,6 +38,7 @@ WRITE_REPORT = True
 BEAT_MS = round(60.0 / BPM * 1000)
 ROUND_TO_NEAREST = round(BEAT_MS/DIVISIONS_PER_BEAT)
 BEATS_PER_YEAR = round(MS_PER_YEAR/BEAT_MS)
+GROUPS_PER_YEAR = int(BEATS_PER_YEAR)
 
 # Init
 years = []
@@ -99,6 +100,29 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
 with open(LAND_LOSS_INPUT_FILE) as data_file:
     years = json.load(data_file)
 
+# Break years up into groups
+for i, year in enumerate(years):
+    # Initialize groups
+    groups = []
+    for g in range(GROUPS_PER_YEAR):
+        groups.append(0)
+    # Add losses to groups
+    total_loss = len(year['losses'])
+    for l, loss in enumerate(year['losses']):
+        group_i = int(l / total_loss * GROUPS_PER_YEAR)
+        groups[group_i] += 1
+    # Update
+    years[i]['groups'] = groups
+    years[i]['min_group_value'] = min(groups)
+    years[i]['max_group_value'] = max(groups)
+
+# Normalize groups
+min_group_value = min([y['min_group_value'] for y in years])
+max_group_value = max([y['max_group_value'] for y in years])
+for i, year in enumerate(years):
+    for g, group in enumerate(year['groups']):
+        years[i]['groups'][g] = (1.0 * group - min_group_value) / (max_group_value - min_group_value)
+
 # Calculate total time
 total_ms = len(years) * MS_PER_YEAR
 total_seconds = int(1.0*total_ms/1000)
@@ -147,7 +171,7 @@ def addBeatsToSequence(instrument, duration, ms, round_to):
     global sequence
     global hindex
     beat_ms = int(roundToNearest(instrument['beat_ms'], round_to))
-    offset_ms = int(instrument['tempo_offset'] * beat_ms)
+    offset_ms = int(instrument['tempo_offset'] * instrument['from_beat_ms'])
     ms += offset_ms
     previous_ms = int(ms)
     from_beat_ms = instrument['from_beat_ms']
