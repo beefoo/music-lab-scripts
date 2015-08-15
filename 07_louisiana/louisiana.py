@@ -11,6 +11,7 @@ import csv
 import json
 import math
 import os
+import pprint
 import time
 
 # Config
@@ -36,9 +37,10 @@ WRITE_REPORT = True
 
 # Calculations
 BEAT_MS = round(60.0 / BPM * 1000)
-ROUND_TO_NEAREST = round(BEAT_MS/DIVISIONS_PER_BEAT)
-BEATS_PER_YEAR = round(MS_PER_YEAR/BEAT_MS)
+ROUND_TO_NEAREST = round(BEAT_MS / DIVISIONS_PER_BEAT)
+BEATS_PER_YEAR = round(MS_PER_YEAR / BEAT_MS)
 GROUPS_PER_YEAR = int(BEATS_PER_YEAR)
+GROUP_MS = MS_PER_YEAR / GROUPS_PER_YEAR
 
 # Init
 years = []
@@ -108,8 +110,8 @@ for i, year in enumerate(years):
         groups.append(0)
     # Add losses to groups
     total_loss = len(year['losses'])
-    for l, loss in enumerate(year['losses']):
-        group_i = int(l / total_loss * GROUPS_PER_YEAR)
+    for l in range(total_loss):
+        group_i = int(1.0*l / total_loss * GROUPS_PER_YEAR)
         groups[group_i] += 1
     # Update
     years[i]['groups'] = groups
@@ -207,30 +209,32 @@ for instrument in instruments:
     ms = None
     queue_duration = 0
     c_loss = 0
-    year_start_ms = 0
+    current_ms = 0
 
     # Go through each year
     for year in years:
         c_loss += year['loss']
-        is_valid = year['loss'] >= instrument['min_loss'] and year['loss'] < instrument['max_loss'] and c_loss >= instrument['min_c_loss'] and c_loss < instrument['max_c_loss']
 
-        # If not valid, add it queue to sequence
-        if not is_valid and queue_duration > 0 and ms != None or is_valid and ms != None and year_start_ms > (ms+queue_duration):
+        for g in year['groups']:
+            is_valid = g >= instrument['min_loss'] and g < instrument['max_loss'] and c_loss >= instrument['min_c_loss'] and c_loss < instrument['max_c_loss']
+
+            # If not valid, add it queue to sequence
+            if not is_valid and queue_duration > 0 and ms != None or is_valid and ms != None and current_ms > (ms+queue_duration):
+                addBeatsToSequence(instrument.copy(), queue_duration, ms, ROUND_TO_NEAREST)
+                ms = None
+                queue_duration = 0
+
+            # If valid, add time to queue
+            if is_valid:
+                if ms==None:
+                    ms = current_ms
+                queue_duration += GROUP_MS
+
+            current_ms += GROUP_MS
+
+        # Add remaining queue to sequence
+        if queue_duration > 0 and ms != None:
             addBeatsToSequence(instrument.copy(), queue_duration, ms, ROUND_TO_NEAREST)
-            ms = None
-            queue_duration = 0
-
-        # If valid, add time to queue
-        if is_valid:
-            if ms==None:
-                ms = year_start_ms
-            queue_duration += MS_PER_YEAR
-
-        year_start_ms += MS_PER_YEAR
-
-    # Add remaining queue to sequence
-    if queue_duration > 0 and ms != None:
-        addBeatsToSequence(instrument.copy(), queue_duration, ms, ROUND_TO_NEAREST)
 
 # Sort sequence
 sequence = sorted(sequence, key=lambda k: k['elapsed_ms'])
