@@ -15,10 +15,10 @@ import pprint
 import time
 
 # Config
-BPM = 75 # Beats per minute, e.g. 60, 75, 100, 120, 150
+BPM = 100 # Beats per minute, e.g. 60, 75, 100, 120, 150
 DIVISIONS_PER_BEAT = 4 # e.g. 4 = quarter notes, 8 = eighth notes, etc
 VARIANCE_MS = 20 # +/- milliseconds an instrument note should be off by to give it a little more "natural" feel
-GAIN = 1.0 # base gain
+GAIN = 0.4 # base gain
 TEMPO = 1.0 # base tempo
 MS_PER_YEAR = 12000
 
