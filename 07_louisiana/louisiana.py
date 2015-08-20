@@ -104,29 +104,17 @@ with open(LAND_LOSS_INPUT_FILE) as data_file:
 
 # Break years up into groups
 for i, year in enumerate(years):
-    # Initialize groups
-    groups = []
-    for g in range(GROUPS_PER_YEAR):
-        groups.append(0)
-    # Add losses to groups
     total_loss = len(year['losses'])
-    for l in range(total_loss):
-        group_i = int(1.0*l / total_loss * GROUPS_PER_YEAR)
-        groups[group_i] += 1
-    # Update
     years[i]['total_loss'] = total_loss
     years[i]['loss_per_group'] = 1.0 * total_loss / GROUPS_PER_YEAR
-    years[i]['groups'] = groups
-    years[i]['min_group_value'] = min(groups)
-    years[i]['max_group_value'] = max(groups)
 
 # Normalize groups
-min_group_value = min([y['min_group_value'] for y in years])
-max_group_value = max([y['max_group_value'] for y in years])
+all_years_loss = 1.0 * sum([y['total_loss'] for y in years])
+min_group_value = min([y['loss_per_group'] for y in years])
+max_group_value = max([y['loss_per_group'] for y in years])
 for i, year in enumerate(years):
-    for g, group in enumerate(year['groups']):
-        years[i]['groups'][g] = (1.0 * group - min_group_value) / (max_group_value - min_group_value)
-all_years_loss = sum([y['total_loss'] for y in years])
+    years[i]['loss_per_group_n'] = year['loss_per_group'] / all_years_loss
+    years[i]['group_loss'] = (1.0 * year['loss_per_group'] - min_group_value) / (max_group_value - min_group_value)
 
 # Calculate total time
 total_ms = len(years) * MS_PER_YEAR
@@ -216,11 +204,10 @@ for instrument in instruments:
 
     # Go through each year
     for year in years:
-        # c_loss += year['loss']
 
-        for g in year['groups']:
-            c_loss += (year['loss_per_group'] / all_years_loss)
-            is_valid = g >= instrument['min_loss'] and g < instrument['max_loss'] and c_loss >= instrument['min_c_loss'] and c_loss < instrument['max_c_loss']
+        for g in range(GROUPS_PER_YEAR):
+            c_loss += year['loss_per_group_n']
+            is_valid = year['group_loss'] >= instrument['min_loss'] and year['group_loss'] < instrument['max_loss'] and c_loss >= instrument['min_c_loss'] and c_loss < instrument['max_c_loss']
 
             # If not valid, add it queue to sequence
             if not is_valid and queue_duration > 0 and ms != None or is_valid and ms != None and current_ms > (ms+queue_duration):
@@ -280,19 +267,19 @@ if WRITE_REPORT:
         w = csv.writer(f)
         header = ['Time', 'Year Start', 'Year End', 'Group', 'Loss', 'Loss Cum']
         w.writerow(header)
-        year_start_ms = 0
+        start_ms = 0
         cumulative_loss = 0
         for y in years:
             # cumulative_loss += y['loss']
-            for gi, g in enumerate(y['groups']):
-                cumulative_loss += (y['loss_per_group'] / all_years_loss)
-                elapsed = year_start_ms
+            for g in range(GROUPS_PER_YEAR):
+                cumulative_loss += y['loss_per_group_n']
+                elapsed = start_ms
                 elapsed_f = time.strftime('%M:%S', time.gmtime(int(elapsed/1000)))
                 ms = int(elapsed % 1000)
                 elapsed_f += '.' + str(ms)
-                row = [elapsed_f, y['year_start'], y['year_end'], gi, g, cumulative_loss]
+                row = [elapsed_f, y['year_start'], y['year_end'], g, y['group_loss'], cumulative_loss]
                 w.writerow(row)
-                year_start_ms += GROUP_MS
+                start_ms += GROUP_MS
         print('Successfully wrote summary file: '+SUMMARY_OUTPUT_FILE)
 
     if len(sequence) > 0:
