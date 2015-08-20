@@ -114,6 +114,8 @@ for i, year in enumerate(years):
         group_i = int(1.0*l / total_loss * GROUPS_PER_YEAR)
         groups[group_i] += 1
     # Update
+    years[i]['total_loss'] = total_loss
+    years[i]['loss_per_group'] = 1.0 * total_loss / GROUPS_PER_YEAR
     years[i]['groups'] = groups
     years[i]['min_group_value'] = min(groups)
     years[i]['max_group_value'] = max(groups)
@@ -124,6 +126,7 @@ max_group_value = max([y['max_group_value'] for y in years])
 for i, year in enumerate(years):
     for g, group in enumerate(year['groups']):
         years[i]['groups'][g] = (1.0 * group - min_group_value) / (max_group_value - min_group_value)
+all_years_loss = sum([y['total_loss'] for y in years])
 
 # Calculate total time
 total_ms = len(years) * MS_PER_YEAR
@@ -213,9 +216,10 @@ for instrument in instruments:
 
     # Go through each year
     for year in years:
-        c_loss += year['loss']
+        # c_loss += year['loss']
 
         for g in year['groups']:
+            c_loss += (year['loss_per_group'] / all_years_loss)
             is_valid = g >= instrument['min_loss'] and g < instrument['max_loss'] and c_loss >= instrument['min_c_loss'] and c_loss < instrument['max_c_loss']
 
             # If not valid, add it queue to sequence
@@ -274,19 +278,21 @@ if WRITE_SEQUENCE and len(sequence) > 0:
 if WRITE_REPORT:
     with open(SUMMARY_OUTPUT_FILE, 'wb') as f:
         w = csv.writer(f)
-        header = ['Time', 'Year Start', 'Year End', 'Loss', 'Loss Cum']
+        header = ['Time', 'Year Start', 'Year End', 'Group', 'Loss', 'Loss Cum']
         w.writerow(header)
         year_start_ms = 0
         cumulative_loss = 0
         for y in years:
-            cumulative_loss += y['loss']
-            elapsed = year_start_ms
-            elapsed_f = time.strftime('%M:%S', time.gmtime(int(elapsed/1000)))
-            ms = int(elapsed % 1000)
-            elapsed_f += '.' + str(ms)
-            row = [elapsed_f, y['year_start'], y['year_end'], y['loss'], cumulative_loss]
-            w.writerow(row)
-            year_start_ms += MS_PER_YEAR
+            # cumulative_loss += y['loss']
+            for gi, g in enumerate(y['groups']):
+                cumulative_loss += (y['loss_per_group'] / all_years_loss)
+                elapsed = year_start_ms
+                elapsed_f = time.strftime('%M:%S', time.gmtime(int(elapsed/1000)))
+                ms = int(elapsed % 1000)
+                elapsed_f += '.' + str(ms)
+                row = [elapsed_f, y['year_start'], y['year_end'], gi, g, cumulative_loss]
+                w.writerow(row)
+                year_start_ms += GROUP_MS
         print('Successfully wrote summary file: '+SUMMARY_OUTPUT_FILE)
 
     if len(sequence) > 0:

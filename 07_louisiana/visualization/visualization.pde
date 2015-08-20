@@ -45,7 +45,7 @@ float startMs = 0;
 float stopMs = 0;
 float elapsedMs = startMs;
 float frameMs = (1.0/fps) * 1000;
-float yearMs = 8000;
+float yearMs = 12000;
 
 void setup() {
   // set the stage
@@ -215,7 +215,7 @@ class Year
 
     JSONArray changes_json_array = _year.getJSONArray("changes");
     int change_count = changes_json_array.size();
-    float change_duration = _ms_per_year / 10.0;
+    float change_duration = _ms_per_year / 6.0;
     float ms_per_change = (_ms_per_year-change_duration) / change_count;
     float change_ms = start_ms;
     for (int i = 0; i < change_count; i++) {
