@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # Paul's Extreme Sound Stretch (Paulstretch) - Python version
-# Batch processing adapted from https://github.com/paulnasca/paulstretch_python
+# Batch processing adapted from https://github.com/paulnasca/paulstretch_python/blob/master/paulstretch_stereo.py
 #
 
 import csv
@@ -9,11 +9,6 @@ from numpy import *
 import scipy.io.wavfile
 import sys
 import wave
-
-INPUT_FILE = 'data/instruments_stretch.csv'
-INPUT_DIR = 'instruments/'
-OUTPUT_DIR = 'output/'
-WINDOW_SIZE = 0.25
 
 def load_wav(filename):
     try:
@@ -27,8 +22,6 @@ def load_wav(filename):
     except:
         print ("Error loading wav: "+filename)
         return None
-
-
 
 def optimize_windowsize(n):
     orig_n=n
@@ -128,15 +121,31 @@ def paulstretch(samplerate,smp,stretch,windowsize_seconds,outfilename):
 
     outfile.close()
 
-# Read instruments from file
+if len(sys.argv) < 3:
+    print ("Usage: "+sys.argv[0]+" <inputfile> <inputdir> <outputdir>")
+    print ("      <inputfile> is a .csv file with two columns: filename (string, e.g. sound.wav) and multiplier (float, e.g. 8.0)")
+    print ("      <inputdir> is the directory where the input files exist, e.g. path/to/sounds/")
+    print ("      <outputdir> is the directory where the output files should be written to, e.g. path/to/sounds/output/")
+    sys.exit(1)
+
+INPUT_FILE = sys.argv[1]
+INPUT_DIR = sys.argv[2]
+OUTPUT_DIR = sys.argv[3]
+WINDOW_SIZE = 0.25
+
+# Read files from file
 with open(INPUT_FILE, 'rb') as f:
     r = csv.reader(f, delimiter=',')
-    next(r, None) # remove header
-    for file,multiply in r:
-        input_file = INPUT_DIR + file
-        output_file = OUTPUT_DIR + file.replace('.wav', '-x'+multiply+'.wav')
-        stretch = float(multiply)
-        (samplerate,smp)=load_wav(input_file)
-        print('Processing: '+input_file+' '+multiply+'x')
-        paulstretch(samplerate,smp,stretch,WINDOW_SIZE,output_file)
-        print('Wrote to file: '+output_file)
+    for filename,multiply in r:
+        if filename.endswith('.wav') and multiply.isdigit():
+            input_file = INPUT_DIR + filename
+            output_file = OUTPUT_DIR + filename.replace('.wav', '-x'+multiply+'.wav')
+            stretch = float(multiply)
+            (samplerate,smp)=load_wav(input_file)
+            print ("Processing: "+input_file+" "+multiply+"x")
+            paulstretch(samplerate,smp,stretch,WINDOW_SIZE,output_file
+            print ("Wrote to file: "+output_file)
+        else:
+            print ("Skipping line: "+filename+", "+multiply)
+
+print ("Done.")
