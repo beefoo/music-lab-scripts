@@ -20,7 +20,7 @@ DIVISIONS_PER_BEAT = 4 # e.g. 4 = quarter notes, 8 = eighth notes, etc
 VARIANCE_MS = 20 # +/- milliseconds an instrument note should be off by to give it a little more "natural" feel
 GAIN = 0.4 # base gain
 TEMPO = 1.0 # base tempo
-MS_PER_YEAR = 12000
+MS_PER_YEAR = 7200
 
 # Files
 INSTRUMENTS_INPUT_FILE = 'data/instruments.csv'

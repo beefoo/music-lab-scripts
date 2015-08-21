@@ -45,7 +45,7 @@ float startMs = 0;
 float stopMs = 0;
 float elapsedMs = startMs;
 float frameMs = (1.0/fps) * 1000;
-float yearMs = 12000;
+float yearMs = 7200;
 
 void setup() {
   // set the stage
