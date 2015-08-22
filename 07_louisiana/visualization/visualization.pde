@@ -39,6 +39,12 @@ int legendStep = 10;
 int legendStart = 0;
 int legendEnd = 0;
 int legendSteps = 0;
+float scaleW = 86;
+float scaleH = 5;
+float scaleS = 2;
+float scaleY = canvasH - 20 - scaleH;
+float scaleX = canvasW - 20 - scaleW;
+int scaleMiles = 5;
 
 // time
 float startMs = 0;
@@ -154,6 +160,19 @@ void draw(){
   textAlign(LEFT, TOP);
   textFont(font);
   text("Land Loss", canvasW-150, 14);
+  
+  // scale
+  int scaleW = 86;
+  int scaleH = 5;
+  int scaleS = 2;
+  int scaleMiles = 5;
+  fill(textC, 60);
+  textAlign(RIGHT, CENTER);
+  textFont(fontSmall);
+  rect(scaleX, scaleY, scaleW, scaleS);
+  rect(scaleX, scaleY-scaleH, scaleS, scaleH);
+  rect(scaleX+scaleW-scaleS, scaleY-scaleH, scaleS, scaleH);
+  text(scaleMiles+" mi", scaleX-12, scaleY-6);
 
   // increment time
   elapsedMs += frameMs;
