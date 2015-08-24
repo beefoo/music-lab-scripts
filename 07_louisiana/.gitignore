@@ -1,5 +1,9 @@
 output/
 data/*.json
+data/*.csv
+!data/years.csv
+!data/instruments.csv
+!data/instruments_stretch.csv
 visualization/output/
 visualization/build/
 visualization/data/*.json
