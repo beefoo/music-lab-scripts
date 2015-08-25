@@ -143,7 +143,7 @@ with open(INPUT_FILE, 'rb') as f:
             stretch = float(multiply)
             (samplerate,smp)=load_wav(input_file)
             print ("Processing: "+input_file+" "+multiply+"x")
-            paulstretch(samplerate,smp,stretch,WINDOW_SIZE,output_file
+            paulstretch(samplerate,smp,stretch,WINDOW_SIZE,output_file)
             print ("Wrote to file: "+output_file)
         else:
             print ("Skipping line: "+filename+", "+multiply)
