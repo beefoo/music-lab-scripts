@@ -30,6 +30,7 @@ POPULATIONS_INPUT_FILE = 'data/populations.json'
 REFUGEES_INPUT_FILE = 'data/refugees_processed.csv'
 EVENTS_INPUT_FILE = 'data/events.csv'
 SUMMARY_OUTPUT_FILE = 'data/report_summary.csv'
+SUMMARY_SEQUENCE_OUTPUT_FILE = 'data/report_sequence.csv'
 INSTRUMENTS_OUTPUT_FILE = 'data/ck_instruments.csv'
 SEQUENCE_OUTPUT_FILE = 'data/ck_sequence.csv'
 VISUALIZATION_OUTPUT_FILE = 'visualization/data/years_refugees.json'
@@ -58,12 +59,12 @@ hindex = 0
 
 # Mean of list
 def mean(data):
-    if iter(data) is data:
+	if iter(data) is data:
 		data = list(data)
-    n = len(data)
-    if n < 1:
+	n = len(data)
+	if n < 1:
 		return 0
-    else:
+	else:
 		return sum(data)/n
 
 # For creating pseudo-random numbers
@@ -401,6 +402,21 @@ if WRITE_REPORT:
 			row = [elapsed_f, y['year'], y['count_n'], y['avg_distance_n'], y['countries_1000_n']]
 			w.writerow(row)
 		print('Successfully wrote summary file: '+SUMMARY_OUTPUT_FILE)
+
+	if len(sequence) > 0:
+		with open(SUMMARY_SEQUENCE_OUTPUT_FILE, 'wb') as f:
+			w = csv.writer(f)
+			w.writerow(['Time', 'Instrument', 'Gain'])
+			for step in sequence:
+				instrument = instruments[step['instrument_index']]
+				elapsed = step['elapsed_ms']
+				elapsed_f = time.strftime('%M:%S', time.gmtime(int(elapsed/1000)))
+				ms = int(elapsed % 1000)
+				elapsed_f += '.' + str(ms)
+				w.writerow([elapsed_f, instrument['file'], step['gain']])
+			f.seek(-2, os.SEEK_END) # remove newline
+			f.truncate()
+			print('Successfully wrote sequence report to file: '+SUMMARY_SEQUENCE_OUTPUT_FILE)
 
 # Build visualization data
 vis_data = []
