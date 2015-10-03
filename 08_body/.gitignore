@@ -1,0 +1,5 @@
+output/
+scrapers/files/*
+!scrapers/files/.keep
+visualization/output/
+visualization/build/
