@@ -22,7 +22,7 @@ for artist in soup.find_all("div", class_="artist"):
     items = artist.find_all("a")
     for item in items:
         url = "http://genius.com" + item.get('href')
-        albums.append({
+        albums.insert(0, {
             "artist": artist_name,
             "gender": artist_gender,
             "album": item.string.strip(),
