@@ -38,6 +38,7 @@ for song in songs:
         "gender": song["gender"],
         "album": song["album"],
         "song": song["title"],
+        "year": song["year"],
         "url": song["url"],
         "lyrics": lyrics
     })
