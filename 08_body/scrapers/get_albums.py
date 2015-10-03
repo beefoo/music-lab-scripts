@@ -17,12 +17,14 @@ soup = BeautifulSoup(html_content, 'html.parser')
 
 # Retrieve album names and urls
 for artist in soup.find_all("div", class_="artist"):
-    artist_name = artist.get('title')
+    artist_name = artist.get('name')
+    artist_gender = artist.get('gender')
     items = artist.find_all("a")
     for item in items:
         url = "http://genius.com" + item.get('href')
         albums.append({
             "artist": artist_name,
+            "gender": artist_gender,
             "album": item.string.strip(),
             "url": url
         })

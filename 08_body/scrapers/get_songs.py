@@ -28,6 +28,7 @@ for album in albums:
         title = link.find("span", class_="song_title").string.strip()
         songs.append({
             "artist": album["artist"],
+            "gender": album["gender"],
             "album": album["album"],
             # "album_url": album["url"],
             "url": link.get('href'),

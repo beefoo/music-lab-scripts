@@ -7,7 +7,7 @@ import re
 
 songs_file = "data/songs.json"
 songs_dir = "files/songs/"
-output_file = "data/lyrics.json"
+output_file = "../data/lyrics.json"
 
 songs = []
 song_lyrics = []
@@ -18,7 +18,7 @@ with open(songs_file) as f:
 
 for song in songs:
     filename = songs_dir + song["url"].split("/")[-1] + ".htm"
-    if song['artist'].lower().replace(' ','-').replace('é'.decode('utf-8'),'e') not in song['url'].lower():
+    if song['artist'].lower().replace(' ','-').replace('é'.decode('utf-8'),'e') not in song['url'].lower() or '[Credits]' in song['title']:
         print "Skipping: " + song["url"]
         continue
     print "Parsing " + song["title"] + "..."
@@ -30,11 +30,12 @@ for song in songs:
     # Retrieve song lyrics
     container = soup.find("div", class_="lyrics_container")
     content = container.find("div", class_="lyrics")
-    lyrics = content.get_text().lower().replace('\n','') # remove newline
+    lyrics =  " ".join(content.strings).lower().replace('\n',' ') # remove newline
     lyrics = re.sub('[^a-z\- ]|\-\-', ' ', lyrics) # remove punctuation
     lyrics = ' '.join(lyrics.split()) # remove multi-space
     song_lyrics.append({
         "artist": song["artist"],
+        "gender": song["gender"],
         "album": song["album"],
         "song": song["title"],
         "url": song["url"],
