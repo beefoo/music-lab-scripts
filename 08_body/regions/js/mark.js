@@ -84,7 +84,7 @@
     Mark.prototype.addRegionLink = function(region, active){
       var _this = this,
           $li = $('<li>'),
-          $a = $('<a href="#" class="region-link" data-id="'+region.id+'>'+region.id+'</a>');
+          $a = $('<a href="#" class="region-link" data-id="'+region.id+'">'+region.id+'</a>');
 
       if (active) $a.addClass('active');
 
@@ -127,7 +127,7 @@
             _this.regions.push(region);
             _this.addRegionLink(region, i===0);
             if (region.w > 0 && region.h > 0) {
-              _this.addRegion(region.id, false, {
+              _this.addRegion(region.id, i===0, {
                 top: region.y + '%',
                 left: region.x + '%',
                 width: region.w + '%',
@@ -210,8 +210,11 @@
       var _this = this;
 
       $.each(this.regions, function(i, region){
-        var positionData = _this.getRegionData($('.region[data-id="'+region.id+'"]'));
-        $.extend(_this.regions[i], positionData);
+        var $region = $('.region[data-id="'+region.id+'"]');
+        if ($region.length) {
+          var positionData = _this.getRegionData($region);
+          $.extend(_this.regions[i], positionData);
+        }
       });
 
       $('#output').val(JSON.stringify(this.regions));
