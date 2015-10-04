@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Mark Body Regions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style type="text/css">
+  body {
+    background: black;
+    color: white;
+    font-family: sans-serif;
+  }
+  a {
+    color: white;
+  }
+
+  .container {
+    overflow: auto;
+    zoom: 1;
+  }
+  .body {
+    width: 1280px;
+    height: 720px;
+    background: url(../visualization/data/bodies.png) no-repeat;
+    background-size: cover;
+    position: relative;
+    margin: 20px auto;
+    cursor: crosshair;
+    float: right;
+  }
+  .body .region {
+    border: 1px solid rgba(255,255,255,0.2);
+    position: absolute;
+    z-index: 1;
+    cursor: move;
+    opacity: 0.5;
+  }
+  .body .region.active {
+    border-color: red;
+    z-index: 10;
+    opacity: 1;
+  }
+  .body .region .ui-resizable-se {
+    cursor: nwse-resize;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
+    width: 10px;
+    height: 10px;
+  }
+
+  .body .region:hover .ui-resizable-se,
+  .body .region.active .ui-resizable-se {
+    opacity: 1;
+  }
+  .sidebar {
+    margin-right: 1280px;
+    box-sizing: border-box;
+    padding: 1em;
+  }
+  .region-list {
+    list-style: none;
+    margin: 0 0 20px;
+    padding: 0;
+  }
+  .region-list li {
+    padding: 0.5em 0;
+  }
+  .region-link.active {
+    color: #feffc4;
+  }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="body" class="body"></div>
+    <div class="sidebar">
+      <ul id="region-list" class="region-list">
+      </ul>
+      <textarea id="output"></textarea>
+    </div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="js/jquery-ui.min.js"></script>
+  <script src="js/hammer.min.js"></script>
+  <script src="js/jquery.hammer.js"></script>
+  <script src="js/mark.js"></script>
+
+</body>
+</html>
