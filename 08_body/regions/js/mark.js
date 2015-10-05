@@ -23,16 +23,37 @@
       this.loadData();
     };
 
+    Mark.prototype.activateGroup = function(id){
+      $('.region').removeClass('group-active');
+      $('.region[data-group="'+id+'"]').addClass('group-active');
+      $('.group-link').removeClass('active');
+      $('.group-link[data-id="'+id+'"]').addClass('active');
+    };
+
     Mark.prototype.activateRegion = function(id){
       $('.region').removeClass('active');
       $('.region[data-id="'+id+'"]').addClass('active');
-      $('.region-link').removeClass('active');
-      $('.region-link[data-id="'+id+'"]').addClass('active');
     };
 
-    Mark.prototype.addRegion = function(id, active, styles){
+    Mark.prototype.addGroupLink = function(group, active){
       var _this = this,
-          $region = $('<div class="region" data-id="'+id+'"></div>');
+          $li = $('<li>'),
+          $a = $('<a href="#" class="group-link" data-id="'+group.id+'">'+group.id+'</a>');
+
+      if (active) $a.addClass('active');
+
+      $a.on('click', function(e){
+        e.preventDefault();
+        _this.activateGroup(group.id);
+      });
+
+      $li.append($a);
+      $('#group-list').append($li);
+    };
+
+    Mark.prototype.addRegion = function(id, group_id, active, styles){
+      var _this = this,
+          $region = $('<div class="region" data-id="'+id+'" data-group="'+group_id+'"></div>');
 
       // add styles
       if (styles) {
@@ -45,16 +66,22 @@
       // activate and update button text
       if (active) {
         this.activateRegion(id);
+        $region.addClass('group-active');
       }
 
       // make it draggable
       $region.draggable({
         start: function(e){
+          if (!$(this).hasClass('group-active')) return false;
           e.stopPropagation();
           _this.activateRegion(id);
         },
-        drag: function(e){ e.stopPropagation(); },
+        drag: function(e){
+          if (!$(this).hasClass('group-active')) return false;
+          e.stopPropagation();
+        },
         stop: function(e){
+          if (!$(this).hasClass('group-active')) return false;
           e.stopPropagation();
           _this.submit();
         }
@@ -62,11 +89,16 @@
       // make it resizable
       }).resizable({
         start: function(e){
+          if (!$(this).hasClass('group-active')) return false;
           e.stopPropagation();
           _this.activateRegion(id);
         },
-        resize: function(e){ e.stopPropagation(); },
+        resize: function(e){
+          if (!$(this).hasClass('group-active')) return false;
+          e.stopPropagation();
+        },
         stop: function(e){
+          if (!$(this).hasClass('group-active')) return false;
           e.stopPropagation();
           _this.submit();
         }
@@ -74,6 +106,7 @@
 
       // click on region, make active
       $region.on('click', function(e){
+        if (!$(this).hasClass('group-active')) return false;
         e.preventDefault();
         _this.activateRegion(id);
       });
@@ -81,20 +114,9 @@
       return $region;
     };
 
-    Mark.prototype.addRegionLink = function(region, active){
-      var _this = this,
-          $li = $('<li>'),
-          $a = $('<a href="#" class="region-link" data-id="'+region.id+'">'+region.id+'</a>');
-
-      if (active) $a.addClass('active');
-
-      $a.on('click', function(e){
-        e.preventDefault();
-        _this.activateRegion(region.id);
-      });
-
-      $li.append($a);
-      $('#region-list').append($li);
+    Mark.prototype.deleteRegion = function($region){
+      $region = $region || $('.region.active').first();
+      $region.remove();
     };
 
     Mark.prototype.getRegionData = function($region){
@@ -117,23 +139,21 @@
     Mark.prototype.loadData = function(){
       var _this = this;
 
-      this.regions = [];
-
       $.ajax({
         dataType: "json",
         url: '../data/regions.json',
         success: function(data) {
-          $.each(data, function(i, region){
-            _this.regions.push(region);
-            _this.addRegionLink(region, i===0);
-            if (region.w > 0 && region.h > 0) {
-              _this.addRegion(region.id, i===0, {
+          $.each(data, function(i, group){
+            $.each(group['regions'], function(j, region){
+              region.id = group.id + '_' + j;
+              _this.addRegion(region.id, group.id, false, {
                 top: region.y + '%',
                 left: region.x + '%',
                 width: region.w + '%',
                 height: region.h + '%'
               });
-            }
+            });
+            _this.addGroupLink(group, false);
           });
           _this.data_loaded.resolve();
           _this.options.debug && console.log('Loaded '+data.length+' regions');
@@ -152,7 +172,6 @@
       // Starting to drag rectangle, remember start values
       $asset.hammer().bind('panstart', function(e) {
         e.stopPropagation();
-        $('.region.active').remove();
         assetX = $asset.offset().left;
         assetY = $asset.offset().top;
         assetW = $asset.width();
@@ -161,12 +180,13 @@
             eventY = e.gesture.center.y,
             offsetX = eventX - assetX,
             offsetY = eventY - assetY,
-            id = $('.region-link.active').first().attr('data-id');
+            group_id = $('.group-link.active').first().attr('data-id'),
+            id = group_id + '_' + $('.region[data-group="'+group_id+'"]').length;
         startX = offsetX;
         startY = offsetY;
 
         // add region
-        _this.addRegion(id, true);
+        _this.addRegion(id, group_id, true);
       });
 
       // Dragging rectangle, update rectangle
@@ -202,22 +222,36 @@
           left: regionValue.x+'%',
           top: regionValue.y+'%'
         });
+        _this.submit();
+      });
+
+      // delete key
+      $(window).keyup(function(e){
+        if (e.keyCode == 68) { // d
+          e.preventDefault();
+          _this.deleteRegion();
+        }
       });
 
     };
 
     Mark.prototype.submit = function(){
-      var _this = this;
+      var _this = this,
+          groups = [];
 
-      $.each(this.regions, function(i, region){
-        var $region = $('.region[data-id="'+region.id+'"]');
-        if ($region.length) {
-          var positionData = _this.getRegionData($region);
-          $.extend(_this.regions[i], positionData);
+      $('.group-link').each(function(){
+        group = {
+          id: $(this).attr('data-id'),
+          regions: []
         }
+        $('.region[data-group="'+group.id+'"]').each(function(){
+          var region = _this.getRegionData($(this));
+          group.regions.push(region);
+        });
+        groups.push(group);
       });
 
-      $('#output').val(JSON.stringify(this.regions));
+      $('#output').val(JSON.stringify(groups));
     };
 
     return Mark;
