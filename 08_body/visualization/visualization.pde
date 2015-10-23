@@ -103,14 +103,17 @@ void draw(){
   }
 
   // create mask
+  pg_mask.beginDraw();
   pg_mask.background(255);
   for (Region r : current_artist.getRegions()) {
     int x = round(r.getX() * canvasW);
     int y = round(r.getY() * canvasH);
     int w = round(r.getW() * canvasW);
     int h = round(r.getH() * canvasH);
+    pg_mask.tint(255, round(r.getValue()*255));
     pg_mask.image(img_gradient, x, y, w, h);
   }
+  pg_mask.endDraw();
   pg_mask.updatePixels();
 
   // draw images
@@ -118,7 +121,7 @@ void draw(){
   img.mask(pg_mask.pixels);
   image(img_active, 0, 0, canvasW, canvasH);
   image(img, 0, 0, canvasW, canvasH);
-  image(img_mask, 0, 0, canvasW, canvasH);
+  // image(img_mask, 0, 0, canvasW, canvasH);
 
   // label
   fill(textC);
@@ -238,6 +241,10 @@ class Region
 
   float getH(){
     return h;
+  }
+  
+  float getValue(){
+    return value;
   }
 
   void setValue(float _value){
