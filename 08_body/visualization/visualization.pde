@@ -32,12 +32,12 @@ String img_gradient_file = "gradient.png";
 
 // text
 color textC = #f4f3ef;
-int fontSize = 28;
+int fontSize = 42;
 PFont font = createFont("OpenSans-Semibold", fontSize, true);
 
 // components
 int labelX = canvasW / 2;
-int labelY = canvasH - 20;
+int labelY = canvasH - 24;
 
 // time
 float startMs = 0;
@@ -105,11 +105,12 @@ void draw(){
   // create mask
   pg_mask.beginDraw();
   pg_mask.background(255);
+  pg_mask.imageMode(CENTER);
   for (Region r : current_artist.getRegions()) {
     int x = round(r.getX() * canvasW);
     int y = round(r.getY() * canvasH);
-    int w = round(r.getW() * canvasW);
-    int h = round(r.getH() * canvasH);
+    int w = round(r.getSW(elapsedMs) * canvasW);
+    int h = round(r.getSH(elapsedMs) * canvasH);
     pg_mask.tint(255, round(r.getValue()*255));
     pg_mask.image(img_gradient, x, y, w, h);
   }
@@ -200,17 +201,25 @@ class Artist
 
 class Region
 {
+  float minMultiplier = 1.0;
+  float maxMultiplier = 1.5;
+  float minWave = 1.0;
+  float maxWave = 1.3;
+  float pulse = 0.2;
+
   JSONObject regionJSON;
-  float x, y, w, h, value;
+  float x, y, w0, h0, w, h, value;
   String id;
 
   Region(String _id, JSONObject _region) {
     id = _id;
     regionJSON = _region;
-    x = regionJSON.getFloat("x") * 0.01;
-    y = regionJSON.getFloat("y") * 0.01;
     w = regionJSON.getFloat("w") * 0.01;
     h = regionJSON.getFloat("h") * 0.01;
+    w0 = w;
+    h0 = h;
+    x = regionJSON.getFloat("x") * 0.01 + w * 0.5;
+    y = regionJSON.getFloat("y") * 0.01 + h * 0.5;
     value = 0;
   }
 
@@ -242,13 +251,32 @@ class Region
   float getH(){
     return h;
   }
-  
+
+  float getSW(float ms){
+    float m = _getWaveMultiplier(ms*pulse%100*0.01);
+    return w * m;
+  }
+
+  float getSH(float ms){
+    float m = _getWaveMultiplier(ms*pulse%100*0.01);
+    return h * m;
+  }
+
   float getValue(){
     return value;
   }
 
   void setValue(float _value){
     value = _value;
+    float m = lerp(minMultiplier, maxMultiplier, value);
+    w = w0 * m;
+    h = h0 * m;
+  }
+
+  float _getWaveMultiplier(float p){
+    float rad = p * PI;
+    float m = sin(rad);
+    return lerp(minWave, maxWave, m);
   }
 
 }
