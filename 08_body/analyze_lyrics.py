@@ -29,10 +29,13 @@ objectWords = {
     'you': 'opposite'
 }
 wordBuffer = 4
+regionMatchCount = 3
+songMatchCount = 10
 
 songs = []
 words = []
 data = []
+song_data = []
 
 # Read words
 with open(WORDS_FILE, 'rb') as f:
@@ -45,12 +48,14 @@ with open(LYRICS_FILE) as f:
     songs = json.load(f)
 
 # Add data
-def addData(artist, region, value):
+def addData(song, region, value):
     global data
 
+    artist = song['artist']
     matches = [d for d in data if artist==d['artist']]
     match = matches[0]
     i = match['index']
+    # Look for gendered matches
     regionFound = False
     for j,r in enumerate(match['regions']):
         if r['name']==region:
@@ -63,6 +68,39 @@ def addData(artist, region, value):
             'value': value
         })
     data[i]['value_count'] += value
+    # Look for gender-agnostic matches
+    regionFound = False
+    region = region.split('_')[-1]
+    for j,r in enumerate(match['regions_agnostic']):
+        if r['name']==region:
+            regionFound = True
+            data[i]['regions_agnostic'][j]['value'] += value
+            break
+    if not regionFound:
+        data[i]['regions_agnostic'].append({
+            'name': region,
+            'value': value
+        })
+
+def addSongData(song, region):
+    global song_data
+
+    artist = song['artist']
+    song_name = song['song'] + ' (' + song['album'] + ')'
+    matches = [d for d in song_data if artist==d['artist'] and song_name==d['song']]
+    match = matches[0]
+    i = match['index']
+    regionFound = False
+    for j,r in enumerate(match['regions']):
+        if r['name']==region:
+            regionFound = True
+            song_data[i]['regions'][j]['value'] += 1
+            break
+    if not regionFound:
+        song_data[i]['regions'].append({
+            'name': region,
+            'value': 1
+        })
 
 # Add word count
 def addWordCount(artist, value):
@@ -85,9 +123,16 @@ for s in songs:
             'index': len(data),
             'artist': s['artist'],
             'regions': [],
+            'regions_agnostic': [],
             'word_count': 0,
             'value_count': 0
         })
+    song_data.append({
+        'index': len(song_data),
+        'artist': s['artist'],
+        'song': s['song'] + ' (' + s['album'] + ')',
+        'regions': []
+    })
 
 print "Analyzing..."
 
@@ -132,15 +177,18 @@ for song in songs:
                     gender = swapGender(song['gender'])
                 # Found gender, add that gender
                 if gender:
-                    addData(song['artist'], gender+'_'+match['region'], 2)
+                    addData(song, gender+'_'+match['region'], 2)
+                    addSongData(song, match['region'])
                 # If not strict, add both genders
                 elif not gender and not match['strict']:
-                    addData(song['artist'], 'male_'+match['region'], 1)
-                    addData(song['artist'], 'female_'+match['region'], 1)
+                    addData(song, 'male_'+match['region'], 1)
+                    addData(song, 'female_'+match['region'], 1)
+                    addSongData(song, match['region'])
 
             # gender-specific body part, add value of two
             else:
-                addData(song['artist'], match['gender']+'_'+match['region'], 2)
+                addData(song, match['gender']+'_'+match['region'], 2)
+                addSongData(song, match['region'])
 
     addWordCount(song['artist'], len(lWords))
 
@@ -149,6 +197,8 @@ print "Finished analysis. Calculating percentages..."
 # Determine percents
 minValue = None
 maxValue = None
+minValueAgnostic = None
+maxValueAgnostic = None
 for i, d in enumerate(data):
     for j, r in enumerate(d['regions']):
         # Normalize values to percent of value count
@@ -159,13 +209,35 @@ for i, d in enumerate(data):
             minValue = value_n
         if maxValue is None or value_n > maxValue:
             maxValue = value_n
+    for j, r in enumerate(d['regions_agnostic']):
+        # Normalize values to percent of value count
+        value_n = 1.0 * r['value'] / d['value_count']
+        data[i]['regions_agnostic'][j]['value_n'] = value_n
+        # Track min/max
+        if minValueAgnostic is None or value_n < minValueAgnostic:
+            minValueAgnostic = value_n
+        if maxValueAgnostic is None or value_n > maxValueAgnostic:
+            maxValueAgnostic = value_n
 
-print "Finished percentages. Normalizing..."
+print "Finished percentages. Normalizing and sorting..."
 
 # Normalize to 0-1
 for i, d in enumerate(data):
     for j, r in enumerate(d['regions']):
         data[i]['regions'][j]['value_n'] = (r['value_n']-minValue) / (maxValue-minValue)
+    for j, r in enumerate(d['regions_agnostic']):
+        data[i]['regions_agnostic'][j]['value_n'] = (r['value_n']-minValueAgnostic) / (maxValueAgnostic-minValueAgnostic)
+    # Sort regions
+    data[i]['regions'] = sorted(data[i]['regions'], key=lambda k: k['value_n'], reverse=True)
+    data[i]['regions_agnostic'] = sorted(data[i]['regions_agnostic'], key=lambda k: k['value_n'], reverse=True)
+
+print "Finished normalizing and sorting. Calculating top song matches..."
+
+for i, d in enumerate(data):
+    top_regions = []
+    for j, r in enumerate(d['regions_agnostic']):
+        if j < regionMatchCount:
+            top_regions.append(r)
 
 # Save data
 with open(OUTPUT_FILE, 'w') as f:
