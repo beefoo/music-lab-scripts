@@ -6,6 +6,7 @@ import json
 LYRICS_FILE = "data/lyrics.json"
 WORDS_FILE = "data/words.csv"
 OUTPUT_FILE = "data/analysis.json"
+SONG_OUTPUT_FILE = "data/song_analysis.csv"
 
 possessiveWords = {
     'his': 'male',
@@ -46,6 +47,13 @@ with open(WORDS_FILE, 'rb') as f:
 # Read songs/lyrics
 with open(LYRICS_FILE) as f:
     songs = json.load(f)
+
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
 
 # Add data
 def addData(song, region, value):
@@ -256,3 +264,19 @@ for i, d in enumerate(data):
 with open(OUTPUT_FILE, 'w') as f:
     json.dump(data, f)
     print('Successfully wrote ' + str(len(data)) + ' artists to JSON file: '+OUTPUT_FILE)
+
+# Save song data
+with open(SONG_OUTPUT_FILE, 'wb') as f:
+    w = csv.writer(f)
+    headers = ['artist', 'song', 'album', 'url', 'score']
+    w.writerow(headers)
+    for d in data:
+        for s in d['top_songs']:
+            row = []
+            for h in headers:
+                if isinstance(s[h], basestring):
+                    row.append(s[h].encode('utf-8'))
+                else:
+                    row.append(s[h])
+            w.writerow(row)
+    print('Successfully wrote to song data file: '+SONG_OUTPUT_FILE)
