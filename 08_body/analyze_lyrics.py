@@ -85,9 +85,7 @@ def addData(song, region, value):
 def addSongData(song, region):
     global song_data
 
-    artist = song['artist']
-    song_name = song['song'] + ' (' + song['album'] + ')'
-    matches = [d for d in song_data if artist==d['artist'] and song_name==d['song']]
+    matches = [d for d in song_data if song['artist']==d['artist'] and song['song']==d['song'] and song['album']==d['album']]
     match = matches[0]
     i = match['index']
     regionFound = False
@@ -130,8 +128,11 @@ for s in songs:
     song_data.append({
         'index': len(song_data),
         'artist': s['artist'],
-        'song': s['song'] + ' (' + s['album'] + ')',
-        'regions': []
+        'song': s['song'],
+        'album': s['album'],
+        'url': s['url'],
+        'regions': [],
+        'score': 0
     })
 
 print "Analyzing..."
@@ -234,10 +235,22 @@ for i, d in enumerate(data):
 print "Finished normalizing and sorting. Calculating top song matches..."
 
 for i, d in enumerate(data):
+    # Get the artist's top mentioned regions
     top_regions = []
     for j, r in enumerate(d['regions_agnostic']):
         if j < regionMatchCount:
-            top_regions.append(r)
+            top_regions.append(r['name'])
+    # Retrieve artist's songs
+    artist_songs = [s for s in song_data if s['artist']==d['artist']]
+    # Give each song a score based on top mentioned regions
+    for j, s in enumerate(artist_songs):
+        for r in s['regions']:
+            if r['name'] in top_regions:
+                artist_songs[j]['score'] += r['value']
+    # Sort songs by score
+    artist_songs = sorted(artist_songs, key=lambda k: k['score'], reverse=True)
+    # Add songs to data
+    data[i]['top_songs'] = artist_songs[:songMatchCount]
 
 # Save data
 with open(OUTPUT_FILE, 'w') as f:
