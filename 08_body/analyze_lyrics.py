@@ -31,7 +31,7 @@ objectWords = {
 }
 wordBuffer = 4
 regionMatchCount = 3
-songMatchCount = 10
+songMatchCount = 20
 
 songs = []
 words = []
