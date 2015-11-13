@@ -157,27 +157,11 @@ for song in songs:
             if match['gender']=='both':
                 gender = ""
 
-                # This is an action word, so look at the subject and object (e.g. I kissed her)
-                if match['action']:
-                    # Look to the left for gendered subject words
-                    for w in bufferLeft:
-                        if w in subjectWords:
-                            gender = subjectWords[w]
-                            break
-                    # Look to the right for gendered object words
-                    if not gender:
-                        for w in bufferRight:
-                            if w in objectWords:
-                                gender = objectWords[w]
-                                break
-
-                # Otherwise, this is a noun (e.g. her butt)
-                else:
-                    # Look left for gendered possessive words
-                    for w in bufferLeft:
-                        if w in possessiveWords:
-                            gender = possessiveWords[w]
-                            break
+                # Look left for gendered possessive words (e.g. his face)
+                for w in bufferLeft:
+                    if w in possessiveWords:
+                        gender = possessiveWords[w]
+                        break
 
                 # Determine gender for self/opposite
                 if gender=='self':
@@ -188,8 +172,8 @@ for song in songs:
                 if gender:
                     addData(song, gender+'_'+match['region'], 2)
                     addSongData(song, match['region'])
-                # If not strict, add both genders
-                elif not gender and not match['strict']:
+                # Add both genders
+                else:
                     addData(song, 'male_'+match['region'], 1)
                     addData(song, 'female_'+match['region'], 1)
                     addSongData(song, match['region'])
