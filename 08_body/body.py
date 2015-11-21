@@ -21,6 +21,8 @@ VARIANCE_MS = 20 # +/- milliseconds an instrument note should be off by to give 
 GAIN = 0.4 # base gain
 TEMPO = 1.0 # base tempo
 MS_PER_ARTIST = 8000
+REGION_COUNT = 3 # number of artist's top-mentioned body regions to look at
+PROBABILITY_MULITPLIER = 0.8 # make it more or less likely to say a body part
 
 # Files
 INSTRUMENTS_INPUT_FILE = 'data/instruments.csv'
@@ -45,6 +47,7 @@ artists = []
 instruments = []
 sequence = []
 hindex = 0
+hindex_instrument = 0
 
 # For creating pseudo-random numbers
 def halton(index, base):
@@ -69,7 +72,7 @@ def roundToNearest(n, nearest):
 with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
     r = csv.reader(f, delimiter=',')
     next(r, None) # remove header
-    for file, artist, region, min_percent, max_percent, from_gain, to_gain, from_tempo, to_tempo, tempo_offset, interval, interval_offset, active in r:
+    for file, artist, region, from_gain, to_gain, from_tempo, to_tempo, tempo_offset, interval, interval_offset, active in r:
         if int(active):
             index = len(instruments)
             # build instrument object
@@ -79,8 +82,6 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
                 'file': INSTRUMENTS_DIR + file,
                 'artist': artist,
                 'region': region,
-                'min_percent': float(min_percent),
-                'max_percent': float(max_percent),
                 'from_gain': float(from_gain) * GAIN,
                 'to_gain': float(to_gain) * GAIN,
                 'from_tempo': float(from_tempo) * TEMPO,
@@ -144,9 +145,11 @@ def isValidInterval(instrument, elapsed_ms):
     return int(math.floor(1.0*elapsed_ms/interval_ms)) % interval == interval_offset
 
 # Add beats to sequence
-def addBeatsToSequence(instrument, duration, ms, round_to):
+def addBeatsToSequence(region, instrument, duration, ms, round_to):
     global sequence
     global hindex
+    global hindex_instrument
+
     beat_ms = int(roundToNearest(instrument['beat_ms'], round_to))
     offset_ms = int(instrument['tempo_offset'] * instrument['from_beat_ms'])
     ms += offset_ms
@@ -163,18 +166,21 @@ def addBeatsToSequence(instrument, duration, ms, round_to):
         this_beat_ms = getBeatMs(instrument, percent_complete, round_to)
         # add to sequence if in valid interval
         if isValidInterval(instrument, elapsed_ms):
-            h = halton(hindex, 3)
-            variance = int(h * VARIANCE_MS * 2 - VARIANCE_MS)
-            sequence.append({
-                'instrument_index': instrument['index'],
-                'instrument': instrument,
-                'position': 0,
-                'rate': 1,
-                'gain': getGain(instrument, percent_complete),
-                'elapsed_ms': max([elapsed_ms + variance, 0]),
-                'duration': min([this_beat_ms, MS_PER_ARTIST])
-            })
-            hindex += 1
+            h_i = halton(hindex_instrument, 5)
+            hindex_instrument += 1
+            if h_i < region['value_n'] * PROBABILITY_MULITPLIER:
+                h = halton(hindex, 3)
+                variance = int(h * VARIANCE_MS * 2 - VARIANCE_MS)
+                sequence.append({
+                    'instrument_index': instrument['index'],
+                    'instrument': instrument,
+                    'position': 0,
+                    'rate': 1,
+                    'gain': getGain(instrument, percent_complete),
+                    'elapsed_ms': max([elapsed_ms + variance, 0]),
+                    'duration': min([this_beat_ms, MS_PER_ARTIST])
+                })
+                hindex += 1
         remaining_duration -= this_beat_ms
         elapsed_duration += this_beat_ms
         ms += this_beat_ms
@@ -182,16 +188,17 @@ def addBeatsToSequence(instrument, duration, ms, round_to):
 # Build sequence
 for i in instruments:
     ms = 0
+    hindex_instrument = 0
 
     # Go through each artist
     for a in artist:
-        
-        # Go through top three regions
-        regions = a['regions_agnostic'][:3]
+
+        # Go through top x regions
+        regions = a['regions_agnostic'][:REGION_COUNT]
         for r in regions:
 
-            if a['artist']==i['artist'] && r['name']==i['region'] && r['value_n']>=i['min_percent'] && r['value_n']<i['max_percent']:
-                addBeatsToSequence(instrument.copy(), ARTIST_MS, ms, ROUND_TO_NEAREST)
+            if a['artist']==i['artist'] && r['name']==i['region']
+                addBeatsToSequence(r, instrument.copy(), ARTIST_MS, ms, ROUND_TO_NEAREST)
 
         ms += ARTIST_MS
 
