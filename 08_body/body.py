@@ -11,7 +11,8 @@ import csv
 import json
 import math
 import os
-import pprint
+from pprint import pprint
+import sys
 import time
 
 # Config
@@ -20,7 +21,7 @@ DIVISIONS_PER_BEAT = 4 # e.g. 4 = quarter notes, 8 = eighth notes, etc
 VARIANCE_MS = 20 # +/- milliseconds an instrument note should be off by to give it a little more "natural" feel
 GAIN = 0.4 # base gain
 TEMPO = 1.0 # base tempo
-MS_PER_ARTIST = 8000
+MS_PER_ARTIST = 12000
 REGION_COUNT = 3 # number of artist's top-mentioned body regions to look at
 PROBABILITY_MULITPLIER = 0.8 # make it more or less likely to say a body part
 
@@ -34,7 +35,7 @@ SEQUENCE_OUTPUT_FILE = 'data/ck_sequence.csv'
 INSTRUMENTS_DIR = 'instruments/'
 
 # Output options
-WRITE_SEQUENCE = False
+WRITE_SEQUENCE = True
 WRITE_REPORT = True
 
 # Calculations
@@ -72,7 +73,7 @@ def roundToNearest(n, nearest):
 with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
     r = csv.reader(f, delimiter=',')
     next(r, None) # remove header
-    for file, artist, region, from_gain, to_gain, from_tempo, to_tempo, tempo_offset, interval, interval_offset, active in r:
+    for file, artist, region, from_gain, to_gain, from_tempo, to_tempo, tempo_offset, interval_phase, interval, interval_offset, active in r:
         if int(active):
             index = len(instruments)
             # build instrument object
@@ -80,7 +81,7 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
             instrument = {
                 'index': index,
                 'file': INSTRUMENTS_DIR + file,
-                'artist': artist,
+                'artist': artist.decode('utf-8'),
                 'region': region,
                 'from_gain': float(from_gain) * GAIN,
                 'to_gain': float(to_gain) * GAIN,
@@ -191,16 +192,16 @@ for i in instruments:
     hindex_instrument = 0
 
     # Go through each artist
-    for a in artist:
+    for a in artists:
 
         # Go through top x regions
         regions = a['regions_agnostic'][:REGION_COUNT]
         for r in regions:
 
-            if a['artist']==i['artist'] && r['name']==i['region']
-                addBeatsToSequence(r, instrument.copy(), ARTIST_MS, ms, ROUND_TO_NEAREST)
+            if a['artist']==i['artist'] and r['name']==i['region']:
+                addBeatsToSequence(r.copy(), i.copy(), MS_PER_ARTIST, ms, ROUND_TO_NEAREST)
 
-        ms += ARTIST_MS
+        ms += MS_PER_ARTIST
 
 # Sort sequence
 sequence = sorted(sequence, key=lambda k: k['elapsed_ms'])
