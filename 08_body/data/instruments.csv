@@ -1,0 +1,84 @@
+file,artist,region,from_gain,to_gain,from_tempo,to_tempo,tempo_offset,interval_phase,interval,interval_offset,active
+beatles_lucy_eyes_01.wav,The Beatles,eye,1,1,0.25,0.25,0,4,2,0,1
+beatles_lucy_eyes_03.wav,The Beatles,eye,1,1,0.25,0.25,0,4,2,1,1
+beatles_lucy_eyes_02.wav,The Beatles,eye,1,1,0.5,0.5,0,1,1,0,1
+beatles_sgt_peppers_hearts_02.wav,The Beatles,heart,1,1,0.5,0.5,0.5,2,3,0,1
+beatles_sgt_peppers_hearts_03.wav,The Beatles,heart,1,1,0.5,0.5,0.5,2,3,1,1
+beatles_sgt_peppers_hearts_04.wav,The Beatles,heart,1,1,0.5,0.5,0.5,2,3,2,1
+beatles_eleanor_rigby_face_01.wav,The Beatles,face,1,1,0.5,0.5,0.25,2,2,0,1
+beatles_here_comes_faces_01.wav,The Beatles,face,1,1,0.5,0.5,0.75,2,2,1,1
+diana_reflections_eyes_02.wav,Diana Ross,eye,1,1,0.5,0.5,0,1,1,0,1
+diana_im_still_wating_eyes_01.wav,Diana Ross,eye,1,1,0.25,0.25,0,1,1,0,1
+diana_someday_heart_01.wav,Diana Ross,heart,1,1,0.5,0.5,0.5,2,2,0,1
+diana_endless_love_hearts_01.wav,Diana Ross,heart,1,1,0.5,0.5,0.5,2,2,1,1
+diana_im_still_wating_face_01.wav,Diana Ross,face,1,1,0.5,0.5,0.75,2,2,0,1
+diana_im_still_wating_face_02.wav,Diana Ross,face,1,1,0.5,0.5,0.25,2,2,1,1
+michael_billie_hearts_01.wav,Michael Jackson,heart,1,1,0.5,0.5,0,2,2,0,1
+michael_billie_hearts_02.wav,Michael Jackson,heart,1,1,0.5,0.5,0,2,2,1,1
+michael_thriller_heart_01.wav,Michael Jackson,heart,1,1,0.25,0.25,0,1,1,0,1
+michael_beat_it_face_01.wav,Michael Jackson,face,1,1,0.5,0.5,0.5,1,1,0,1
+michael_thriller_eyes_01.wav,Michael Jackson,eye,1,1,0.25,0.25,0.5,4,3,0,1
+michael_thriller_eyes_02.wav,Michael Jackson,eye,1,1,0.25,0.25,0.5,4,3,1,1
+michael_thriller_eyes_03.wav,Michael Jackson,eye,1,1,0.25,0.25,0.5,4,3,2,1
+madonna_frozen_heart_01.wav,Madonna,heart,1,1,0.5,0.5,0,2,2,0,1
+madonna_frozen_heart_05.wav,Madonna,heart,1,1,0.5,0.5,0,2,2,1,1
+madonna_frozen_heart_03.wav,Madonna,heart,1,1,0.25,0.25,0,1,1,0,1
+madonna_like_a_prayer_eyes_01.wav,Madonna,eye,1,1,0.25,0.25,0.5,4,2,0,1
+madonna_like_a_prayer_eyes_02.wav,Madonna,eye,1,1,0.25,0.25,0.5,4,2,1,1
+madonna_bad_girl_lips_02.wav,Madonna,mouth,1,1,0.5,0.5,0.5,2,2,0,1
+madonna_bad_girl_lips_03.wav,Madonna,mouth,1,1,0.5,0.5,0.5,2,2,1,1
+green_geek_face_01.wav,Green Day,face,1,1,0.25,0.25,0,4,3,0,1
+green_geek_face_02.wav,Green Day,face,1,1,0.25,0.25,0,4,3,1,1
+green_geek_face_03.wav,Green Day,face,1,1,0.25,0.25,0,4,3,2,1
+green_homecoming_heart_01.wav,Green Day,heart,1,1,0.25,0.25,0.5,1,1,0,1
+green_homecoming_heart_02.wav,Green Day,heart,1,1,0.5,0.5,0.5,2,2,0,1
+green_brain_mouth_01.wav,Green Day,mouth,1,1,0.5,0.5,0.5,2,2,1,1
+mariah_my_all_your_eyes_01.wav,Mariah Carey,eye,1,1,0.5,0.5,0,2,2,0,1
+mariah_say_something_eyes_01.wav,Mariah Carey,eye,1,1,0.5,0.5,0,2,2,1,1
+mariah_we_belong_heart_01.wav,Mariah Carey,heart,1,1,0.5,0.5,0.5,2,2,0,1
+mariah_butterfly_heart_01.wav,Mariah Carey,heart,1,1,0.5,0.5,0.5,2,2,1,1
+mariah_touch_mouth_01.wav,Mariah Carey,mouth,1,1,0.5,0.5,0.75,2,2,0,1
+mariah_we_belong_lips_01.wav,Mariah Carey,mouth,1,1,0.5,0.5,0.25,2,2,1,1
+jayz_threat_face_01.wav,Jay Z,face,1,1,0.5,0.5,0,2,3,0,1
+jayz_all_i_need_face_01.wav,Jay Z,face,1,1,0.5,0.5,0,2,3,1,1
+jayz_moment_face_01.wav,Jay Z,face,1,1,0.5,0.5,0,2,3,2,1
+jayz_threat_hands_01.wav,Jay Z,hand,1,1,0.5,0.5,0.5,2,2,0,1
+jayz_dirt_hand_01.wav,Jay Z,hand,1,1,0.5,0.5,0.5,2,2,1,1
+jayz_never_change_balls_01.wav,Jay Z,groin,1,1,0.5,0.5,0.25,2,4,0,1
+jayz_dirt_balls_01.wav,Jay Z,groin,1,1,0.5,0.5,0.75,2,4,1,1
+jayz_hola_dick_01.wav,Jay Z,groin,1,1,0.5,0.5,0.25,2,4,2,1
+jayz_lucifer_cock_01.wav,Jay Z,groin,1,1,0.5,0.5,0.75,2,4,3,1
+beyonce_countdown_lip_01.wav,Beyoncé,mouth,1,1,1,1,0,1,3,0,1
+beyonce_love_on_top_lips_01.wav,Beyoncé,mouth,1,1,1,1,0,1,3,1,1
+beyonce_partition_lips_01.wav,Beyoncé,mouth,1,1,1,1,0,1,3,2,1
+beyonce_rocket_eyes_01.wav,Beyoncé,eye,1,1,0.5,0.5,0.5,2,2,0,1
+beyonce_ego_eyes_01.wav,Beyoncé,eye,1,1,0.5,0.5,0.5,2,2,1,1
+beyonce_xo_heart_01.wav,Beyoncé,heart,1,1,0.5,0.5,0.25,2,2,0,1
+beyonce_rocket_heart_01.wav,Beyoncé,heart,1,1,0.5,0.5,0.75,2,2,1,1
+eminem_drips_dicks_01.wav,Eminem,groin,1,1,0.5,0.5,0,2,3,0,1
+eminem_drips_dicks_02.wav,Eminem,groin,1,1,0.5,0.5,0,2,3,1,1
+eminem_drips_penis_01.wav,Eminem,groin,1,1,0.5,0.5,0,2,3,2,1
+eminem_my_name_is_dick_01.wav,Eminem,groin,1,1,1,1,0,1,1,0,1
+eminem_ass_ass_01.wav,Eminem,butt,1,1,0.5,0.5,0.5,2,3,0,1
+eminem_ass_butt_01.wav,Eminem,butt,1,1,0.5,0.5,0.5,2,3,1,1
+eminem_ass_bum_01.wav,Eminem,butt,1,1,1,1,0.5,1,1,0,1
+eminem_my_name_is_face_01.wav,Eminem,face,1,1,0.5,0.5,0.5,2,3,2,1
+rihanna_diamonds_eye_01.wav,Rihanna,eye,1,1,0.5,0.5,0,1,1,0,1
+rihanna_diamonds_eye_02.wav,Rihanna,eye,1,1,0.25,0.25,0,4,2,0,1
+rihanna_russian_eyes_02.wav,Rihanna,eye,1,1,0.25,0.25,0,4,2,1,1
+rihanna_we_found_love_heart_01.wav,Rihanna,heart,1,1,0.5,0.5,0.5,2,2,0,1
+rihanna_umbrella_heart_01.wav,Rihanna,heart,1,1,0.5,0.5,0.5,2,2,1,1
+rihanna_california_lips_01.wav,Rihanna,mouth,1,1,0.5,0.5,0.25,1,1,0,1
+kanye_diamonds_ass_01.wav,Kanye West,butt,1,1,0.5,0.5,0,2,2,0,1
+kanye_get_em_high_assholes_01.wav,Kanye West,butt,1,1,0.5,0.5,0,2,2,1,1
+kanye_jesus_walks_facial_01.wav,Kanye West,face,1,1,0.5,0.5,0.5,2,2,0,1
+kanye_jesus_walks_facial_01.wav,Kanye West,face,1,1,0.5,0.5,0.5,2,2,1,1
+kanye_diamonds_hands_01.wav,Kanye West,hand,1,1,0.5,0.5,0.25,2,2,0,1
+kanye_get_em_high_hands_03.wav,Kanye West,hand,1,1,0.5,0.5,0.75,2,2,1,1
+taylor_invisible_eyes_01.wav,Taylor Swift,eye,1,1,0.5,0.5,0,2,2,0,1
+taylor_invisible_eyes_02.wav,Taylor Swift,eye,1,1,0.5,0.5,0,2,2,1,1
+taylor_forever_eye_01.wav,Taylor Swift,eye,1,1,0.5,0.5,0,1,1,0,1
+taylor_teardrops_eyes_01.wav,Taylor Swift,eye,1,1,0.25,0.25,0.75,1,1,0,1
+taylor_wildest_lips_03.wav,Taylor Swift,mouth,1,1,0.5,0.5,0.5,2,2,1,1
+taylor_white_horse_face_01.wav,Taylor Swift,face,1,1,0.5,0.5,0.5,2,2,0,1
+taylor_blank_space_face_01.wav,Taylor Swift,face,1,1,0.5,0.5,0.5,2,2,2,1
