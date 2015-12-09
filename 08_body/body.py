@@ -17,7 +17,7 @@ import time
 
 # Config
 BPM = 100 # Beats per minute, e.g. 60, 75, 100, 120, 150
-DIVISIONS_PER_BEAT = 4 # e.g. 4 = quarter notes, 8 = eighth notes, etc
+DIVISIONS_PER_BEAT = 8 # e.g. 4 = quarter notes, 8 = eighth notes, etc
 VARIANCE_MS = 20 # +/- milliseconds an instrument note should be off by to give it a little more "natural" feel
 GAIN = 0.4 # base gain
 TEMPO = 1.0 # base tempo
@@ -167,8 +167,11 @@ def addBeatsToSequence(region, instrument, duration, ms, round_to):
         this_beat_ms = getBeatMs(instrument, percent_complete, round_to)
         # add to sequence if in valid interval
         if isValidInterval(instrument, elapsed_ms):
-            h_i = halton(hindex_instrument, 5)
-            hindex_instrument += 1
+            if instrument['region'] == 'all':
+                h_i = -1
+            else:
+                h_i = halton(hindex_instrument, 5)
+                hindex_instrument += 1
             if h_i < region['value_n'] * PROBABILITY_MULITPLIER:
                 h = halton(hindex, 3)
                 variance = int(h * VARIANCE_MS * 2 - VARIANCE_MS)
@@ -198,7 +201,7 @@ for i in instruments:
         regions = a['regions_agnostic'][:REGION_COUNT]
         for r in regions:
 
-            if a['artist']==i['artist'] and r['name']==i['region']:
+            if a['artist']==i['artist'] and (r['name']==i['region'] or i['region']=='all'):
                 addBeatsToSequence(r.copy(), i.copy(), MS_PER_ARTIST, ms, ROUND_TO_NEAREST)
 
         ms += MS_PER_ARTIST

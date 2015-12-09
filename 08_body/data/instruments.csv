@@ -1,6 +1,6 @@
 file,artist,region,from_gain,to_gain,from_tempo,to_tempo,tempo_offset,interval_phase,interval,interval_offset,active
-beatles_lucy_eyes_01.wav,The Beatles,eye,1,1,0.25,0.25,0,4,2,0,1
-beatles_lucy_eyes_03.wav,The Beatles,eye,1,1,0.25,0.25,0,4,2,1,1
+beatles_lucy_eyes_01.wav,The Beatles,eye,1,1,0.125,0.125,0.5,8,2,0,1
+beatles_lucy_eyes_03.wav,The Beatles,eye,1,1,0.125,0.125,0.5,8,2,1,1
 beatles_lucy_eyes_02.wav,The Beatles,eye,1,1,0.5,0.5,0,1,1,0,1
 beatles_sgt_peppers_hearts_02.wav,The Beatles,heart,1,1,0.5,0.5,0.5,2,3,0,1
 beatles_sgt_peppers_hearts_03.wav,The Beatles,heart,1,1,0.5,0.5,0.5,2,3,1,1
@@ -10,7 +10,7 @@ beatles_here_comes_faces_01.wav,The Beatles,face,1,1,0.5,0.5,0.75,2,2,1,1
 diana_reflections_eyes_02.wav,Diana Ross,eye,1,1,0.5,0.5,0,1,1,0,1
 diana_im_still_wating_eyes_01.wav,Diana Ross,eye,1,1,0.25,0.25,0,1,1,0,1
 diana_someday_heart_01.wav,Diana Ross,heart,1,1,0.5,0.5,0.5,2,2,0,1
-diana_endless_love_hearts_01.wav,Diana Ross,heart,1,1,0.5,0.5,0.5,2,2,1,1
+diana_endless_love_hearts_01.wav,Diana Ross,heart,1,1,0.5,0.5,0.375,2,2,1,1
 diana_im_still_wating_face_01.wav,Diana Ross,face,1,1,0.5,0.5,0.75,2,2,0,1
 diana_im_still_wating_face_02.wav,Diana Ross,face,1,1,0.5,0.5,0.25,2,2,1,1
 michael_billie_hearts_01.wav,Michael Jackson,heart,1,1,0.5,0.5,0,2,2,0,1
@@ -82,3 +82,93 @@ taylor_teardrops_eyes_01.wav,Taylor Swift,eye,1,1,0.25,0.25,0.75,1,1,0,1
 taylor_wildest_lips_03.wav,Taylor Swift,mouth,1,1,0.5,0.5,0.5,2,2,1,1
 taylor_white_horse_face_01.wav,Taylor Swift,face,1,1,0.5,0.5,0.5,2,2,0,1
 taylor_blank_space_face_01.wav,Taylor Swift,face,1,1,0.5,0.5,0.5,2,2,2,1
+beatles_lucy_drum_01.wav,The Beatles,all,1,1,0.25,0.25,0,1,1,0,1
+beatles_lucy_cymbal_01.wav,The Beatles,all,1,1,0.25,0.25,0.5,4,2,0,1
+beatles_lucy_drums_01.wav,The Beatles,all,1,1,0.25,0.25,0.5,4,2,1,1
+beatles_lucy_bass_01.wav,The Beatles,all,1,1,0.5,0.5,0,2,4,0,1
+beatles_lucy_bass_02.wav,The Beatles,all,1,1,0.5,0.5,0,2,4,1,1
+beatles_lucy_bass_03.wav,The Beatles,all,1,1,0.5,0.5,0,2,4,2,1
+beatles_lucy_bass_04.wav,The Beatles,all,1,1,0.5,0.5,0,2,4,3,1
+beatles_lucy_organ_07.wav,The Beatles,all,0.6,0.6,0.5,0.5,0.5,2,2,0,0
+beatles_lucy_organ_08.wav,The Beatles,all,0.6,0.6,0.5,0.5,0.5,2,2,1,0
+beatles_lucy_sitar_01.wav,The Beatles,all,1,1,0.125,0.125,0,1,1,0,1
+diana_make_you_love_trumpet_01.wav,Diana Ross,all,1,1,0.5,0.5,0,2,4,0,1
+diana_make_you_love_kick_02.wav,Diana Ross,all,1,1,0.5,0.5,0,2,4,1,1
+diana_make_you_love_trumpet_02.wav,Diana Ross,all,1,1,0.5,0.5,0,2,4,2,1
+diana_reach_out_drum_04.wav,Diana Ross,all,1,1,0.5,0.5,0,2,4,3,1
+diana_make_you_love_snare_01.wav,Diana Ross,all,1,1,0.5,0.5,0.5,1,1,0,1
+diana_endless_piano_01.wav,Diana Ross,all,1,1,0.5,0.5,0.5,2,3,0,1
+diana_endless_piano_02.wav,Diana Ross,all,1,1,0.5,0.5,0.5,2,3,1,1
+diana_endless_piano_03.wav,Diana Ross,all,1,1,0.5,0.5,0.5,2,3,2,1
+michael_beat_it_kick_01.wav,Michael Jackson,all,1,1,0.5,0.5,0,2,2,0,1
+michael_beat_it_kick_cymbal_01.wav,Michael Jackson,all,1,1,0.5,0.5,0,2,2,1,1
+michael_beat_it_snare_02.wav,Michael Jackson,all,1,1,0.5,0.5,0.5,2,3,0,1
+michael_beat_it_snare_03.wav,Michael Jackson,all,1,1,0.5,0.5,0.5,2,3,1,1
+michael_beat_it_snare_04.wav,Michael Jackson,all,1,1,0.5,0.5,0.5,2,3,2,1
+michael_beat_it_hat_01.wav,Michael Jackson,all,1,1,0.5,0.5,0.25,1,1,0,1
+michael_beat_it_hat_02.wav,Michael Jackson,all,1,1,0.5,0.5,0.75,1,1,0,1
+michael_beat_it_keyboard_01.wav,Michael Jackson,all,1,1,0.25,0.25,0,4,3,0,1
+michael_beat_it_keyboard_02.wav,Michael Jackson,all,1,1,0.25,0.25,0,4,3,1,1
+michael_beat_it_keyboard_03.wav,Michael Jackson,all,1,1,0.25,0.25,0,4,3,2,1
+michael_beat_it_bass_01.wav,Michael Jackson,all,1,1,0.5,0.5,0.25,2,6,0,1
+michael_beat_it_bass_02.wav,Michael Jackson,all,1,1,0.5,0.5,0.25,2,6,1,1
+michael_beat_it_bass_03.wav,Michael Jackson,all,1,1,0.5,0.5,0.25,2,6,2,1
+michael_beat_it_bass_04.wav,Michael Jackson,all,1,1,0.5,0.5,0.25,2,6,3,1
+michael_beat_it_bass_05.wav,Michael Jackson,all,1,1,0.5,0.5,0.25,2,6,4,1
+michael_beat_it_bass_06.wav,Michael Jackson,all,1,1,0.5,0.5,0.25,2,6,5,1
+madonna_like_a_prayer_organ_01.wav,Madonna,all,0.6,0.6,0.5,0.5,0,2,4,0,1
+madonna_like_a_prayer_organ_02.wav,Madonna,all,0.6,0.6,0.5,0.5,0,2,4,1,1
+madonna_like_a_prayer_organ_03.wav,Madonna,all,0.6,0.6,0.5,0.5,0,2,4,2,1
+madonna_like_a_prayer_organ_04.wav,Madonna,all,0.6,0.6,0.5,0.5,0,2,4,3,1
+green_geek_kick_01.wav,Green Day,all,1,1,0.5,0.5,0,1,1,0,1
+green_geek_crash_01.wav,Green Day,all,1,1,0.5,0.5,0.5,1,1,0,1
+green_geek_bass_01.wav,Green Day,all,1,1,0.25,0.25,0,4,4,0,1
+green_geek_bass_02.wav,Green Day,all,1,1,0.25,0.25,0,4,4,1,1
+green_geek_bass_03.wav,Green Day,all,1,1,0.25,0.25,0,4,4,2,1
+green_geek_bass_04.wav,Green Day,all,1,1,0.25,0.25,0,4,4,3,1
+mariah_butterfly_kick_01.wav,Mariah Carey,all,1,1,0.5,0.5,0,2,2,0,1
+mariah_butterfly_kick_02.wav,Mariah Carey,all,1,1,0.5,0.5,0,2,2,1,0
+mariah_butterfly_snare_01.wav,Mariah Carey,all,1,1,0.5,0.5,0.5,1,1,0,1
+mariah_butterfly_piano_01.wav,Mariah Carey,all,1,1,0.5,0.5,0,2,5,0,1
+mariah_butterfly_piano_02.wav,Mariah Carey,all,1,1,0.5,0.5,0,2,5,1,1
+mariah_butterfly_piano_03.wav,Mariah Carey,all,1,1,0.5,0.5,0,2,5,2,1
+mariah_butterfly_piano_04.wav,Mariah Carey,all,1,1,0.5,0.5,0,2,5,3,1
+mariah_butterfly_piano_05.wav,Mariah Carey,all,1,1,0.5,0.5,0,2,5,4,1
+jayz_dirt_kick_01.wav,Jay Z,all,1,1,0.5,0.5,0,2,2,0,1
+jayz_dirt_kick_02.wav,Jay Z,all,1,1,0.5,0.5,0,2,2,1,1
+jayz_dirt_snare_01.wav,Jay Z,all,1,1,0.5,0.5,0.5,2,2,0,1
+jayz_dirt_snare_02.wav,Jay Z,all,1,1,0.5,0.5,0.5,2,2,1,1
+jayz_dirt_synth_02.wav,Jay Z,all,0.8,0.8,0.5,0.5,0.25,1,1,0,1
+jayz_dirt_synth_03.wav,Jay Z,all,0.8,0.8,0.5,0.5,0.75,1,1,0,1
+beyonce_rocket_kick_01.wav,Beyoncé,all,1,1,0.25,0.25,0,4,2,0,1
+beyonce_rocket_kick_02.wav,Beyoncé,all,1,1,0.25,0.25,0,4,2,1,1
+beyonce_rocket_snare_01.wav,Beyoncé,all,1,1,0.25,0.25,0.5,4,2,0,1
+beyonce_rocket_snare_02.wav,Beyoncé,all,1,1,0.25,0.25,0.5,4,2,1,1
+beyonce_xo_synth_01.wav,Beyoncé,all,0.5,0.5,2,2,0,1,4,0,1
+beyonce_xo_synth_02.wav,Beyoncé,all,0.5,0.5,2,2,0,1,4,1,1
+beyonce_xo_synth_03.wav,Beyoncé,all,0.5,0.5,2,2,0,1,4,2,1
+beyonce_xo_synth_04.wav,Beyoncé,all,0.5,0.5,2,2,0,1,4,3,1
+eminem_my_name_is_bass_01.wav,Eminem,all,1,1,0.5,0.5,0,1,1,0,1
+eminem_my_name_is_snare_01.wav,Eminem,all,1,1,0.5,0.5,0.5,1,1,0,1
+rihanna_diamonds_piano_01.wav,Rihanna,all,1,1,0.25,0.25,0,4,3,0,1
+rihanna_diamonds_piano_02.wav,Rihanna,all,1,1,0.25,0.25,0,4,3,1,1
+rihanna_diamonds_piano_03.wav,Rihanna,all,1,1,0.25,0.25,0,4,3,2,1
+rihanna_diamonds_kick_01.wav,Rihanna,all,1,1,0.5,0.5,0,1,1,0,1
+kanye_jesus_kick_01.wav,Kanye West,all,1,1,0.5,0.5,0,1,1,0,0
+kanye_jesus_snare_01.wav,Kanye West,all,1,1,0.5,0.5,0.5,2,3,0,0
+kanye_jesus_snare_02.wav,Kanye West,all,1,1,0.5,0.5,0.5,2,3,1,0
+kanye_jesus_clap_01.wav,Kanye West,all,1,1,0.5,0.5,0.5,2,3,2,0
+kanye_diamonds_kick_01.wav,Kanye West,all,1,1,0.5,0.5,0,2,2,0,1
+kanye_diamonds_kick_02.wav,Kanye West,all,1,1,0.5,0.5,0,2,2,1,1
+kanye_diamonds_snare_01.wav,Kanye West,all,1,1,0.5,0.5,0.5,2,4,0,1
+kanye_diamonds_snare_02.wav,Kanye West,all,1,1,0.5,0.5,0.5,2,4,1,1
+kanye_diamonds_snare_03.wav,Kanye West,all,1,1,0.5,0.5,0.5,2,4,2,1
+kanye_diamonds_snare_04.wav,Kanye West,all,1,1,0.5,0.5,0.5,2,4,3,1
+taylor_forever_piano_01.wav,Taylor Swift,all,1,1,0.5,0.5,0,2,6,0,1
+taylor_forever_piano_02.wav,Taylor Swift,all,1,1,0.5,0.5,0,2,6,1,1
+taylor_forever_piano_03.wav,Taylor Swift,all,1,1,0.5,0.5,0,2,6,2,1
+taylor_forever_piano_04.wav,Taylor Swift,all,1,1,0.5,0.5,0,2,6,3,1
+taylor_forever_piano_05.wav,Taylor Swift,all,1,1,0.5,0.5,0,2,6,4,1
+taylor_forever_piano_06.wav,Taylor Swift,all,1,1,0.5,0.5,0,2,6,5,1
+taylor_blank_kick_01.wav,Taylor Swift,all,1,1,0.5,0.5,0,2,2,0,1
+taylor_blank_kick_02.wav,Taylor Swift,all,1,1,0.5,0.5,0,2,2,1,1
