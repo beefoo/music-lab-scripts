@@ -17,7 +17,7 @@ ArrayList<Artist> artists;
 JSONArray regions_json_array;
 JSONArray artists_json_array;
 String regions_file = "../data/regions.json";
-String artists_file = "../data/analysis.json";
+String artists_file = "data/visualization.json";
 
 // images and graphics
 PImage img;
@@ -44,7 +44,6 @@ float startMs = 0;
 float stopMs = 0;
 float elapsedMs = startMs;
 float frameMs = (1.0/fps) * 1000;
-float artistMs = 2000;
 
 void setup() {
   // set the stage
@@ -71,7 +70,7 @@ void setup() {
   artists_json_array = loadJSONArray(artists_file);
   for (int i = 0; i < artists_json_array.size(); i++) {
     JSONObject artist_json = artists_json_array.getJSONObject(i);
-    artists.add(new Artist(artist_json, artistMs, regions));
+    artists.add(new Artist(artist_json, regions));
   }
 
   // load images
@@ -85,7 +84,7 @@ void setup() {
   pg_mask.loadPixels();
 
   // determine length
-  stopMs = artistMs * artists.size();
+  stopMs = artists.get(artists.size()-1).getEndMs();
 
   // noLoop();
 }
@@ -157,12 +156,14 @@ class Artist
   float start_ms, end_ms;
   String name;
   ArrayList<Region> regions;
+  ArrayList<Instrument> instruments;
 
-  Artist(JSONObject _artist, float _ms_per_artist, ArrayList<Region> _regions) {
+  Artist(JSONObject _artist, ArrayList<Region> _regions) {
     index = _artist.getInt("index");
     name = _artist.getString("artist");
-    start_ms = _ms_per_artist * index;
-    end_ms = start_ms + _ms_per_artist;
+    start_ms = _artist.getInt("start_ms");
+    end_ms = _artist.getInt("end_ms");
+
     // look through artist's regions
     regions = new ArrayList<Region>();
     JSONArray regions_json_array = _artist.getJSONArray("regions");
@@ -179,6 +180,22 @@ class Artist
         }
       }
     }
+
+    // look through artist's instruments
+    instruments = new ArrayList<Instrument>();
+    JSONArray instruments_json_array = _artist.getJSONArray("instruments");
+    for (int i = 0; i < instruments_json_array.size(); i++) {
+      JSONObject instrument_json = instruments_json_array.getJSONObject(i);
+      String region_id = instrument_json.getString("region");
+      Region region = getRegionById(region_id);
+      float i_start_ms = instrument_json.getFloat("start_ms");
+      float i_end_ms = instrument_json.getFloat("end_ms");
+      instruments.add(new Instrument(i_start_ms, i_end_ms, region));
+    }
+  }
+
+  float getEndMs(){
+    return end_ms;
   }
 
   int getIndex(){
@@ -187,6 +204,16 @@ class Artist
 
   String getName(){
     return name;
+  }
+
+  Region getRegionById(String region_id){
+    Region region = new Region(regions.get(0));
+    for (Region r : regions) {
+      if (region_id.equals(r.getId())) {
+        region = new Region(r);
+      }
+    }
+    return region;
   }
 
   ArrayList<Region> getRegions(){
@@ -205,7 +232,7 @@ class Region
   float maxMultiplier = 1.5;
   float minWave = 1.0;
   float maxWave = 1.3;
-  float pulse = 0.2;
+  float pulse = 0.1;
 
   JSONObject regionJSON;
   float x, y, w0, h0, w, h, value;
@@ -277,6 +304,23 @@ class Region
     float rad = p * PI;
     float m = sin(rad);
     return lerp(minWave, maxWave, m);
+  }
+
+}
+
+class Instrument
+{
+  float start_ms, end_ms;
+  Region region;
+
+  Instrument(float _start_ms, float _end_ms, Region _region) {
+    start_ms = _start_ms;
+    end_ms = _end_ms;
+    region = _region;
+  }
+
+  boolean isActive(float ms) {
+    return ms >= start_ms && ms < end_ms;
   }
 
 }
