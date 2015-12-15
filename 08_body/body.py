@@ -32,11 +32,13 @@ SUMMARY_OUTPUT_FILE = 'data/report_summary.csv'
 SUMMARY_SEQUENCE_OUTPUT_FILE = 'data/report_sequence.csv'
 INSTRUMENTS_OUTPUT_FILE = 'data/ck_instruments.csv'
 SEQUENCE_OUTPUT_FILE = 'data/ck_sequence.csv'
+VIZ_OUTPUT_FILE = 'visualization/data/visualization.json'
 INSTRUMENTS_DIR = 'instruments/'
 
 # Output options
 WRITE_SEQUENCE = True
 WRITE_REPORT = True
+WRITE_VIZ = True
 
 # Calculations
 BEAT_MS = round(60.0 / BPM * 1000)
@@ -73,7 +75,7 @@ def roundToNearest(n, nearest):
 with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
     r = csv.reader(f, delimiter=',')
     next(r, None) # remove header
-    for file, artist, region, from_gain, to_gain, from_tempo, to_tempo, tempo_offset, interval_phase, interval, interval_offset, active in r:
+    for file, artist, region, gender, from_gain, to_gain, from_tempo, to_tempo, tempo_offset, interval_phase, interval, interval_offset, active in r:
         if int(active):
             index = len(instruments)
             # build instrument object
@@ -83,6 +85,7 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
                 'file': INSTRUMENTS_DIR + file,
                 'artist': artist.decode('utf-8'),
                 'region': region,
+                'gender': gender,
                 'from_gain': float(from_gain) * GAIN,
                 'to_gain': float(to_gain) * GAIN,
                 'from_tempo': float(from_tempo) * TEMPO,
@@ -241,19 +244,87 @@ if WRITE_SEQUENCE and len(sequence) > 0:
         print('Successfully wrote sequence to file: '+SEQUENCE_OUTPUT_FILE)
 
 # Write summary files
-if WRITE_REPORT:
+if WRITE_REPORT and len(sequence) > 0:
 
-    if len(sequence) > 0:
-        with open(SUMMARY_SEQUENCE_OUTPUT_FILE, 'wb') as f:
-            w = csv.writer(f)
-            w.writerow(['Time', 'Instrument', 'Gain'])
-            for step in sequence:
-                instrument = instruments[step['instrument_index']]
-                elapsed = step['elapsed_ms']
-                elapsed_f = time.strftime('%M:%S', time.gmtime(int(elapsed/1000)))
-                ms = int(elapsed % 1000)
-                elapsed_f += '.' + str(ms)
-                w.writerow([elapsed_f, instrument['file'], step['gain']])
-            f.seek(-2, os.SEEK_END) # remove newline
-            f.truncate()
-            print('Successfully wrote sequence report to file: '+SUMMARY_SEQUENCE_OUTPUT_FILE)
+    with open(SUMMARY_SEQUENCE_OUTPUT_FILE, 'wb') as f:
+        w = csv.writer(f)
+        w.writerow(['Time', 'Instrument', 'Gain'])
+        for step in sequence:
+            instrument = instruments[step['instrument_index']]
+            elapsed = step['elapsed_ms']
+            elapsed_f = time.strftime('%M:%S', time.gmtime(int(elapsed/1000)))
+            ms = int(elapsed % 1000)
+            elapsed_f += '.' + str(ms)
+            w.writerow([elapsed_f, instrument['file'], step['gain']])
+        f.seek(-2, os.SEEK_END) # remove newline
+        f.truncate()
+        print('Successfully wrote sequence report to file: '+SUMMARY_SEQUENCE_OUTPUT_FILE)
+
+def getDuration(wav_file):
+    duration = 0
+    with open(wav_file, "r") as f:
+        # read the ByteRate field from file (see the Microsoft RIFF WAVE file format)
+        # https://ccrma.stanford.edu/courses/422/projects/WaveFormat/
+        # ByteRate is located at the first 28th byte
+        f.seek(28)
+        a = f.read(4)
+
+        # convert string a into integer/longint value
+        # a is little endian, so proper conversion is required
+        byteRate = 0
+        for i in range(4):
+            byteRate = byteRate + ord(a[i]) * pow(256,i)
+
+        # get the file size in bytes
+        fileSize = os.path.getsize(wav_file)
+
+        # the duration of the data, in milliseconds, is given by
+        duration = (fileSize - 44) * 1000 / byteRate
+
+    return duration
+
+if WRITE_VIZ and len(sequence) > 0:
+
+    # measure the durations of all audio files
+    files = set([i['file'] for i in instruments if i['region'] != 'all'])
+    file_durations = {}
+    for f in files:
+        d = getDuration(f)
+        file_durations[f] = d
+
+    # add ms to artists
+    ms = 0
+    for i, a in enumerate(artists):
+        artists[i]['start_ms'] = ms
+        artists[i]['end_ms'] = ms + MS_PER_ARTIST
+        artists[i]['instruments'] = []
+
+    # build instrument sequence
+    for step in sequence:
+
+        i = step['instrument']
+        if i['file'] not in file_durations:
+            continue
+        duration = file_durations[i['file']]
+
+        # Retrieve artist
+        artist = next(iter([a for a in artists if i['artist']==a['artist']]), None)
+
+        # Determine instrument's regions
+        instrument_regions = []
+        if i['gender'] == 'both':
+            instrument_regions = ['female_' + i['region'], 'male_' + i['region']]
+        else:
+            instrument_regions = [i['gender'] + '_' + i['region']]
+
+        # Add instruments to artists
+        for r in instrument_regions:
+            artists[artist['index']]['instruments'].append({
+                'region': r,
+                'start_ms': step['elapsed_ms'],
+                'end_ms': step['elapsed_ms'] + duration
+            })
+
+    with open(VIZ_OUTPUT_FILE, 'w') as outfile:
+        json.dump(artists, outfile)
+        print('Successfully wrote viz data to file: '+VIZ_OUTPUT_FILE)
