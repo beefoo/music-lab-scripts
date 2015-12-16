@@ -6,7 +6,7 @@
 // output
 int fps = 30;
 String outputFrameFile = "output/frames/frames-#####.png";
-boolean captureFrames = false;
+boolean captureFrames = true;
 
 // resolution
 int canvasW = 1280;
@@ -23,12 +23,14 @@ String artists_file = "data/visualization.json";
 PImage img;
 PImage img_mask;
 PImage img_gradient;
+PImage img_gradient_instrument;
 PImage img_active;
 PGraphics pg_mask;
 String img_file = "bodies.png";
 String img_mask_file = "bodies_mask.png";
 String img_active_file = "bodies_active.png";
 String img_gradient_file = "gradient.png";
+String img_gradient_instrument_file = "gradient_instrument.png";
 
 // text
 color textC = #f4f3ef;
@@ -76,6 +78,7 @@ void setup() {
   // load images
   img_mask = loadImage(img_mask_file);
   img_gradient = loadImage(img_gradient_file);
+  img_gradient_instrument = loadImage(img_gradient_instrument_file);
   img_active = loadImage(img_active_file);
 
   // load mask
@@ -105,6 +108,7 @@ void draw(){
   pg_mask.beginDraw();
   pg_mask.background(255);
   pg_mask.imageMode(CENTER);
+  // draw the regions
   for (Region r : current_artist.getRegions()) {
     int x = round(r.getX() * canvasW);
     int y = round(r.getY() * canvasH);
@@ -112,6 +116,15 @@ void draw(){
     int h = round(r.getSH(elapsedMs) * canvasH);
     pg_mask.tint(255, round(r.getValue()*255));
     pg_mask.image(img_gradient, x, y, w, h);
+  }
+  // draw instruments
+  for (Instrument i : current_artist.getCurrentInstruments(elapsedMs)) {
+    int x = round(i.getX() * canvasW);
+    int y = round(i.getY() * canvasH);
+    int w = round(i.getSW(elapsedMs) * canvasW);
+    int h = round(i.getSH(elapsedMs) * canvasH);
+    pg_mask.tint(255, round(i.getValue(elapsedMs)*255));
+    pg_mask.image(img_gradient_instrument, x, y, w, h);
   }
   pg_mask.endDraw();
   pg_mask.updatePixels();
@@ -192,6 +205,18 @@ class Artist
       float i_end_ms = instrument_json.getFloat("end_ms");
       instruments.add(new Instrument(i_start_ms, i_end_ms, region));
     }
+  }
+
+  ArrayList<Instrument> getCurrentInstruments(float ms) {
+    ArrayList<Instrument> current_instruments = new ArrayList<Instrument>();
+
+    for (Instrument i : instruments) {
+      if (i.isActive(ms)) {
+        current_instruments.add(i);
+      }
+    }
+
+    return current_instruments;
   }
 
   float getEndMs(){
@@ -310,6 +335,9 @@ class Region
 
 class Instrument
 {
+  float minMultiplier = 1.0;
+  float maxMultiplier = 1.8;
+
   float start_ms, end_ms;
   Region region;
 
@@ -321,6 +349,32 @@ class Instrument
 
   boolean isActive(float ms) {
     return ms >= start_ms && ms < end_ms;
+  }
+
+  float getX(){
+    return region.getX();
+  }
+
+  float getY(){
+    return region.getY();
+  }
+
+  float getSW(float ms){
+    float v = getValue(ms);
+    v = lerp(minMultiplier, maxMultiplier, v);
+    return v * region.getW();
+  }
+
+  float getSH(float ms){
+    float v = getValue(ms);
+    v = lerp(minMultiplier, maxMultiplier, v);
+    return v * region.getH();
+  }
+
+  float getValue(float ms) {
+    float percent_complete = (ms - start_ms) / (end_ms - start_ms);
+    percent_complete = constrain(percent_complete, 0.0, 1.0);
+    return sin(percent_complete * PI);
   }
 
 }

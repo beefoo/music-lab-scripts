@@ -298,6 +298,7 @@ if WRITE_VIZ and len(sequence) > 0:
         artists[i]['start_ms'] = ms
         artists[i]['end_ms'] = ms + MS_PER_ARTIST
         artists[i]['instruments'] = []
+        ms += MS_PER_ARTIST
 
     # build instrument sequence
     for step in sequence:
