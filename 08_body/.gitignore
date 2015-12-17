@@ -4,3 +4,6 @@ scrapers/files/*
 visualization/output/
 visualization/build/
 instruments/
+data/ck_instruments.csv
+data/ck_sequence.csv
+data/report_sequence.csv

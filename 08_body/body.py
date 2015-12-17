@@ -27,7 +27,8 @@ PROBABILITY_MULITPLIER = 0.8 # make it more or less likely to say a body part
 
 # Files
 INSTRUMENTS_INPUT_FILE = 'data/instruments.csv'
-ARTISTS_INPUT_FILE = 'data/analysis.json'
+ARTISTS_INPUT_FILE = 'data/artists.csv'
+ANALYSIS_INPUT_FILE = 'data/analysis.json'
 SUMMARY_OUTPUT_FILE = 'data/report_summary.csv'
 SUMMARY_SEQUENCE_OUTPUT_FILE = 'data/report_sequence.csv'
 INSTRUMENTS_OUTPUT_FILE = 'data/ck_instruments.csv'
@@ -46,6 +47,7 @@ ROUND_TO_NEAREST = round(BEAT_MS / DIVISIONS_PER_BEAT)
 BEATS_PER_ARTIST = round(MS_PER_ARTIST / BEAT_MS)
 
 # Init
+artist_sequence = []
 artists = []
 instruments = []
 sequence = []
@@ -102,8 +104,19 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
             instruments.append(instrument)
 
 # Read artists from file
-with open(ARTISTS_INPUT_FILE) as data_file:
+with open(ANALYSIS_INPUT_FILE) as data_file:
     artists = json.load(data_file)
+
+with open(ARTISTS_INPUT_FILE) as csvfile:
+    artist_sequence = csv.DictReader(csvfile)
+
+    # Re-order artists based on sequence
+    artists_temp = artists[:]
+    artists = []
+    for i, a in enumerate(artist_sequence):
+        artist = next(iter([_a for _a in artists_temp if a['name']==_a['artist'].encode('utf-8')]), None)
+        artist['index'] = i
+        artists.append(artist)
 
 # Calculate total time
 total_ms = len(artists) * MS_PER_ARTIST
