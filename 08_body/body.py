@@ -259,6 +259,21 @@ if WRITE_SEQUENCE and len(sequence) > 0:
 # Write summary files
 if WRITE_REPORT and len(sequence) > 0:
 
+    with open(SUMMARY_OUTPUT_FILE, 'wb') as f:
+        w = csv.writer(f)
+        w.writerow(['Artist', 'Region', 'Percent'])
+        valid_regions = ['eye','face','hand','heart','mouth','foot','arm','butt','groin']
+        for a in artists:
+            for r in valid_regions:
+                region = next(iter([_r for _r in a['regions_agnostic'] if _r['name']==r]), None)
+                if region is None:
+                    w.writerow([a['artist'].encode('utf-8'), r, 0])
+                else:
+                    w.writerow([a['artist'].encode('utf-8'), r, 1.0 * region['value'] / a['value_count']])
+            others = sum([r['value'] for r in a['regions_agnostic'] if r['name'] not in valid_regions])
+            w.writerow([a['artist'].encode('utf-8'), 'other', 1.0 * others / a['value_count']])
+        print('Successfully wrote report to file: '+SUMMARY_OUTPUT_FILE)
+
     with open(SUMMARY_SEQUENCE_OUTPUT_FILE, 'wb') as f:
         w = csv.writer(f)
         w.writerow(['Time', 'Instrument', 'Gain'])

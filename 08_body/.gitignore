@@ -5,4 +5,5 @@ visualization/output/
 visualization/build/
 data/ck_instruments.csv
 data/ck_sequence.csv
+data/report_summary.csv
 data/report_sequence.csv
