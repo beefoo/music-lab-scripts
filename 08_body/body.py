@@ -69,7 +69,7 @@ def roundToNearest(n, nearest):
 with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
     r = csv.reader(f, delimiter=',')
     next(r, None) # remove header
-    for file, artist, region, min_percent, max_percent, from_gain, to_gain, from_tempo, to_tempo, tempo_offset, interval, interval_offset, active in r:
+    for file, artist, region, from_gain, to_gain, from_tempo, to_tempo, tempo_offset, interval, interval_offset, active in r:
         if int(active):
             index = len(instruments)
             # build instrument object
@@ -79,8 +79,6 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
                 'file': INSTRUMENTS_DIR + file,
                 'artist': artist,
                 'region': region,
-                'min_percent': float(min_percent),
-                'max_percent': float(max_percent),
                 'from_gain': float(from_gain) * GAIN,
                 'to_gain': float(to_gain) * GAIN,
                 'from_tempo': float(from_tempo) * TEMPO,
@@ -185,7 +183,7 @@ for i in instruments:
 
     # Go through each artist
     for a in artist:
-        
+
         # Go through top three regions
         regions = a['regions_agnostic'][:3]
         for r in regions:
