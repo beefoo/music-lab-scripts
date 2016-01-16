@@ -32,11 +32,11 @@ All software required for making this song from scratch is free and open-source
 
 ### Configure The Scripts
 
-1. Python script: [dating.py](dating.py)
+1. Python script: [lousiana.py](lousiana.py)
   * **BPM** is the song's beats per minute.
   * **PX_PER_BEAT** is pixels to move per beat.
   * **DIVISIONS_PER_BEAT** is how the beats are divided. For example, a value of 4 would create quarter-notes as the smallest unit, 8 would create eighth-notes, etc.
-2. ChucK script: [dating.ck](dating.ck)
+2. ChucK script: [lousiana.ck](lousiana.ck)
   * **padding** is the amount of milliseconds before and after the song.
   * **instrument_buffers** is the number of buffers each instrument has. If you hear clipping in your song, you will want to increase this number.
 	* **start** is which millisecond you would like the song to start on. Useful for debugging a particular part of the song.

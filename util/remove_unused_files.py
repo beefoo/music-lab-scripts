@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+# Usage: python remove_unused_files.py ../08_body/data/instruments.csv ../08_body/instruments/
+
 import csv
 import glob
 import os
