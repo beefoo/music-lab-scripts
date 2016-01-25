@@ -1,439 +1,439 @@
-movie_id,movie_name,movie_imdb_id,role,order,name,imdb_id,img,gender,races,note,reference_url,voice
-1,Thor,800369,cast,1,Chris Hemsworth,1165110,http://s3.amazonaws.com/brianfoo_art/hollywood/1165110.jpg,m,w,"Dutch (from his immigrant maternal grandfather), Irish, English, Scottish, and German",http://www.imdb.com/name/nm1165110/bio,0
-1,Thor,800369,cast,2,Natalie Portman,204,http://s3.amazonaws.com/brianfoo_art/hollywood/204.jpg,f,w,"Ashkenazi Jewish, Polish, Romanian, Austrian, Russian, Lithuanian",http://www.imdb.com/name/nm0000204/bio,0
-1,Thor,800369,cast,3,Tom Hiddleston,1089991,http://s3.amazonaws.com/brianfoo_art/hollywood/1089991.jpg,m,w,"His father is Scottish. His mother is English, and has English, Welsh, and German ancestry.",http://www.imdb.com/name/nm1089991/bio,0
-1,Thor,800369,cast,4,Anthony Hopkins,164,http://s3.amazonaws.com/brianfoo_art/hollywood/164.jpg,m,w,half Welsh and half English,http://www.imdb.com/name/nm0000164/bio,0
-1,Thor,800369,cast,5,Stellan Skarsgård,1745,http://s3.amazonaws.com/brianfoo_art/hollywood/1745.jpg,m,w,Swedish,http://www.imdb.com/name/nm0001745/bio,0
-2,Sherlock Holmes: A Game of Shadows,1515091,cast,1,Robert Downey Jr.,375,http://s3.amazonaws.com/brianfoo_art/hollywood/375.jpg,m,w,"Robert's father is of half Lithuanian Jewish, one quarter Hungarian Jewish, and one quarter Irish, descent, while Robert's mother was of English, Scottish, German, and Swiss-German",http://www.imdb.com/name/nm0000375/bio,0
-2,Sherlock Holmes: A Game of Shadows,1515091,cast,2,Jude Law,179,http://s3.amazonaws.com/brianfoo_art/hollywood/179.jpg,m,w,"English, Scottish",http://www.imdb.com/name/nm0000179/bio,0
-2,Sherlock Holmes: A Game of Shadows,1515091,cast,3,Noomi Rapace,636426,http://s3.amazonaws.com/brianfoo_art/hollywood/636426.jpg,f,"w,h","half Spanish, half Swedish",http://www.imdb.com/name/nm0636426/bio,0
-2,Sherlock Holmes: A Game of Shadows,1515091,cast,4,Rachel McAdams,1046097,http://s3.amazonaws.com/brianfoo_art/hollywood/1046097.jpg,f,w,"English, Welsh, Irish, and Scottish",http://www.imdb.com/name/nm1046097/bio,0
-2,Sherlock Holmes: A Game of Shadows,1515091,cast,5,Jared Harris,364813,http://s3.amazonaws.com/brianfoo_art/hollywood/364813.jpg,m,w,"Irish, Welsh",http://www.imdb.com/name/nm0364813/bio,0
-3,Cars 2,1216475,cast,1,Larry Guy the Cable,1249256,http://s3.amazonaws.com/brianfoo_art/hollywood/1249256.jpg,m,w,,,1
-3,Cars 2,1216475,cast,2,Owen Wilson,5562,http://s3.amazonaws.com/brianfoo_art/hollywood/5562.jpg,m,w,Irish-American,http://www.imdb.com/name/nm0005562/bio,1
-3,Cars 2,1216475,cast,3,Michael Caine,323,http://s3.amazonaws.com/brianfoo_art/hollywood/323.jpg,m,w,"His father had English, Irish, and, reportedly, gypsy ancestry",https://en.wikipedia.org/wiki/Michael_Caine#Early_life,1
-3,Cars 2,1216475,cast,4,Emily Mortimer,607865,http://s3.amazonaws.com/brianfoo_art/hollywood/607865.jpg,f,w,,,1
-3,Cars 2,1216475,cast,5,Eddie Izzard,412850,http://s3.amazonaws.com/brianfoo_art/hollywood/412850.jpg,m,w,English,https://en.wikipedia.org/wiki/Eddie_Izzard#Early_life,1
-4,Mission: Impossible - Ghost Protocol,1229238,cast,1,Tom Cruise,129,http://s3.amazonaws.com/brianfoo_art/hollywood/129.jpg,m,w,"Irish, German, and English",http://www.imdb.com/name/nm0000129/bio,0
-4,Mission: Impossible - Ghost Protocol,1229238,cast,2,Paula Patton,1745736,http://s3.amazonaws.com/brianfoo_art/hollywood/1745736.jpg,f,"w,b","Her father is African-American and her mother, who is caucasian, has German, English, and Dutch ancestry",http://www.imdb.com/name/nm1745736/bio,0
-4,Mission: Impossible - Ghost Protocol,1229238,cast,3,Simon Pegg,670408,http://s3.amazonaws.com/brianfoo_art/hollywood/670408.jpg,m,w,,,0
-4,Mission: Impossible - Ghost Protocol,1229238,cast,4,Jeremy Renner,719637,http://s3.amazonaws.com/brianfoo_art/hollywood/719637.jpg,m,w," German, English, Scottish, Irish, and Swedish; some of his forebears also lived in Panama",http://www.imdb.com/name/nm0719637/bio,0
-4,Mission: Impossible - Ghost Protocol,1229238,cast,5,Michael Nyqvist,638824,http://s3.amazonaws.com/brianfoo_art/hollywood/638824.jpg,m,w,"Swedish, Italian",http://www.imdb.com/name/nm0638824/bio,0
-5,Fast Five,1596343,cast,1,Vin Diesel,4874,http://s3.amazonaws.com/brianfoo_art/hollywood/4874.jpg,m,"w,b","Mother is English, German, Scottish, and Irish. Biological father's race not publicly known. Diesel identifies as person of color. Some sources say his biological father was African-American ",http://ethnicelebs.com/vin-diesel,0
-5,Fast Five,1596343,cast,2,Paul Walker,908094,http://s3.amazonaws.com/brianfoo_art/hollywood/908094.jpg,m,w,English and German,http://www.imdb.com/name/nm0908094/bio,0
-5,Fast Five,1596343,cast,3,Jordana Brewster,108287,http://s3.amazonaws.com/brianfoo_art/hollywood/108287.jpg,f,"w,h",Mother is Brazilian; Father is English and Scottish; technically not hispanic; identifies as Latina,http://www.huffingtonpost.com/2012/06/13/dallas-star-jordana-brewster_n_1595303.html,0
-5,Fast Five,1596343,cast,4,Tyrese Gibson,879085,http://s3.amazonaws.com/brianfoo_art/hollywood/879085.jpg,m,b,,http://www.imdb.com/name/nm0879085/awards,0
-5,Fast Five,1596343,cast,5,Ludacris,524839,http://s3.amazonaws.com/brianfoo_art/hollywood/524839.jpg,m,"b,b,w,o","African-American, English, Jewish, and Native American ancestry",https://en.wikipedia.org/wiki/Ludacris#Early_life,0
-6,Pirates of the Caribbean: On Stranger Tides,1298650,cast,1,Johnny Depp,136,http://s3.amazonaws.com/brianfoo_art/hollywood/136.jpg,m,w,"English, as well as Irish, Scots-Irish, Scottish, Welsh, French, Dutch, Belgian (Flemish), and German",http://www.imdb.com/name/nm0000136/bio,0
-6,Pirates of the Caribbean: On Stranger Tides,1298650,cast,2,Penélope Cruz,4851,http://s3.amazonaws.com/brianfoo_art/hollywood/4851.jpg,f,h,Spanish,http://www.imdb.com/name/nm0004851/bio,0
-6,Pirates of the Caribbean: On Stranger Tides,1298650,cast,3,Geoffrey Rush,1691,http://s3.amazonaws.com/brianfoo_art/hollywood/1691.jpg,m,w,"His mother was of German descent and his father had English, Irish, and Scottish ancestry",http://www.imdb.com/name/nm0001691/bio,0
-6,Pirates of the Caribbean: On Stranger Tides,1298650,cast,4,Ian McShane,574534,http://s3.amazonaws.com/brianfoo_art/hollywood/574534.jpg,m,w,His father was Scottish and his mother was of English and Irish descent,http://www.imdb.com/name/nm0574534/bio,0
-6,Pirates of the Caribbean: On Stranger Tides,1298650,cast,5,Kevin McNally,573618,http://s3.amazonaws.com/brianfoo_art/hollywood/573618.jpg,m,w,English,http://www.imdb.com/name/nm0573618/bio,0
-7,The Hangover Part II,1411697,cast,1,Bradley Cooper,177896,http://s3.amazonaws.com/brianfoo_art/hollywood/177896.jpg,m,w,His father was of Irish descent and his mother is of Italian ancestry,http://www.imdb.com/name/nm0177896/bio,0
-7,The Hangover Part II,1411697,cast,2,Ed Helms,1159180,http://s3.amazonaws.com/brianfoo_art/hollywood/1159180.jpg,m,w,"English, as well as smaller amounts of Scots-Irish (Northern Irish), German, Dutch, and French",http://www.imdb.com/name/nm1159180/bio,0
-7,The Hangover Part II,1411697,cast,3,Zach Galifianakis,302108,http://s3.amazonaws.com/brianfoo_art/hollywood/302108.jpg,m,w,His father is of Greek descent and his mother is of mostly English and Scottish ancestry,http://www.imdb.com/name/nm0302108/bio,0
-7,The Hangover Part II,1411697,cast,4,Justin Bartha,58581,http://s3.amazonaws.com/brianfoo_art/hollywood/58581.jpg,m,w,"His parents are both from Jewish families (their families moved to the U.S. from Austria, Germany, Russia, and Poland)",http://www.imdb.com/name/nm0058581/bio,0
-7,The Hangover Part II,1411697,cast,5,Ken Jeong,421822,http://s3.amazonaws.com/brianfoo_art/hollywood/421822.jpg,m,a,Korean,http://www.imdb.com/name/nm0421822/bio,0
-8,The Twilight Saga: Breaking Dawn Part 1,1324999,cast,1,Kristen Stewart,829576,http://s3.amazonaws.com/brianfoo_art/hollywood/829576.jpg,f,w,,,0
-8,The Twilight Saga: Breaking Dawn Part 1,1324999,cast,2,Robert Pattinson,1500155,http://s3.amazonaws.com/brianfoo_art/hollywood/1500155.jpg,m,w,,,0
-8,The Twilight Saga: Breaking Dawn Part 1,1324999,cast,3,Taylor Lautner,1210124,http://s3.amazonaws.com/brianfoo_art/hollywood/1210124.jpg,m,w,"Austrian, English, German, Swiss-German, French, Irish, and Dutch",http://www.imdb.com/name/nm1210124/bio,0
-8,The Twilight Saga: Breaking Dawn Part 1,1324999,cast,4,Billy Burke,121605,http://s3.amazonaws.com/brianfoo_art/hollywood/121605.jpg,m,w,,,0
-8,The Twilight Saga: Breaking Dawn Part 1,1324999,cast,5,Peter Facinelli,4906,http://s3.amazonaws.com/brianfoo_art/hollywood/4906.jpg,m,w,Italian,http://www.imdb.com/name/nm0004906/bio,0
-9,Transformers: Dark of the Moon,1399103,cast,1,Shia LaBeouf,479471,http://s3.amazonaws.com/brianfoo_art/hollywood/479471.jpg,m,w,"His mother is from an Ashkenazi Jewish family, while his father has Cajun (French) ancestry",http://www.imdb.com/name/nm0479471/bio,0
-9,Transformers: Dark of the Moon,1399103,cast,2,Rosie Huntington-Whiteley,2492819,http://s3.amazonaws.com/brianfoo_art/hollywood/2492819.jpg,f,w,Ashkenazi Jewish and English,http://www.imdb.com/name/nm2492819/bio,0
-9,Transformers: Dark of the Moon,1399103,cast,3,Josh Duhamel,241049,http://s3.amazonaws.com/brianfoo_art/hollywood/241049.jpg,m,w,"French-Canadian (from his great-great-grandfather; his last name is a very common last name among Francophones in the world), Norwegian, German, Irish, and English",http://www.imdb.com/name/nm0241049/bio,0
-9,Transformers: Dark of the Moon,1399103,cast,4,John Turturro,1806,http://s3.amazonaws.com/brianfoo_art/hollywood/1806.jpg,m,w,"The Turturro family originates from Sicily, Italy",http://www.imdb.com/name/nm0001806/bio,0
-9,Transformers: Dark of the Moon,1399103,cast,5,Tyrese Gibson,879085,http://s3.amazonaws.com/brianfoo_art/hollywood/879085.jpg,m,b,,http://www.imdb.com/name/nm0879085/awards,0
-10,Harry Potter and the Deathly Hallows Part 2,1201607,cast,1,Daniel Radcliffe,705356,http://s3.amazonaws.com/brianfoo_art/hollywood/705356.jpg,m,w,"His father is from a Northern Irish Protestant background, while his mother was born in South Africa, to a Jewish family (from Lithuania, Poland, Russia, and Germany)",http://www.imdb.com/name/nm0705356/bio,0
-10,Harry Potter and the Deathly Hallows Part 2,1201607,cast,2,Rupert Grint,342488,http://s3.amazonaws.com/brianfoo_art/hollywood/342488.jpg,m,w,English and 1/8th Irish,http://www.imdb.com/name/nm0342488/bio,0
-10,Harry Potter and the Deathly Hallows Part 2,1201607,cast,3,Emma Watson,914612,http://s3.amazonaws.com/brianfoo_art/hollywood/0914612.jpg,f,w,English,http://www.imdb.com/name/nm0914612/bio,0
-10,Harry Potter and the Deathly Hallows Part 2,1201607,cast,4,Helena Bonham Carter,307,http://s3.amazonaws.com/brianfoo_art/hollywood/307.jpg,f,"w,w,w,h","Father was of English ancestry; maternal grandfather was a half-Jewish/half-Catholic Spanish; maternal grandmother from a Jewish family (from Germany, Austria, France, Bohemia, and Ukraine)",http://www.imdb.com/name/nm0000307/bio,0
-10,Harry Potter and the Deathly Hallows Part 2,1201607,cast,5,Ralph Fiennes,146,http://s3.amazonaws.com/brianfoo_art/hollywood/146.jpg,m,w,"He is of English, Irish, and Scottish origin",http://www.imdb.com/name/nm0000146/bio,0
-11,Madagascar 3: Europe's Most Wanted,1277953,cast,1,Ben Stiller,1774,http://s3.amazonaws.com/brianfoo_art/hollywood/1774.jpg,m,w,"His father is of Austrian Jewish and Polish Jewish descent, and his mother was of Irish ancestry",http://www.imdb.com/name/nm0001774/bio,1
-11,Madagascar 3: Europe's Most Wanted,1277953,cast,2,Chris Rock,1674,http://s3.amazonaws.com/brianfoo_art/hollywood/1674.jpg,m,b,,https://en.wikipedia.org/wiki/Chris_Rock#Personal_life,1
-11,Madagascar 3: Europe's Most Wanted,1277953,cast,3,David Schwimmer,1710,http://s3.amazonaws.com/brianfoo_art/hollywood/1710.jpg,m,w,"Ashkenazi Jewish (from Ukraine, Austria, Russia, Germany, and Belarus)",http://www.imdb.com/name/nm0001710/bio,1
-11,Madagascar 3: Europe's Most Wanted,1277953,cast,4,Jada Pinkett Smith,586,http://s3.amazonaws.com/brianfoo_art/hollywood/586.jpg,f,b,Her father is of African-American descent and her mother is of Afro-Caribbean ancestry (from Barbados and Jamaica),http://www.imdb.com/name/nm0000586/bio,1
-11,Madagascar 3: Europe's Most Wanted,1277953,cast,5,Sacha Baron Cohen,56187,http://s3.amazonaws.com/brianfoo_art/hollywood/56187.jpg,m,w,"His father, born in Wales and raised in England, is of Eastern European Jewish descent, while his mother was born in Israel, to German Jewish parents",http://www.imdb.com/name/nm0056187/bio,1
-12,Ted,1637725,cast,1,Mark Wahlberg,242,http://s3.amazonaws.com/brianfoo_art/hollywood/242.jpg,m,w,"Irish, Swedish (from his paternal grandfather), and more distant French-Canadian and English",http://www.imdb.com/name/nm0000242/bio,0
-12,Ted,1637725,cast,2,Mila Kunis,5109,http://s3.amazonaws.com/brianfoo_art/hollywood/5109.jpg,f,w,Ashkenazi Jewish,http://www.imdb.com/name/nm0005109/bio,0
-12,Ted,1637725,cast,3,Seth MacFarlane,532235,http://s3.amazonaws.com/brianfoo_art/hollywood/532235.jpg,m,w,"English, Scottish, and Irish",http://www.imdb.com/name/nm0532235/bio,1
-12,Ted,1637725,cast,4,Joel McHale,570364,http://s3.amazonaws.com/brianfoo_art/hollywood/570364.jpg,m,w,"Norwegian, Finnish, and English",http://www.imdb.com/name/nm0570364/bio,0
-12,Ted,1637725,cast,5,Giovanni Ribisi,610,http://s3.amazonaws.com/brianfoo_art/hollywood/610.jpg,m,w,"Italian (from his paternal grandfather), English, and German ",http://www.imdb.com/name/nm0000610/bio,0
-13,Brave,1217209,cast,1,Kelly Macdonald,531808,http://s3.amazonaws.com/brianfoo_art/hollywood/531808.jpg,f,w,Scottish,http://www.imdb.com/name/nm0531808/bio,1
-13,Brave,1217209,cast,2,Billy Connolly,175262,http://s3.amazonaws.com/brianfoo_art/hollywood/175262.jpg,m,w,"Irish, Scottish",https://en.wikipedia.org/wiki/Billy_Connolly#Ancestry,1
-13,Brave,1217209,cast,3,Emma Thompson,668,http://s3.amazonaws.com/brianfoo_art/hollywood/668.jpg,f,w,"Scottish, English",http://www.imdb.com/name/nm0000668/bio,1
-13,Brave,1217209,cast,4,Julie Walters,910278,http://s3.amazonaws.com/brianfoo_art/hollywood/910278.jpg,f,w,"Irish, English",http://www.imdb.com/name/nm0910278/bio,1
-13,Brave,1217209,cast,5,Robbie Coltrane,1059,http://s3.amazonaws.com/brianfoo_art/hollywood/1059.jpg,m,w,Scottish,https://en.wikipedia.org/wiki/Robbie_Coltrane,1
-14,The Amazing Spider-Man,948470,cast,1,Andrew Garfield,1940449,http://s3.amazonaws.com/brianfoo_art/hollywood/1940449.jpg,m,w,"Polish, Russian, Romanian Jew",http://www.imdb.com/name/nm1940449/bio,0
-14,The Amazing Spider-Man,948470,cast,2,Emma Stone,1297015,http://s3.amazonaws.com/brianfoo_art/hollywood/1297015.jpg,f,w,"Swedish (from her paternal grandfather), English, German, Scottish, and Irish",http://www.imdb.com/name/nm1297015/bio,0
-14,The Amazing Spider-Man,948470,cast,3,Rhys Ifans,406975,http://s3.amazonaws.com/brianfoo_art/hollywood/406975.jpg,m,w,Welsh,http://www.imdb.com/name/nm0406975/bio,0
-14,The Amazing Spider-Man,948470,cast,4,Denis Leary,1459,http://s3.amazonaws.com/brianfoo_art/hollywood/1459.jpg,m,w,Irish,http://www.imdb.com/name/nm0001459/bio,0
-14,The Amazing Spider-Man,948470,cast,5,Martin Sheen,640,http://s3.amazonaws.com/brianfoo_art/hollywood/640.jpg,m,"w,h","Irish, Spanish",http://www.imdb.com/name/nm0000640/bio,0
-15,The Twilight Saga: Breaking Dawn Part 2,1673434,cast,1,Kristen Stewart,829576,http://s3.amazonaws.com/brianfoo_art/hollywood/829576.jpg,f,w,,,0
-15,The Twilight Saga: Breaking Dawn Part 2,1673434,cast,2,Robert Pattinson,1500155,http://s3.amazonaws.com/brianfoo_art/hollywood/1500155.jpg,m,w,,,0
-15,The Twilight Saga: Breaking Dawn Part 2,1673434,cast,3,Taylor Lautner,1210124,http://s3.amazonaws.com/brianfoo_art/hollywood/1210124.jpg,m,w,"Austrian, English, German, Swiss-German, French, Irish, and Dutch",http://www.imdb.com/name/nm1210124/bio,0
-15,The Twilight Saga: Breaking Dawn Part 2,1673434,cast,4,Peter Facinelli,4906,http://s3.amazonaws.com/brianfoo_art/hollywood/4906.jpg,m,w,Italian,http://www.imdb.com/name/nm0004906/bio,0
-15,The Twilight Saga: Breaking Dawn Part 2,1673434,cast,5,Elizabeth Reaser,714147,http://s3.amazonaws.com/brianfoo_art/hollywood/714147.jpg,f,w,"German, Swedish, English, Irish, and Scottish",http://www.imdb.com/name/nm0714147/bio,0
-16,The Hobbit: An Unexpected Journey,903624,cast,1,Ian McKellen,5212,http://s3.amazonaws.com/brianfoo_art/hollywood/5212.jpg,m,w,"Scottish, Northern Irish, and English",http://www.imdb.com/name/nm0005212/bio,0
-16,The Hobbit: An Unexpected Journey,903624,cast,2,Martin Freeman,293509,http://s3.amazonaws.com/brianfoo_art/hollywood/293509.jpg,m,w,English and Irish,http://www.imdb.com/name/nm0293509/bio,0
-16,The Hobbit: An Unexpected Journey,903624,cast,3,Richard Armitage,35514,http://s3.amazonaws.com/brianfoo_art/hollywood/35514.jpg,m,w,,,0
-16,The Hobbit: An Unexpected Journey,903624,cast,4,Ken Stott,832792,http://s3.amazonaws.com/brianfoo_art/hollywood/832792.jpg,m,w,His father was Scottish and his mother was Sicilian,http://www.imdb.com/name/nm0832792/bio,0
-16,The Hobbit: An Unexpected Journey,903624,cast,5,Graham McTavish,574615,http://s3.amazonaws.com/brianfoo_art/hollywood/574615.jpg,m,w,Scottish,http://www.imdb.com/name/nm0574615/bio,0
-17,Skyfall,1074638,cast,1,Daniel Craig,185819,http://s3.amazonaws.com/brianfoo_art/hollywood/185819.jpg,m,w,"English, as well as Welsh, Scottish, and Irish",http://www.imdb.com/name/nm0185819/bio,0
-17,Skyfall,1074638,cast,2,Judi Dench,1132,http://s3.amazonaws.com/brianfoo_art/hollywood/1132.jpg,f,w,Irish,https://en.wikipedia.org/wiki/Category:British_people_of_Irish_descent,0
-17,Skyfall,1074638,cast,3,Javier Bardem,849,http://s3.amazonaws.com/brianfoo_art/hollywood/849.jpg,m,h,Spanish,http://www.imdb.com/name/nm0000849/bio,0
-17,Skyfall,1074638,cast,4,Ralph Fiennes,146,http://s3.amazonaws.com/brianfoo_art/hollywood/146.jpg,m,w,"He is of English, Irish, and Scottish origin",http://www.imdb.com/name/nm0000146/bio,0
-17,Skyfall,1074638,cast,5,Naomie Harris,365140,http://s3.amazonaws.com/brianfoo_art/hollywood/365140.jpg,f,b,Her father is from Jamaica and her mother is from Trinidad,http://www.imdb.com/name/nm0365140/bio,0
-18,The Hunger Games,1392170,cast,1,Jennifer Lawrence,2225369,http://s3.amazonaws.com/brianfoo_art/hollywood/2225369.jpg,f,w,"English, German, Irish, and Scottish",http://www.imdb.com/name/nm2225369/bio,0
-18,The Hunger Games,1392170,cast,2,Josh Hutcherson,1242688,http://s3.amazonaws.com/brianfoo_art/hollywood/1242688.jpg,m,w," English, as well as Scottish, German, and distant Irish and French",http://www.imdb.com/name/nm1242688/bio,0
-18,The Hunger Games,1392170,cast,3,Liam Hemsworth,2955013,http://s3.amazonaws.com/brianfoo_art/hollywood/2955013.jpg,m,w,"Dutch (from his immigrant maternal grandfather), Irish, English, Scottish, and German",http://www.imdb.com/name/nm2955013/bio,0
-18,The Hunger Games,1392170,cast,4,Woody Harrelson,437,http://s3.amazonaws.com/brianfoo_art/hollywood/437.jpg,m,w,"English, Scottish, German, and distant Dutch and Welsh",http://www.imdb.com/name/nm0000437/bio,0
-18,The Hunger Games,1392170,cast,5,Elizabeth Banks,6969,http://s3.amazonaws.com/brianfoo_art/hollywood/6969.jpg,f,w,"English, Irish, Scottish, and more distant Dutch",http://www.imdb.com/name/nm0006969/bio,0
-19,The Dark Knight Rises,1345836,cast,1,Christian Bale,288,http://s3.amazonaws.com/brianfoo_art/hollywood/288.jpg,m,w,English,http://www.imdb.com/name/nm0000288/bio,0
-19,The Dark Knight Rises,1345836,cast,2,Gary Oldman,198,http://s3.amazonaws.com/brianfoo_art/hollywood/198.jpg,m,w,"English, with a smaller amount of Irish",http://www.imdb.com/name/nm0000198/bio,0
-19,The Dark Knight Rises,1345836,cast,3,Tom Hardy,362766,http://s3.amazonaws.com/brianfoo_art/hollywood/362766.jpg,m,w,English and Irish,http://www.imdb.com/name/nm0362766/bio,0
-19,The Dark Knight Rises,1345836,cast,4,Joseph Gordon-Levitt,330687,http://s3.amazonaws.com/brianfoo_art/hollywood/330687.jpg,m,w,"Russian, Lithuanian, Romanian, Polish Jewish",http://www.imdb.com/name/nm0330687/bio,0
-19,The Dark Knight Rises,1345836,cast,5,Anne Hathaway,4266,http://s3.amazonaws.com/brianfoo_art/hollywood/4266.jpg,f,w,"mostly Irish descent, along with English, German, and French",http://www.imdb.com/name/nm0004266/bio,0
-20,Marvel's The Avengers,848228,cast,1,Robert Downey Jr.,375,http://s3.amazonaws.com/brianfoo_art/hollywood/375.jpg,m,w,"Robert's father is of half Lithuanian Jewish, one quarter Hungarian Jewish, and one quarter Irish, descent, while Robert's mother was of English, Scottish, German, and Swiss-German",http://www.imdb.com/name/nm0000375/bio,0
-20,Marvel's The Avengers,848228,cast,2,Chris Evans,262635,http://s3.amazonaws.com/brianfoo_art/hollywood/262635.jpg,m,w,"Chris's father is of half German and half Welsh/English/Scottish ancestry, while Chris's mother is of half Italian and half Irish descent",http://www.imdb.com/name/nm0262635/bio,0
-20,Marvel's The Avengers,848228,cast,3,Mark Ruffalo,749263,http://s3.amazonaws.com/brianfoo_art/hollywood/749263.jpg,m,w,"His father's ancestry is Italian, and his mother is of half French-Canadian and half Italian descent",http://www.imdb.com/name/nm0749263/bio,0
-20,Marvel's The Avengers,848228,cast,4,Chris Hemsworth,1165110,http://s3.amazonaws.com/brianfoo_art/hollywood/1165110.jpg,m,w,"Dutch (from his immigrant maternal grandfather), Irish, English, Scottish, and German",http://www.imdb.com/name/nm1165110/bio,0
-20,Marvel's The Avengers,848228,cast,5,Scarlett Johansson,424060,http://s3.amazonaws.com/brianfoo_art/hollywood/424060.jpg,f,w,"Ashkenazi Jewish, Danish",http://www.imdb.com/name/nm0424060/bio,0
-21,Oz The Great and Powerful,1623205,cast,1,James Franco,290556,http://s3.amazonaws.com/brianfoo_art/hollywood/290556.jpg,m,w,"His father was of half Portuguese and half Swedish descent. His mother is from an Ashkenazi Jewish family (from Russia, Germany, Poland, and Lithuania).",http://www.imdb.com/name/nm0290556/bio,0
-21,Oz The Great and Powerful,1623205,cast,2,Mila Kunis,5109,http://s3.amazonaws.com/brianfoo_art/hollywood/5109.jpg,f,w,Ashkenazi Jewish,http://www.imdb.com/name/nm0005109/bio,0
-21,Oz The Great and Powerful,1623205,cast,3,Rachel Weisz,1838,http://s3.amazonaws.com/brianfoo_art/hollywood/1838.jpg,f,w,"Her father is a Hungarian Jewish immigrant, and her Austrian-born mother, who left Vienna in the 1930s, is of Italian and Austrian Jewish heritage",http://www.imdb.com/name/nm0001838/bio,0
-21,Oz The Great and Powerful,1623205,cast,4,Michelle Williams,931329,http://s3.amazonaws.com/brianfoo_art/hollywood/931329.jpg,f,w,"Norwegian, as well as German, English, Swedish, Swiss-German, Danish, Welsh, and Scottish",http://www.imdb.com/name/nm0931329/bio,0
-21,Oz The Great and Powerful,1623205,cast,5,Zach Braff,103785,http://s3.amazonaws.com/brianfoo_art/hollywood/103785.jpg,m,w,His father is of Ashkenazi Jewish descent (from a family from Austria and Russia). His mother is from a family with English and Scottish ancestry,http://www.imdb.com/name/nm0103785/bio,1
-22,Fast & Furious 6,1905041,cast,1,Vin Diesel,4874,http://s3.amazonaws.com/brianfoo_art/hollywood/4874.jpg,m,"w,b","Mother is English, German, Scottish, and Irish. Biological father's race not publicly known. Diesel identifies as person of color. Some sources say his biological father was African-American ",http://ethnicelebs.com/vin-diesel,0
-22,Fast & Furious 6,1905041,cast,2,Paul Walker,908094,http://s3.amazonaws.com/brianfoo_art/hollywood/908094.jpg,m,w,English and German,http://www.imdb.com/name/nm0908094/bio,0
-22,Fast & Furious 6,1905041,cast,3,Dwayne Johnson,425005,http://s3.amazonaws.com/brianfoo_art/hollywood/425005.jpg,m,"b,a","His father is black (of Black Nova Scotian descent), and his mother is of Samoan background",http://www.imdb.com/name/nm0425005/bio,0
-22,Fast & Furious 6,1905041,cast,4,Jordana Brewster,108287,http://s3.amazonaws.com/brianfoo_art/hollywood/108287.jpg,f,"w,h",Mother is Brazilian; Father is English and Scottish; technically not hispanic; identifies as Latina,http://www.huffingtonpost.com/2012/06/13/dallas-star-jordana-brewster_n_1595303.html,0
-22,Fast & Furious 6,1905041,cast,5,Michelle Rodriguez,735442,http://s3.amazonaws.com/brianfoo_art/hollywood/735442.jpg,f,h,Puerto Rican and Dominican,http://www.imdb.com/name/nm0735442/bio,0
-23,The Hobbit: The Desolation of Smaug,1170358,cast,1,Ian McKellen,5212,http://s3.amazonaws.com/brianfoo_art/hollywood/5212.jpg,m,w,"Scottish, Northern Irish, and English",http://www.imdb.com/name/nm0005212/bio,0
-23,The Hobbit: The Desolation of Smaug,1170358,cast,2,Martin Freeman,293509,http://s3.amazonaws.com/brianfoo_art/hollywood/293509.jpg,m,w,English and Irish,http://www.imdb.com/name/nm0293509/bio,0
-23,The Hobbit: The Desolation of Smaug,1170358,cast,3,Richard Armitage,35514,http://s3.amazonaws.com/brianfoo_art/hollywood/35514.jpg,m,w,,,0
-23,The Hobbit: The Desolation of Smaug,1170358,cast,4,Ken Stott,832792,http://s3.amazonaws.com/brianfoo_art/hollywood/832792.jpg,m,w,His father was Scottish and his mother was Sicilian,http://www.imdb.com/name/nm0832792/bio,0
-23,The Hobbit: The Desolation of Smaug,1170358,cast,5,Graham McTavish,574615,http://s3.amazonaws.com/brianfoo_art/hollywood/574615.jpg,m,w,Scottish,http://www.imdb.com/name/nm0574615/bio,0
-24,Monsters University,1453405,cast,1,Billy Crystal,345,http://s3.amazonaws.com/brianfoo_art/hollywood/345.jpg,m,w,"His family were Jewish immigrants from Russia, Austria, and Lithuania",http://www.imdb.com/name/nm0000345/bio,1
-24,Monsters University,1453405,cast,2,John Goodman,422,http://s3.amazonaws.com/brianfoo_art/hollywood/422.jpg,m,w,"English, Welsh, and German",http://www.imdb.com/name/nm0000422/bio,1
-24,Monsters University,1453405,cast,3,Steve Buscemi,114,http://s3.amazonaws.com/brianfoo_art/hollywood/114.jpg,m,w," Italian (father) and English, Dutch, and Irish (mother)",http://www.imdb.com/name/nm0000114/bio,1
-24,Monsters University,1453405,cast,4,Helen Mirren,545,http://s3.amazonaws.com/brianfoo_art/hollywood/545.jpg,f,w,"English, Russian",http://www.imdb.com/name/nm0000545/bio,1
-24,Monsters University,1453405,cast,5,Peter Sohn,812307,http://s3.amazonaws.com/brianfoo_art/hollywood/812307.jpg,m,a,Korean,https://en.wikipedia.org/wiki/Peter_Sohn#Life_and_career,1
-25,Gravity,1454468,cast,1,Sandra Bullock,113,http://s3.amazonaws.com/brianfoo_art/hollywood/113.jpg,f,w,"Irish, English, French, and German",http://www.imdb.com/name/nm0000113/bio,0
-25,Gravity,1454468,cast,2,George Clooney,123,http://s3.amazonaws.com/brianfoo_art/hollywood/123.jpg,m,w,"Irish, English, and German",http://www.imdb.com/name/nm0000123/bio,0
-25,Gravity,1454468,cast,3,Ed Harris,438,http://s3.amazonaws.com/brianfoo_art/hollywood/438.jpg,m,w,,,1
-25,Gravity,1454468,cast,4,Orto Ignatiussen,1241511,none,m,u,possibly Greenland Inuit,http://www.hollywoodreporter.com/news/gravity-spinoff-watch-side-sandra-657919,1
-25,Gravity,1454468,cast,5,Phaldut Sharma,2060857,http://s3.amazonaws.com/brianfoo_art/hollywood/2060857.jpg,m,a,Indian,http://www.telegraphindia.com/1131029/jsp/t2/story_17504261.jsp#.Vo3TsfkrL4Y,1
-26,Man of Steel,770828,cast,1,Henry Cavill,147147,http://s3.amazonaws.com/brianfoo_art/hollywood/147147.jpg,m,w,"Irish, Scottish, and English",http://www.imdb.com/name/nm0147147/bio,0
-26,Man of Steel,770828,cast,2,Amy Adams,10736,http://s3.amazonaws.com/brianfoo_art/hollywood/10736.jpg,f,w,"English, as well as smaller amounts of Danish, Swiss-German, and Norwegian",http://www.imdb.com/name/nm0010736/bio,0
-26,Man of Steel,770828,cast,3,Michael Shannon,788335,http://s3.amazonaws.com/brianfoo_art/hollywood/788335.jpg,m,w,,,0
-26,Man of Steel,770828,cast,4,Diane Lane,178,http://s3.amazonaws.com/brianfoo_art/hollywood/178.jpg,f,w,"English, and some German and Scots-Irish (Northern Irish)",http://www.imdb.com/name/nm0000178/bio,0
-26,Man of Steel,770828,cast,5,Russell Crowe,128,http://s3.amazonaws.com/brianfoo_art/hollywood/128.jpg,m,w,"Welsh (where his paternal grandfather was born, in Wrexham), English, Irish, Scottish, Norwegian, Swedish, and Maori (one of Crowe's maternal great-grandmothers, Erana Putiputi Hayes Heihi, was Maori)",http://www.imdb.com/name/nm0000128/bio,0
-27,Despicable Me 2,1690953,cast,1,Steve Carell,136797,http://s3.amazonaws.com/brianfoo_art/hollywood/136797.jpg,m,w,His mother is of Polish descent and his father is of Italian and German ancestry,http://www.imdb.com/name/nm0136797/bio,1
-27,Despicable Me 2,1690953,cast,2,Kristen Wiig,1325419,http://s3.amazonaws.com/brianfoo_art/hollywood/1325419.jpg,f,w,"Norwegian (from her paternal grandfather), Irish, English, and Scottish",http://www.imdb.com/name/nm1325419/bio,1
-27,Despicable Me 2,1690953,cast,3,Benjamin Bratt,973,http://s3.amazonaws.com/brianfoo_art/hollywood/973.jpg,m,"w,o","English, German, and Austrian descent on his father's side, and of Peruvian (Qechua) descent on his mother's side",http://www.imdb.com/name/nm0000973/bio,1
-27,Despicable Me 2,1690953,cast,4,Miranda Cosgrove,1388927,http://s3.amazonaws.com/brianfoo_art/hollywood/1388927.jpg,f,w,"English, Irish, and French",http://www.imdb.com/name/nm1388927/bio,1
-27,Despicable Me 2,1690953,cast,5,Russell Brand,1258970,http://s3.amazonaws.com/brianfoo_art/hollywood/1258970.jpg,m,w,English,http://www.imdb.com/name/nm1258970/bio,1
-28,Frozen,2294629,cast,1,Kristen Bell,68338,http://s3.amazonaws.com/brianfoo_art/hollywood/68338.jpg,f,w,Scottish and Polish,http://www.imdb.com/name/nm0068338/bio,1
-28,Frozen,2294629,cast,2,Idina Menzel,579953,http://s3.amazonaws.com/brianfoo_art/hollywood/579953.jpg,f,w,Russian and Eastern European Jewish,https://en.wikipedia.org/wiki/Idina_Menzel,1
-28,Frozen,2294629,cast,3,Jonathan Groff,2676147,http://s3.amazonaws.com/brianfoo_art/hollywood/2676147.jpg,m,w,,,1
-28,Frozen,2294629,cast,4,Josh Gad,1265802,http://s3.amazonaws.com/brianfoo_art/hollywood/1265802.jpg,m,w,"His father was born in Afghanistan, to an Afghan Jewish family. His mother, who is originally from New York, is of Ashkenazi Jewish background",http://www.imdb.com/name/nm1265802/bio,1
-28,Frozen,2294629,cast,5,Santino Fontana,2949014,http://s3.amazonaws.com/brianfoo_art/hollywood/2949014.jpg,m,w,"He is of half Italian, one quarter Portuguese, and one quarter Spanish, descent",https://en.wikipedia.org/wiki/Santino_Fontana#Life_and_career,1
-29,Iron Man 3,1300854,cast,1,Robert Downey Jr.,375,http://s3.amazonaws.com/brianfoo_art/hollywood/375.jpg,m,w,"Robert's father is of half Lithuanian Jewish, one quarter Hungarian Jewish, and one quarter Irish, descent, while Robert's mother was of English, Scottish, German, and Swiss-German",http://www.imdb.com/name/nm0000375/bio,0
-29,Iron Man 3,1300854,cast,2,Gwyneth Paltrow,569,http://s3.amazonaws.com/brianfoo_art/hollywood/569.jpg,f,w,"German, and some English and Irish; Eastern European",http://www.imdb.com/name/nm0000569/bio,0
-29,Iron Man 3,1300854,cast,3,Don Cheadle,332,http://s3.amazonaws.com/brianfoo_art/hollywood/332.jpg,m,b,,http://www.pbs.org/wnet/aalives/profiles/cheadle.html,0
-29,Iron Man 3,1300854,cast,4,Guy Pearce,1602,http://s3.amazonaws.com/brianfoo_art/hollywood/1602.jpg,m,w,English and Scottish,http://www.imdb.com/name/nm0001602/bio,0
-29,Iron Man 3,1300854,cast,5,Rebecca Hall,356017,http://s3.amazonaws.com/brianfoo_art/hollywood/356017.jpg,f,"w,w,w,w,b,o","Dutch, Scottish, Sioux, and African American",http://www.imdb.com/name/nm0356017/bio,0
-30,The Hunger Games: Catching Fire,1951264,cast,1,Jennifer Lawrence,2225369,http://s3.amazonaws.com/brianfoo_art/hollywood/2225369.jpg,f,w,"English, German, Irish, and Scottish",http://www.imdb.com/name/nm2225369/bio,0
-30,The Hunger Games: Catching Fire,1951264,cast,2,Josh Hutcherson,1242688,http://s3.amazonaws.com/brianfoo_art/hollywood/1242688.jpg,m,w," English, as well as Scottish, German, and distant Irish and French",http://www.imdb.com/name/nm1242688/bio,0
-30,The Hunger Games: Catching Fire,1951264,cast,3,Liam Hemsworth,2955013,http://s3.amazonaws.com/brianfoo_art/hollywood/2955013.jpg,m,w,"Dutch (from his immigrant maternal grandfather), Irish, English, Scottish, and German",http://www.imdb.com/name/nm2955013/bio,0
-30,The Hunger Games: Catching Fire,1951264,cast,4,Woody Harrelson,437,http://s3.amazonaws.com/brianfoo_art/hollywood/437.jpg,m,w,"English, Scottish, German, and distant Dutch and Welsh",http://www.imdb.com/name/nm0000437/bio,0
-30,The Hunger Games: Catching Fire,1951264,cast,5,Elizabeth Banks,6969,http://s3.amazonaws.com/brianfoo_art/hollywood/6969.jpg,f,w,"English, Irish, Scottish, and more distant Dutch",http://www.imdb.com/name/nm0006969/bio,0
-31,Big Hero 6,2245084,cast,1,Scott Adsit,12523,http://s3.amazonaws.com/brianfoo_art/hollywood/12523.jpg,m,w,,,1
-31,Big Hero 6,2245084,cast,2,Ryan Potter,3994407,http://s3.amazonaws.com/brianfoo_art/hollywood/3994407.jpg,m,"w,a",Japanese father and a caucasian American-Jewish mother,http://www.imdb.com/name/nm3994407/bio,1
-31,Big Hero 6,2245084,cast,3,Daniel Henney,2024644,http://s3.amazonaws.com/brianfoo_art/hollywood/2024644.jpg,m,"w,a","father (American of British descent), mother (American of Korean descent)",http://www.imdb.com/name/nm2024644/bio,1
-31,Big Hero 6,2245084,cast,4,T.J. Miller,2554352,http://s3.amazonaws.com/brianfoo_art/hollywood/2554352.jpg,m,w,,,1
-31,Big Hero 6,2245084,cast,5,Jamie Chung,1512166,http://s3.amazonaws.com/brianfoo_art/hollywood/1512166.jpg,f,a,Korean,http://www.imdb.com/name/nm1512166/bio,1
-32,X-Men: Days of Future Past,1877832,cast,1,Hugh Jackman,413168,http://s3.amazonaws.com/brianfoo_art/hollywood/413168.jpg,m,w,"English, Greek, Scottish",http://www.imdb.com/name/nm0413168/bio,0
-32,X-Men: Days of Future Past,1877832,cast,2,James McAvoy,564215,http://s3.amazonaws.com/brianfoo_art/hollywood/564215.jpg,m,w,,,0
-32,X-Men: Days of Future Past,1877832,cast,3,Michael Fassbender,1055413,http://s3.amazonaws.com/brianfoo_art/hollywood/1055413.jpg,m,w,"German, Irish",http://www.imdb.com/name/nm1055413/bio,0
-32,X-Men: Days of Future Past,1877832,cast,4,Jennifer Lawrence,2225369,http://s3.amazonaws.com/brianfoo_art/hollywood/2225369.jpg,f,w,"English, German, Irish, and Scottish",http://www.imdb.com/name/nm2225369/bio,0
-32,X-Men: Days of Future Past,1877832,cast,5,Halle Berry,932,http://s3.amazonaws.com/brianfoo_art/hollywood/932.jpg,f,"w,b","father was African-American, mother has English and German ancestry",http://www.imdb.com/name/nm0000932/bio,0
-33,Maleficent,1587310,cast,1,Angelina Jolie,1401,http://s3.amazonaws.com/brianfoo_art/hollywood/1401.jpg,f,w,"German and Slovak on her father's side, and French-Canadian, Dutch, German, Czech, and remote Huron",http://www.imdb.com/name/nm0001401/bio,0
-33,Maleficent,1587310,cast,2,Elle Fanning,1102577,http://s3.amazonaws.com/brianfoo_art/hollywood/1102577.jpg,f,w,"German, Irish, English, French, and Channel Islander",http://www.imdb.com/name/nm1102577/bio,0
-33,Maleficent,1587310,cast,3,Sharlto Copley,1663205,http://s3.amazonaws.com/brianfoo_art/hollywood/1663205.jpg,m,w,"English ethnicity, South African nationality",http://www.imdb.com/name/nm1663205/bio,0
-33,Maleficent,1587310,cast,4,Lesley Manville,544334,http://s3.amazonaws.com/brianfoo_art/hollywood/544334.jpg,f,w,,,0
-33,Maleficent,1587310,cast,5,Imelda Staunton,1767,http://s3.amazonaws.com/brianfoo_art/hollywood/1767.jpg,f,w,Irish,https://en.wikipedia.org/wiki/Imelda_Staunton#Early_life_and_education,0
-34,Transformers: Age of Extinction,2109248,cast,1,Mark Wahlberg,242,http://s3.amazonaws.com/brianfoo_art/hollywood/242.jpg,m,w,"Irish, Swedish (from his paternal grandfather), and more distant French-Canadian and English",http://www.imdb.com/name/nm0000242/bio,0
-34,Transformers: Age of Extinction,2109248,cast,2,Stanley Tucci,1804,http://s3.amazonaws.com/brianfoo_art/hollywood/1804.jpg,m,w,"His family is Italian-American, with origins in Calabria",http://www.imdb.com/name/nm0001804/bio,0
-34,Transformers: Age of Extinction,2109248,cast,3,Kelsey Grammer,1288,http://s3.amazonaws.com/brianfoo_art/hollywood/1288.jpg,m,w,"English, German, Irish and Scottish",http://www.imdb.com/name/nm0001288/bio,0
-34,Transformers: Age of Extinction,2109248,cast,4,Nicola Peltz,2443758,http://s3.amazonaws.com/brianfoo_art/hollywood/2443758.jpg,f,w,"Ashkenazi Jewish (from her father) and German, Welsh, and English (from her mother)",http://www.imdb.com/name/nm2443758/bio,0
-34,Transformers: Age of Extinction,2109248,cast,5,Jack Reynor,2930503,http://s3.amazonaws.com/brianfoo_art/hollywood/2930503.jpg,m,w,Irish mother,http://www.imdb.com/name/nm2930503/bio,0
-35,The Hobbit: The Battle of the Five Armies,2310332,cast,1,Ian McKellen,5212,http://s3.amazonaws.com/brianfoo_art/hollywood/5212.jpg,m,w,"Scottish, Northern Irish, and English",http://www.imdb.com/name/nm0005212/bio,0
-35,The Hobbit: The Battle of the Five Armies,2310332,cast,2,Martin Freeman,293509,http://s3.amazonaws.com/brianfoo_art/hollywood/293509.jpg,m,w,English and Irish,http://www.imdb.com/name/nm0293509/bio,0
-35,The Hobbit: The Battle of the Five Armies,2310332,cast,3,Richard Armitage,35514,http://s3.amazonaws.com/brianfoo_art/hollywood/35514.jpg,m,w,,,0
-35,The Hobbit: The Battle of the Five Armies,2310332,cast,4,Ken Stott,832792,http://s3.amazonaws.com/brianfoo_art/hollywood/832792.jpg,m,w,His father was Scottish and his mother was Sicilian,http://www.imdb.com/name/nm0832792/bio,0
-35,The Hobbit: The Battle of the Five Armies,2310332,cast,5,Graham McTavish,574615,http://s3.amazonaws.com/brianfoo_art/hollywood/574615.jpg,m,w,Scottish,http://www.imdb.com/name/nm0574615/bio,0
-36,The LEGO Movie,1490017,cast,1,Chris Pratt,695435,http://s3.amazonaws.com/brianfoo_art/hollywood/695435.jpg,m,w,"His mother is of Norwegian descent and his father had English, German, Swiss, and French-Canadian ancestry",http://www.imdb.com/name/nm0695435/bio,1
-36,The LEGO Movie,1490017,cast,2,Will Ferrell,2071,http://s3.amazonaws.com/brianfoo_art/hollywood/0002071.jpg,m,w,"English, with smaller amounts of Irish, German, and Welsh",http://www.imdb.com/name/nm0002071/bio,1
-36,The LEGO Movie,1490017,cast,3,Elizabeth Banks,6969,http://s3.amazonaws.com/brianfoo_art/hollywood/6969.jpg,f,w,"English, Irish, Scottish, and more distant Dutch",http://www.imdb.com/name/nm0006969/bio,1
-36,The LEGO Movie,1490017,cast,4,Will Arnett,4715,http://s3.amazonaws.com/brianfoo_art/hollywood/4715.jpg,m,w,,,1
-36,The LEGO Movie,1490017,cast,5,Nick Offerman,644406,http://s3.amazonaws.com/brianfoo_art/hollywood/0644406.jpg,m,w,German and Swiss-German,http://www.imdb.com/name/nm0644406/bio,1
-37,Captain America: The Winter Soldier,1843866,cast,1,Chris Evans,262635,http://s3.amazonaws.com/brianfoo_art/hollywood/262635.jpg,m,w,"Chris's father is of half German and half Welsh/English/Scottish ancestry, while Chris's mother is of half Italian and half Irish descent",http://www.imdb.com/name/nm0262635/bio,0
-37,Captain America: The Winter Soldier,1843866,cast,2,Samuel L. Jackson,168,,m,b,,http://www.imdb.com/name/nm0000168/bio,0
-37,Captain America: The Winter Soldier,1843866,cast,3,Scarlett Johansson,424060,http://s3.amazonaws.com/brianfoo_art/hollywood/424060.jpg,f,w,"Ashkenazi Jewish, Danish",http://www.imdb.com/name/nm0424060/bio,0
-37,Captain America: The Winter Soldier,1843866,cast,4,Robert Redford,602,http://s3.amazonaws.com/brianfoo_art/hollywood/602.jpg,m,w,"English, Irish, and Scottish",http://www.imdb.com/name/nm0000602/bio,0
-37,Captain America: The Winter Soldier,1843866,cast,5,Sebastian Stan,1659221,http://s3.amazonaws.com/brianfoo_art/hollywood/1659221.jpg,m,w,Romanian,http://www.imdb.com/name/nm1659221/bio,0
-38,Guardians of the Galaxy,2015381,cast,1,Chris Pratt,695435,http://s3.amazonaws.com/brianfoo_art/hollywood/695435.jpg,m,w,"His mother is of Norwegian descent and his father had English, German, Swiss, and French-Canadian ancestry",http://www.imdb.com/name/nm0695435/bio,0
-38,Guardians of the Galaxy,2015381,cast,2,Zoe Saldana,757855,http://s3.amazonaws.com/brianfoo_art/hollywood/757855.jpg,f,h,Her father had Dominican ancestry; her mother is Puerto Rican. She also has Haitian and Lebanese ancestry.,http://www.imdb.com/name/nm0757855/bio,0
-38,Guardians of the Galaxy,2015381,cast,3,Dave Bautista,1176985,http://s3.amazonaws.com/brianfoo_art/hollywood/1176985.jpg,m,"w,a","His father is Filipino, and his mother has Greek ancestry",http://www.imdb.com/name/nm1176985/bio,0
-38,Guardians of the Galaxy,2015381,cast,4,Vin Diesel,4874,http://s3.amazonaws.com/brianfoo_art/hollywood/4874.jpg,m,"w,b","Mother is English, German, Scottish, and Irish. Biological father's race not publicly known. Diesel identifies as person of color. Some sources say his biological father was African-American ",http://ethnicelebs.com/vin-diesel,1
-38,Guardians of the Galaxy,2015381,cast,5,Bradley Cooper,177896,http://s3.amazonaws.com/brianfoo_art/hollywood/177896.jpg,m,w,His father was of Irish descent and his mother is of Italian ancestry,http://www.imdb.com/name/nm0177896/bio,1
-39,The Hunger Games: Mockingjay - Part 1,1951265,cast,1,Jennifer Lawrence,2225369,http://s3.amazonaws.com/brianfoo_art/hollywood/2225369.jpg,f,w,"English, German, Irish, and Scottish",http://www.imdb.com/name/nm2225369/bio,0
-39,The Hunger Games: Mockingjay - Part 1,1951265,cast,2,Josh Hutcherson,1242688,http://s3.amazonaws.com/brianfoo_art/hollywood/1242688.jpg,m,w," English, as well as Scottish, German, and distant Irish and French",http://www.imdb.com/name/nm1242688/bio,0
-39,The Hunger Games: Mockingjay - Part 1,1951265,cast,3,Liam Hemsworth,2955013,http://s3.amazonaws.com/brianfoo_art/hollywood/2955013.jpg,m,w,"Dutch (from his immigrant maternal grandfather), Irish, English, Scottish, and German",http://www.imdb.com/name/nm2955013/bio,0
-39,The Hunger Games: Mockingjay - Part 1,1951265,cast,4,Woody Harrelson,437,http://s3.amazonaws.com/brianfoo_art/hollywood/437.jpg,m,w,"English, Scottish, German, and distant Dutch and Welsh",http://www.imdb.com/name/nm0000437/bio,0
-39,The Hunger Games: Mockingjay - Part 1,1951265,cast,5,Donald Sutherland,661,http://s3.amazonaws.com/brianfoo_art/hollywood/661.jpg,m,w,"Scottish, as well as German and English",http://www.imdb.com/name/nm0000661/bio,0
-40,American Sniper,2179136,cast,1,Bradley Cooper,177896,http://s3.amazonaws.com/brianfoo_art/hollywood/177896.jpg,m,w,His father was of Irish descent and his mother is of Italian ancestry,http://www.imdb.com/name/nm0177896/bio,0
-40,American Sniper,2179136,cast,2,Sienna Miller,1092227,http://s3.amazonaws.com/brianfoo_art/hollywood/1092227.jpg,f,w,South African-born English,http://www.imdb.com/name/nm1092227/bio,0
-40,American Sniper,2179136,cast,3,Max Charles,1934618,http://s3.amazonaws.com/brianfoo_art/hollywood/1934618.jpg,m,w,,,0
-40,American Sniper,2179136,cast,4,Luke Grimes,2093766,http://s3.amazonaws.com/brianfoo_art/hollywood/2093766.jpg,m,w,,,0
-40,American Sniper,2179136,cast,5,Kyle Gallner,973177,http://s3.amazonaws.com/brianfoo_art/hollywood/973177.jpg,m,w,Russian Jewish,http://www.imdb.com/name/nm0973177/bio,0
-41,Spectre,2379713,cast,1,Daniel Craig,185819,http://s3.amazonaws.com/brianfoo_art/hollywood/185819.jpg,m,w,"English, as well as Welsh, Scottish, and Irish",http://www.imdb.com/name/nm0185819/bio,0
-41,Spectre,2379713,cast,2,Christoph Waltz,910607,http://s3.amazonaws.com/brianfoo_art/hollywood/910607.jpg,m,w,"German, Austrian, Viennese",http://www.imdb.com/name/nm0910607/bio,0
-41,Spectre,2379713,cast,3,Léa Seydoux,2244205,http://s3.amazonaws.com/brianfoo_art/hollywood/2244205.jpg,f,w,"French and Alsatian German descent, with more distant Spanish-Venezuelan roots on her father's side",http://www.imdb.com/name/nm2244205/bio,0
-41,Spectre,2379713,cast,4,Ralph Fiennes,146,http://s3.amazonaws.com/brianfoo_art/hollywood/146.jpg,m,w,"He is of English, Irish, and Scottish origin",http://www.imdb.com/name/nm0000146/bio,0
-41,Spectre,2379713,cast,5,Monica Bellucci,899,http://s3.amazonaws.com/brianfoo_art/hollywood/899.jpg,f,w,Italian,http://www.imdb.com/name/nm0000899/bio,0
-42,Cinderella (2015),1661199,cast,1,Cate Blanchett,949,http://s3.amazonaws.com/brianfoo_art/hollywood/949.jpg,f,w," English, some Scottish, and remote French",http://www.imdb.com/name/nm0000949/bio,0
-42,Cinderella (2015),1661199,cast,2,Lily James,4141252,http://s3.amazonaws.com/brianfoo_art/hollywood/4141252.jpg,f,w,"Scottish, English, French, and more distant German",http://www.imdb.com/name/nm4141252/bio,0
-42,Cinderella (2015),1661199,cast,3,Richard Madden,534635,http://s3.amazonaws.com/brianfoo_art/hollywood/534635.jpg,m,w,Scottish,https://en.wikipedia.org/wiki/Richard_Madden,0
-42,Cinderella (2015),1661199,cast,4,Helena Bonham Carter,307,http://s3.amazonaws.com/brianfoo_art/hollywood/307.jpg,f,"w,w,w,h","Father was of English ancestry; maternal grandfather was a half-Jewish/half-Catholic Spanish; maternal grandmother from a Jewish family (from Germany, Austria, France, Bohemia, and Ukraine)",http://www.imdb.com/name/nm0000307/bio,0
-42,Cinderella (2015),1661199,cast,5,Nonso Anozie,1996829,http://s3.amazonaws.com/brianfoo_art/hollywood/1996829.jpg,m,b,Nigerian,https://en.wikipedia.org/wiki/Nonso_Anozie#Life_and_career,0
-43,The Martian,3659388,cast,1,Matt Damon,354,http://s3.amazonaws.com/brianfoo_art/hollywood/354.jpg,m,w," His father is of English and Scottish descent, and his mother is of Finnish and Swedish ancestry",http://www.imdb.com/name/nm0000354/bio,0
-43,The Martian,3659388,cast,2,Jessica Chastain,1567113,http://s3.amazonaws.com/brianfoo_art/hollywood/1567113.jpg,f,"w,w,w,h","one quarter Spanish/Basque, as well as of one eighth Greek, descent, with the remainder of her ancestry including English, German, French, Dutch, Scots-Irish (Northern Irish), and Scottish",http://www.imdb.com/name/nm1567113/bio,0
-43,The Martian,3659388,cast,3,Kristen Wiig,1325419,http://s3.amazonaws.com/brianfoo_art/hollywood/1325419.jpg,f,w,"Norwegian (from her paternal grandfather), Irish, English, and Scottish",http://www.imdb.com/name/nm1325419/bio,0
-43,The Martian,3659388,cast,4,Jeff Daniels,1099,http://s3.amazonaws.com/brianfoo_art/hollywood/1099.jpg,m,w,"English, Northern Irish (Scots-Irish), Scottish, and German",http://www.imdb.com/name/nm0001099/bio,0
-43,The Martian,3659388,cast,5,Michael Peña,671567,http://s3.amazonaws.com/brianfoo_art/hollywood/671567.jpg,m,h,Mexican-American,http://www.imdb.com/name/nm0671567/bio,0
-44,The Hunger Games: Mockingjay - Part 2,1951266,cast,1,Jennifer Lawrence,2225369,http://s3.amazonaws.com/brianfoo_art/hollywood/2225369.jpg,f,w,"English, German, Irish, and Scottish",http://www.imdb.com/name/nm2225369/bio,0
-44,The Hunger Games: Mockingjay - Part 2,1951266,cast,2,Josh Hutcherson,1242688,http://s3.amazonaws.com/brianfoo_art/hollywood/1242688.jpg,m,w," English, as well as Scottish, German, and distant Irish and French",http://www.imdb.com/name/nm1242688/bio,0
-44,The Hunger Games: Mockingjay - Part 2,1951266,cast,3,Liam Hemsworth,2955013,http://s3.amazonaws.com/brianfoo_art/hollywood/2955013.jpg,m,w,"Dutch (from his immigrant maternal grandfather), Irish, English, Scottish, and German",http://www.imdb.com/name/nm2955013/bio,0
-44,The Hunger Games: Mockingjay - Part 2,1951266,cast,4,Woody Harrelson,437,http://s3.amazonaws.com/brianfoo_art/hollywood/437.jpg,m,w,"English, Scottish, German, and distant Dutch and Welsh",http://www.imdb.com/name/nm0000437/bio,0
-44,The Hunger Games: Mockingjay - Part 2,1951266,cast,5,Donald Sutherland,661,http://s3.amazonaws.com/brianfoo_art/hollywood/661.jpg,m,w,"Scottish, as well as German and English",http://www.imdb.com/name/nm0000661/bio,0
-45,Minions,2293640,cast,1,Sandra Bullock,113,http://s3.amazonaws.com/brianfoo_art/hollywood/113.jpg,f,w,"Irish, English, French, and German",http://www.imdb.com/name/nm0000113/bio,1
-45,Minions,2293640,cast,2,Jon Hamm,358316,http://s3.amazonaws.com/brianfoo_art/hollywood/358316.jpg,m,w,"German, English, and Irish",http://www.imdb.com/name/nm0358316/bio,1
-45,Minions,2293640,cast,3,Michael Keaton,474,http://s3.amazonaws.com/brianfoo_art/hollywood/474.jpg,m,w,"Irish, as well as English, Scottish, and German",http://www.imdb.com/name/nm0000474/bio,1
-45,Minions,2293640,cast,4,Allison Janney,5049,http://s3.amazonaws.com/brianfoo_art/hollywood/5049.jpg,f,w,English and German,http://www.imdb.com/name/nm0005049/bio,1
-45,Minions,2293640,cast,5,Steve Coogan,176869,http://s3.amazonaws.com/brianfoo_art/hollywood/176869.jpg,m,w,Irish,http://www.imdb.com/name/nm0176869/bio,1
-46,Furious 7,2820852,cast,1,Vin Diesel,4874,http://s3.amazonaws.com/brianfoo_art/hollywood/4874.jpg,m,"w,b","Mother is English, German, Scottish, and Irish. Biological father's race not publicly known. Diesel identifies as person of color. Some sources say his biological father was African-American ",http://ethnicelebs.com/vin-diesel,0
-46,Furious 7,2820852,cast,2,Paul Walker,908094,http://s3.amazonaws.com/brianfoo_art/hollywood/908094.jpg,m,w,English and German,http://www.imdb.com/name/nm0908094/bio,0
-46,Furious 7,2820852,cast,3,Jason Statham,5458,http://s3.amazonaws.com/brianfoo_art/hollywood/5458.jpg,m,w,,,0
-46,Furious 7,2820852,cast,4,Michelle Rodriguez,735442,http://s3.amazonaws.com/brianfoo_art/hollywood/735442.jpg,f,h,Puerto Rican and Dominican,http://www.imdb.com/name/nm0735442/bio,0
-46,Furious 7,2820852,cast,5,Jordana Brewster,108287,http://s3.amazonaws.com/brianfoo_art/hollywood/108287.jpg,f,"w,h",Mother is Brazilian; Father is English and Scottish; technically not hispanic; identifies as Latina,http://www.huffingtonpost.com/2012/06/13/dallas-star-jordana-brewster_n_1595303.html,0
-47,Inside Out,2096673,cast,1,Amy Poehler,688132,http://s3.amazonaws.com/brianfoo_art/hollywood/688132.jpg,f,w,"Irish (from her mother) and English, German, and Portuguese (from her father)",http://www.imdb.com/name/nm0688132/bio,1
-47,Inside Out,2096673,cast,2,Phyllis Smith,809613,http://s3.amazonaws.com/brianfoo_art/hollywood/809613.jpg,f,w,,,1
-47,Inside Out,2096673,cast,3,Richard Kind,454236,http://s3.amazonaws.com/brianfoo_art/hollywood/454236.jpg,m,w,,,1
-47,Inside Out,2096673,cast,4,Bill Hader,352778,http://s3.amazonaws.com/brianfoo_art/hollywood/352778.jpg,m,w,"German, Danish, Irish, and English",http://www.imdb.com/name/nm0352778/bio,1
-47,Inside Out,2096673,cast,5,Lewis Black,85400,http://s3.amazonaws.com/brianfoo_art/hollywood/85400.jpg,m,w,,,1
-48,Avengers: Age of Ultron,2395427,cast,1,Robert Downey Jr.,375,http://s3.amazonaws.com/brianfoo_art/hollywood/375.jpg,m,w,"Robert's father is of half Lithuanian Jewish, one quarter Hungarian Jewish, and one quarter Irish, descent, while Robert's mother was of English, Scottish, German, and Swiss-German",http://www.imdb.com/name/nm0000375/bio,0
-48,Avengers: Age of Ultron,2395427,cast,2,Chris Hemsworth,1165110,http://s3.amazonaws.com/brianfoo_art/hollywood/1165110.jpg,m,w,"Dutch (from his immigrant maternal grandfather), Irish, English, Scottish, and German",http://www.imdb.com/name/nm1165110/bio,0
-48,Avengers: Age of Ultron,2395427,cast,3,Mark Ruffalo,749263,http://s3.amazonaws.com/brianfoo_art/hollywood/749263.jpg,m,w,"His father's ancestry is Italian, and his mother is of half French-Canadian and half Italian descent",http://www.imdb.com/name/nm0749263/bio,0
-48,Avengers: Age of Ultron,2395427,cast,4,Chris Evans,262635,http://s3.amazonaws.com/brianfoo_art/hollywood/262635.jpg,m,w,"Chris's father is of half German and half Welsh/English/Scottish ancestry, while Chris's mother is of half Italian and half Irish descent",http://www.imdb.com/name/nm0262635/bio,0
-48,Avengers: Age of Ultron,2395427,cast,5,Scarlett Johansson,424060,http://s3.amazonaws.com/brianfoo_art/hollywood/424060.jpg,f,w,"Ashkenazi Jewish, Danish",http://www.imdb.com/name/nm0424060/bio,0
-49,Star Wars: The Force Awakens,2488496,cast,1,Daisy Ridley,5397459,http://s3.amazonaws.com/brianfoo_art/hollywood/5397459.jpg,f,w,,,0
-49,Star Wars: The Force Awakens,2488496,cast,2,John Boyega,3915784,http://s3.amazonaws.com/brianfoo_art/hollywood/3915784.jpg,m,b,,http://www.imdb.com/name/nm3915784/bio,0
-49,Star Wars: The Force Awakens,2488496,cast,3,Harrison Ford,148,http://s3.amazonaws.com/brianfoo_art/hollywood/148.jpg,m,w,"His father was of Irish and German ancestry, while his maternal grandparents were Jewish immigrants from Minsk, Belarus",http://www.imdb.com/name/nm0000148/bio,0
-49,Star Wars: The Force Awakens,2488496,cast,4,Adam Driver,3485845,http://s3.amazonaws.com/brianfoo_art/hollywood/3485845.jpg,m,w,"English, as well as Dutch, German, Irish, and Scottish",http://www.imdb.com/name/nm3485845/bio,0
-49,Star Wars: The Force Awakens,2488496,cast,5,Oscar Isaac,1209966,http://s3.amazonaws.com/brianfoo_art/hollywood/1209966.jpg,m,h,"Guatemalan, Cuban",http://www.imdb.com/name/nm1209966/bio,0
-50,Jurassic World,369610,cast,1,Chris Pratt,695435,http://s3.amazonaws.com/brianfoo_art/hollywood/695435.jpg,m,w,"His mother is of Norwegian descent and his father had English, German, Swiss, and French-Canadian ancestry",http://www.imdb.com/name/nm0695435/bio,0
-50,Jurassic World,369610,cast,2,Bryce Dallas Howard,397171,http://s3.amazonaws.com/brianfoo_art/hollywood/397171.jpg,f,w,"German, English, Scottish, and Irish",http://www.imdb.com/name/nm0397171/bio,0
-50,Jurassic World,369610,cast,3,Irrfan Khan,451234,http://s3.amazonaws.com/brianfoo_art/hollywood/451234.jpg,m,a,Indian,http://www.imdb.com/name/nm0451234/bio,0
-50,Jurassic World,369610,cast,4,Vincent D'Onofrio,352,http://s3.amazonaws.com/brianfoo_art/hollywood/352.jpg,m,w,Italian,http://www.imdb.com/name/nm0000352/bio,0
-50,Jurassic World,369610,cast,5,Ty Simpkins,1339223,http://s3.amazonaws.com/brianfoo_art/hollywood/1339223.jpg,m,w,,,0
-1,Thor,800369,director,1,Kenneth Branagh,110,http://s3.amazonaws.com/brianfoo_art/hollywood/110.jpg,m,w,Irish,http://www.imdb.com/name/nm0000110/bio,
-2,Sherlock Holmes: A Game of Shadows,1515091,director,1,Guy Ritchie,5363,http://s3.amazonaws.com/brianfoo_art/hollywood/5363.jpg,m,w,English,https://en.wikipedia.org/wiki/Guy_Ritchie#Early_life,
-3,Cars 2,1216475,director,1,John Lasseter,5124,http://s3.amazonaws.com/brianfoo_art/hollywood/5124.jpg,m,w,,,
-3,Cars 2,1216475,director,2,Brad Lewis,506977,none,m,w,,,
-4,Mission: Impossible - Ghost Protocol,1229238,director,1,Brad Bird,83348,http://s3.amazonaws.com/brianfoo_art/hollywood/83348.jpg,m,w,Irish grandfather,https://en.wikipedia.org/wiki/Brad_Bird#Early_life,
-5,Fast Five,1596343,director,1,Justin Lin,510912,http://s3.amazonaws.com/brianfoo_art/hollywood/510912.jpg,m,a,Taiwanese,https://en.wikipedia.org/wiki/Justin_Lin,
-6,Pirates of the Caribbean: On Stranger Tides,1298650,director,1,Rob Marshall,551128,http://s3.amazonaws.com/brianfoo_art/hollywood/551128.jpg,m,w,,,
-7,The Hangover Part II,1411697,director,1,Todd Phillips,680846,http://s3.amazonaws.com/brianfoo_art/hollywood/680846.jpg,m,w,,,
-8,The Twilight Saga: Breaking Dawn Part 1,1324999,director,1,Bill Condon,174374,http://s3.amazonaws.com/brianfoo_art/hollywood/174374.jpg,m,w,Irish Catholic,http://www.films42.com/chats/bill_condon.asp,
-9,Transformers: Dark of the Moon,1399103,director,1,Michael Bay,881,http://s3.amazonaws.com/brianfoo_art/hollywood/881.jpg,m,w,Grandfather was Russian,https://en.wikipedia.org/wiki/Michael_Bay#Early_life,
-10,Harry Potter and the Deathly Hallows Part 2,1201607,director,1,David Yates,946734,,m,w,English,http://www.imdb.com/name/nm0946734/bio,
-11,Madagascar 3: Europe's Most Wanted,1277953,director,1,Eric Darnell,201509,http://s3.amazonaws.com/brianfoo_art/hollywood/201509.jpg,m,w,,,
-11,Madagascar 3: Europe's Most Wanted,1277953,director,2,Tom McGrath,569891,http://s3.amazonaws.com/brianfoo_art/hollywood/569891.jpg,m,w,,,
-11,Madagascar 3: Europe's Most Wanted,1277953,director,3,Conrad Vernon,970447,http://s3.amazonaws.com/brianfoo_art/hollywood/970447.jpg,m,w,,,
-12,Ted,1637725,director,1,Seth MacFarlane,532235,http://s3.amazonaws.com/brianfoo_art/hollywood/532235.jpg,m,w,"English, Scottish, and Irish",http://www.imdb.com/name/nm0532235/bio,
-13,Brave,1217209,director,1,Mark Andrews,28764,http://s3.amazonaws.com/brianfoo_art/hollywood/28764.jpg,m,w,,,
-13,Brave,1217209,director,2,Brenda Chapman,152312,http://s3.amazonaws.com/brianfoo_art/hollywood/152312.jpg,f,w,,,
-13,Brave,1217209,director,3,Steve Purcell,700760,none,m,w,,,
-14,The Amazing Spider-Man,948470,director,1,Marc Webb,1989536,http://s3.amazonaws.com/brianfoo_art/hollywood/1989536.jpg,m,w,,,
-15,The Twilight Saga: Breaking Dawn Part 2,1673434,director,1,Bill Condon,174374,http://s3.amazonaws.com/brianfoo_art/hollywood/174374.jpg,m,w,Irish Catholic,http://www.films42.com/chats/bill_condon.asp,
-16,The Hobbit: An Unexpected Journey,903624,director,1,Peter Jackson,1392,http://s3.amazonaws.com/brianfoo_art/hollywood/1392.jpg,m,w,Parents immigrated from England to New Zealand,https://en.wikipedia.org/wiki/Peter_Jackson#Early_life,
-17,Skyfall,1074638,director,1,Sam Mendes,5222,http://s3.amazonaws.com/brianfoo_art/hollywood/5222.jpg,m,w,"His father, who is from Trinidad, is of Portuguese and Italian descent, and his mother is an English Jew",https://en.wikipedia.org/wiki/Sam_Mendes#Early_years,
-18,The Hunger Games,1392170,director,1,Gary Ross,2657,http://s3.amazonaws.com/brianfoo_art/hollywood/2657.jpg,m,w,,,
-19,The Dark Knight Rises,1345836,director,1,Christopher Nolan,634240,http://s3.amazonaws.com/brianfoo_art/hollywood/634240.jpg,m,w,Irish descent,http://www.imdb.com/name/nm0634240/bio,
-20,Marvel's The Avengers,848228,director,1,Joss Whedon,923736,http://s3.amazonaws.com/brianfoo_art/hollywood/923736.jpg,m,w,,,
-21,Oz The Great and Powerful,1623205,director,1,Sam Raimi,600,http://s3.amazonaws.com/brianfoo_art/hollywood/600.jpg,m,w,Hungarian Jewish and Russian Jewish,http://www.imdb.com/name/nm0000600/bio,
-22,Fast & Furious 6,1905041,director,1,Justin Lin,510912,http://s3.amazonaws.com/brianfoo_art/hollywood/510912.jpg,m,a,Taiwanese,https://en.wikipedia.org/wiki/Justin_Lin,
-23,The Hobbit: The Desolation of Smaug,1170358,director,1,Peter Jackson,1392,http://s3.amazonaws.com/brianfoo_art/hollywood/1392.jpg,m,w,Parents immigrated from England to New Zealand,https://en.wikipedia.org/wiki/Peter_Jackson#Early_life,
-24,Monsters University,1453405,director,1,Dan Scanlon,768959,http://s3.amazonaws.com/brianfoo_art/hollywood/768959.jpg,m,w,,,
-25,Gravity,1454468,director,1,Alfonso Cuarón,190859,http://s3.amazonaws.com/brianfoo_art/hollywood/190859.jpg,m,h,Mexican,http://www.imdb.com/name/nm0190859/bio,
-26,Man of Steel,770828,director,1,Zack Snyder,811583,http://s3.amazonaws.com/brianfoo_art/hollywood/811583.jpg,m,w,,,
-27,Despicable Me 2,1690953,director,1,Pierre Coffin,1853544,http://s3.amazonaws.com/brianfoo_art/hollywood/1853544.jpg,m,"w,a","French, Indonesian",https://en.wikipedia.org/wiki/Pierre_Coffin#Life_and_career,
-27,Despicable Me 2,1690953,director,2,Chris Renaud,719208,http://s3.amazonaws.com/brianfoo_art/hollywood/719208.jpg,m,w,,,
-28,Frozen,2294629,director,1,Chris Buck,118333,http://s3.amazonaws.com/brianfoo_art/hollywood/118333.jpg,m,w,,,
-28,Frozen,2294629,director,2,Jennifer Lee,1601644,http://s3.amazonaws.com/brianfoo_art/hollywood/1601644.jpg,f,w,,,
-29,Iron Man 3,1300854,director,1,Shane Black,948,http://s3.amazonaws.com/brianfoo_art/hollywood/948.jpg,m,w,,,
-30,The Hunger Games: Catching Fire,1951264,director,1,Francis Lawrence,1349376,http://s3.amazonaws.com/brianfoo_art/hollywood/1349376.jpg,m,w,,,
-31,Big Hero 6,2245084,director,1,Don Hall,2320658,http://s3.amazonaws.com/brianfoo_art/hollywood/2320658.jpg,m,w,,,
-31,Big Hero 6,2245084,director,2,Chris Williams,930261,http://s3.amazonaws.com/brianfoo_art/hollywood/930261.jpg,m,w,,,
-32,X-Men: Days of Future Past,1877832,director,1,Bryan Singer,1741,http://s3.amazonaws.com/brianfoo_art/hollywood/1741.jpg,m,w,,,
-33,Maleficent,1587310,director,1,Robert Stromberg,834902,http://s3.amazonaws.com/brianfoo_art/hollywood/834902.jpg,m,w,,,
-34,Transformers: Age of Extinction,2109248,director,1,Michael Bay,881,http://s3.amazonaws.com/brianfoo_art/hollywood/881.jpg,m,w,Grandfather was Russian,https://en.wikipedia.org/wiki/Michael_Bay#Early_life,
-35,The Hobbit: The Battle of the Five Armies,2310332,director,1,Peter Jackson,1392,http://s3.amazonaws.com/brianfoo_art/hollywood/1392.jpg,m,w,Parents immigrated from England to New Zealand,https://en.wikipedia.org/wiki/Peter_Jackson#Early_life,
-36,The LEGO Movie,1490017,director,1,Phil Lord,520488,http://s3.amazonaws.com/brianfoo_art/hollywood/520488.jpg,m,"w,h",mother is Cuban refugee,http://www.huffingtonpost.com/2013/04/12/phil-lord-jay-z-cuba_n_3069831.html,
-36,The LEGO Movie,1490017,director,2,Christopher Miller,588087,http://s3.amazonaws.com/brianfoo_art/hollywood/588087.jpg,m,w,,,
-37,Captain America: The Winter Soldier,1843866,director,1,Anthony Russo,751577,http://s3.amazonaws.com/brianfoo_art/hollywood/751577.jpg,m,w,,,
-37,Captain America: The Winter Soldier,1843866,director,2,Joe Russo,751648,http://s3.amazonaws.com/brianfoo_art/hollywood/751648.jpg,m,w,,,
-38,Guardians of the Galaxy,2015381,director,1,James Gunn,348181,http://s3.amazonaws.com/brianfoo_art/hollywood/348181.jpg,m,w,Irish Catholic,http://www.imdb.com/name/nm0348181/bio,
-39,The Hunger Games: Mockingjay - Part 1,1951265,director,1,Francis Lawrence,1349376,http://s3.amazonaws.com/brianfoo_art/hollywood/1349376.jpg,m,w,,,
-40,American Sniper,2179136,director,1,Clint Eastwood,142,http://s3.amazonaws.com/brianfoo_art/hollywood/142.jpg,m,w,"English, as well as Scottish, Irish, Dutch, and German",http://www.imdb.com/name/nm0000142/bio,
-41,Spectre,2379713,director,1,Sam Mendes,5222,http://s3.amazonaws.com/brianfoo_art/hollywood/5222.jpg,m,w,"His father, who is from Trinidad, is of Portuguese and Italian descent, and his mother is an English Jew",https://en.wikipedia.org/wiki/Sam_Mendes#Early_years,
-42,Cinderella (2015),1661199,director,1,Kenneth Branagh,110,http://s3.amazonaws.com/brianfoo_art/hollywood/110.jpg,m,w,Irish,http://www.imdb.com/name/nm0000110/bio,
-43,The Martian,3659388,director,1,Ridley Scott,631,http://s3.amazonaws.com/brianfoo_art/hollywood/631.jpg,m,w,English,http://www.imdb.com/name/nm0000631/bio,
-44,The Hunger Games: Mockingjay - Part 2,1951266,director,1,Francis Lawrence,1349376,http://s3.amazonaws.com/brianfoo_art/hollywood/1349376.jpg,m,w,,,
-45,Minions,2293640,director,1,Kyle Balda,49633,none,m,w,Maltese,https://en.wikipedia.org/wiki/Kyle_Balda#Early_life,
-45,Minions,2293640,director,2,Pierre Coffin,1853544,http://s3.amazonaws.com/brianfoo_art/hollywood/1853544.jpg,m,"w,a","French, Indonesian",https://en.wikipedia.org/wiki/Pierre_Coffin#Life_and_career,
-46,Furious 7,2820852,director,1,James Wan,1490123,http://s3.amazonaws.com/brianfoo_art/hollywood/1490123.jpg,m,a,Malaysian,http://www.imdb.com/name/nm1490123/bio,
-47,Inside Out,2096673,director,1,Pete Docter,230032,http://s3.amazonaws.com/brianfoo_art/hollywood/230032.jpg,m,w,"German, Danish",http://www.imdb.com/name/nm0230032/bio,
-47,Inside Out,2096673,director,2,Ronnie Del Carmen,215455,http://s3.amazonaws.com/brianfoo_art/hollywood/215455.jpg,m,a,Filipino,https://en.wikipedia.org/wiki/Ronnie_del_Carmen,
-48,Avengers: Age of Ultron,2395427,director,1,Joss Whedon,923736,http://s3.amazonaws.com/brianfoo_art/hollywood/923736.jpg,m,w,,,
-49,Star Wars: The Force Awakens,2488496,director,1,J.J. Abrams,9190,http://s3.amazonaws.com/brianfoo_art/hollywood/9190.jpg,m,w,Jewish,,
-50,Jurassic World,369610,director,1,Colin Trevorrow,1119880,http://s3.amazonaws.com/brianfoo_art/hollywood/1119880.jpg,m,w,,,
-1,Thor,800369,writer,1,Ashley Miller,1005420,none,m,w,,,
-1,Thor,800369,writer,2,Zack Stentz,826714,none,m,w,,,
-1,Thor,800369,writer,3,Don Payne,668309,none,m,w,,,
-2,Sherlock Holmes: A Game of Shadows,1515091,writer,1,Michele Mulroney,1802251,http://s3.amazonaws.com/brianfoo_art/hollywood/1802251.jpg,f,w,,,
-2,Sherlock Holmes: A Game of Shadows,1515091,writer,2,Kieran Mulroney,612487,http://s3.amazonaws.com/brianfoo_art/hollywood/612487.jpg,m,w,"Irish, German; reference link refers to Dermot Mulroney, his brother",http://www.imdb.com/name/nm0000551/bio?ref_=nm_ov_bio_sm,
-2,Sherlock Holmes: A Game of Shadows,1515091,writer,3,Arthur Conan Doyle,236279,http://s3.amazonaws.com/brianfoo_art/hollywood/236279.jpg,m,w,"English, Irish",https://en.wikipedia.org/wiki/Arthur_Conan_Doyle#Early_life,
-3,Cars 2,1216475,writer,1,John Lasseter,5124,http://s3.amazonaws.com/brianfoo_art/hollywood/5124.jpg,m,w,,,
-3,Cars 2,1216475,writer,2,Brad Lewis,506977,none,m,w,,,
-3,Cars 2,1216475,writer,3,Dan Fogelman,1557594,http://s3.amazonaws.com/brianfoo_art/hollywood/1557594.jpg,m,w,Jewish,,
-4,Mission: Impossible - Ghost Protocol,1229238,writer,1,Bruce Geller,312367,none,m,w,,,
-4,Mission: Impossible - Ghost Protocol,1229238,writer,2,Josh Appelbaum,32227,none,m,w,,,
-4,Mission: Impossible - Ghost Protocol,1229238,writer,3,André Nemec,625858,http://s3.amazonaws.com/brianfoo_art/hollywood/625858.jpg,m,w,,,
-5,Fast Five,1596343,writer,1,Chris Morgan,604555,none,m,w,,,
-5,Fast Five,1596343,writer,2,Gary Scott Thompson,860155,none,m,w,,,
-6,Pirates of the Caribbean: On Stranger Tides,1298650,writer,1,Ted Elliott,254645,none,m,w,,,
-6,Pirates of the Caribbean: On Stranger Tides,1298650,writer,2,Terry Rossio,744429,none,m,w,,,
-7,The Hangover Part II,1411697,writer,1,Craig Mazin,563301,http://s3.amazonaws.com/brianfoo_art/hollywood/563301.jpg,m,w,,,
-7,The Hangover Part II,1411697,writer,2,Scot Armstrong,35905,none,m,w,,,
-7,The Hangover Part II,1411697,writer,3,Todd Phillips,680846,http://s3.amazonaws.com/brianfoo_art/hollywood/680846.jpg,m,w,,,
-8,The Twilight Saga: Breaking Dawn Part 1,1324999,writer,1,Melissa Rosenberg,742279,http://s3.amazonaws.com/brianfoo_art/hollywood/742279.jpg,f,w,"Irish Catholic, Jewish",https://en.wikipedia.org/wiki/Melissa_Rosenberg#Early_life,
-8,The Twilight Saga: Breaking Dawn Part 1,1324999,writer,2,Stephenie Meyer,2769412,http://s3.amazonaws.com/brianfoo_art/hollywood/2769412.jpg,f,w,,,
-9,Transformers: Dark of the Moon,1399103,writer,1,Ehren Kruger,472567,http://s3.amazonaws.com/brianfoo_art/hollywood/472567.jpg,m,w,,,
-10,Harry Potter and the Deathly Hallows Part 2,1201607,writer,1,Steve Kloves,460141,none,m,w,,,
-10,Harry Potter and the Deathly Hallows Part 2,1201607,writer,2,J.K. Rowling,746830,http://s3.amazonaws.com/brianfoo_art/hollywood/746830.jpg,f,w,Her mother was half-French and half-Scottish,http://www.imdb.com/name/nm0746830/bio,
-11,Madagascar 3: Europe's Most Wanted,1277953,writer,1,Eric Darnell,201509,http://s3.amazonaws.com/brianfoo_art/hollywood/201509.jpg,m,w,,,
-11,Madagascar 3: Europe's Most Wanted,1277953,writer,2,Noah Baumbach,876,http://s3.amazonaws.com/brianfoo_art/hollywood/876.jpg,m,w,,,
-12,Ted,1637725,writer,1,Seth MacFarlane,532235,http://s3.amazonaws.com/brianfoo_art/hollywood/532235.jpg,m,w,"English, Scottish, and Irish",http://www.imdb.com/name/nm0532235/bio,
-12,Ted,1637725,writer,2,Alec Sulkin,1273148,http://s3.amazonaws.com/brianfoo_art/hollywood/1273148.jpg,m,w,,,
-12,Ted,1637725,writer,3,Wellesley Wild,1273397,none,m,w,,,
-13,Brave,1217209,writer,1,Brenda Chapman,152312,http://s3.amazonaws.com/brianfoo_art/hollywood/152312.jpg,f,w,,,
-13,Brave,1217209,writer,2,Mark Andrews,28764,http://s3.amazonaws.com/brianfoo_art/hollywood/28764.jpg,m,w,,,
-13,Brave,1217209,writer,3,Steve Purcell,700760,none,m,w,,,
-14,The Amazing Spider-Man,948470,writer,1,James Vanderbilt,888743,http://s3.amazonaws.com/brianfoo_art/hollywood/888743.jpg,m,w,The Vanderbilt family is an American family of Dutch origin,https://en.wikipedia.org/wiki/James_Vanderbilt#Early_life_and_education,
-14,The Amazing Spider-Man,948470,writer,2,Alvin Sargent,765091,none,m,w,,,
-14,The Amazing Spider-Man,948470,writer,3,Steve Kloves,460141,none,m,w,,,
-15,The Twilight Saga: Breaking Dawn Part 2,1673434,writer,1,Melissa Rosenberg,742279,http://s3.amazonaws.com/brianfoo_art/hollywood/742279.jpg,f,w,"Irish Catholic, Jewish",https://en.wikipedia.org/wiki/Melissa_Rosenberg#Early_life,
-15,The Twilight Saga: Breaking Dawn Part 2,1673434,writer,2,Stephenie Meyer,2769412,http://s3.amazonaws.com/brianfoo_art/hollywood/2769412.jpg,f,w,,,
-16,The Hobbit: An Unexpected Journey,903624,writer,1,Fran Walsh,909638,http://s3.amazonaws.com/brianfoo_art/hollywood/909638.jpg,f,w,Irish,https://en.wikipedia.org/wiki/Fran_Walsh#Early_life,
-16,The Hobbit: An Unexpected Journey,903624,writer,2,Philippa Boyens,101991,http://s3.amazonaws.com/brianfoo_art/hollywood/101991.jpg,f,w,,,
-16,The Hobbit: An Unexpected Journey,903624,writer,3,Peter Jackson,1392,http://s3.amazonaws.com/brianfoo_art/hollywood/1392.jpg,m,w,Parents immigrated from England to New Zealand,https://en.wikipedia.org/wiki/Peter_Jackson#Early_life,
-17,Skyfall,1074638,writer,1,Neal Purvis,701031,none,m,w,,,
-17,Skyfall,1074638,writer,2,Robert Wade,905498,none,m,w,,,
-17,Skyfall,1074638,writer,3,John Logan,517589,http://s3.amazonaws.com/brianfoo_art/hollywood/517589.jpg,m,w,Irish,https://en.wikipedia.org/wiki/John_Logan_(writer)#Early_life,
-18,The Hunger Games,1392170,writer,1,Gary Ross,2657,http://s3.amazonaws.com/brianfoo_art/hollywood/2657.jpg,m,w,,,
-18,The Hunger Games,1392170,writer,2,Suzanne Collins,1056741,http://s3.amazonaws.com/brianfoo_art/hollywood/1056741.jpg,f,w,,,
-18,The Hunger Games,1392170,writer,3,Billy Ray,712753,http://s3.amazonaws.com/brianfoo_art/hollywood/712753.jpg,m,w,,,
-19,The Dark Knight Rises,1345836,writer,1,Jonathan Nolan,634300,http://s3.amazonaws.com/brianfoo_art/hollywood/634300.jpg,m,w,English-American,https://en.wikipedia.org/wiki/Jonathan_Nolan,
-19,The Dark Knight Rises,1345836,writer,2,Christopher Nolan,634240,http://s3.amazonaws.com/brianfoo_art/hollywood/634240.jpg,m,w,Irish descent,http://www.imdb.com/name/nm0634240/bio,
-20,Marvel's The Avengers,848228,writer,1,Joss Whedon,923736,http://s3.amazonaws.com/brianfoo_art/hollywood/923736.jpg,m,w,,,
-20,Marvel's The Avengers,848228,writer,2,Zak Penn,672015,http://s3.amazonaws.com/brianfoo_art/hollywood/672015.jpg,m,w,,,
-21,Oz The Great and Powerful,1623205,writer,1,Mitchell Kapner,438449,none,m,w,,,
-21,Oz The Great and Powerful,1623205,writer,2,David Lindsay-Abaire,1865755,http://s3.amazonaws.com/brianfoo_art/hollywood/1865755.jpg,m,w,,,
-22,Fast & Furious 6,1905041,writer,1,Chris Morgan,604555,none,m,w,,,
-22,Fast & Furious 6,1905041,writer,2,Gary Scott Thompson,860155,none,m,w,,,
-23,The Hobbit: The Desolation of Smaug,1170358,writer,1,Fran Walsh,909638,http://s3.amazonaws.com/brianfoo_art/hollywood/909638.jpg,f,w,Irish,https://en.wikipedia.org/wiki/Fran_Walsh#Early_life,
-23,The Hobbit: The Desolation of Smaug,1170358,writer,2,Philippa Boyens,101991,http://s3.amazonaws.com/brianfoo_art/hollywood/101991.jpg,f,w,,,
-23,The Hobbit: The Desolation of Smaug,1170358,writer,3,Peter Jackson,1392,http://s3.amazonaws.com/brianfoo_art/hollywood/1392.jpg,m,w,Parents immigrated from England to New Zealand,https://en.wikipedia.org/wiki/Peter_Jackson#Early_life,
-24,Monsters University,1453405,writer,1,Dan Scanlon,768959,http://s3.amazonaws.com/brianfoo_art/hollywood/768959.jpg,m,w,,,
-24,Monsters University,1453405,writer,2,Daniel Gerson,314870,none,m,w,,,
-24,Monsters University,1453405,writer,3,Robert L. Baird,47916,none,m,w,,,
-25,Gravity,1454468,writer,1,Alfonso Cuarón,190859,http://s3.amazonaws.com/brianfoo_art/hollywood/190859.jpg,m,h,Mexican,http://www.imdb.com/name/nm0190859/bio,
-25,Gravity,1454468,writer,2,Jonás Cuarón,190861,http://s3.amazonaws.com/brianfoo_art/hollywood/190861.jpg,m,h,Mexican,http://www.imdb.com/name/nm0190861/bio,
-25,Gravity,1454468,writer,3,George Clooney,123,http://s3.amazonaws.com/brianfoo_art/hollywood/123.jpg,m,w,"Irish, English, and German",http://www.imdb.com/name/nm0000123/bio,
-26,Man of Steel,770828,writer,1,David S. Goyer,333060,http://s3.amazonaws.com/brianfoo_art/hollywood/333060.jpg,m,w,,,
-26,Man of Steel,770828,writer,3,Christopher Nolan,634240,http://s3.amazonaws.com/brianfoo_art/hollywood/634240.jpg,m,w,Irish descent,http://www.imdb.com/name/nm0634240/bio,
-27,Despicable Me 2,1690953,writer,1,Cinco Paul,666791,none,m,w,,,
-27,Despicable Me 2,1690953,writer,2,Ken Daurio,202425,http://s3.amazonaws.com/brianfoo_art/hollywood/202425.jpg,m,w,,,
-28,Frozen,2294629,writer,1,Jennifer Lee,1601644,http://s3.amazonaws.com/brianfoo_art/hollywood/1601644.jpg,f,w,,,
-28,Frozen,2294629,writer,2,Hans Christian Andersen,26153,none,m,w,Danish,https://en.wikipedia.org/wiki/Hans_Christian_Andersen,
-28,Frozen,2294629,writer,3,Chris Buck,118333,http://s3.amazonaws.com/brianfoo_art/hollywood/118333.jpg,m,w,,,
-29,Iron Man 3,1300854,writer,1,Drew Pearce,1510800,http://s3.amazonaws.com/brianfoo_art/hollywood/1510800.jpg,m,w,,,
-29,Iron Man 3,1300854,writer,2,Shane Black,948,http://s3.amazonaws.com/brianfoo_art/hollywood/948.jpg,m,w,,,
-29,Iron Man 3,1300854,writer,3,Stan Lee,498278,http://s3.amazonaws.com/brianfoo_art/hollywood/498278.jpg,m,w,Romanian Jewish,http://www.imdb.com/name/nm0498278/bio,
-30,The Hunger Games: Catching Fire,1951264,writer,1,Simon Beaufoy,64479,http://s3.amazonaws.com/brianfoo_art/hollywood/64479.jpg,m,w,,,
-30,The Hunger Games: Catching Fire,1951264,writer,2,Michael Arndt,1578335,http://s3.amazonaws.com/brianfoo_art/hollywood/1578335.jpg,m,w,,,
-30,The Hunger Games: Catching Fire,1951264,writer,3,Suzanne Collins,1056741,http://s3.amazonaws.com/brianfoo_art/hollywood/1056741.jpg,f,w,,,
-31,Big Hero 6,2245084,writer,1,Jordan Roberts,1471001,none,m,w,,,
-31,Big Hero 6,2245084,writer,2,Robert L. Baird,47916,none,m,w,,,
-31,Big Hero 6,2245084,writer,3,Daniel Gerson,314870,none,m,w,,,
-32,X-Men: Days of Future Past,1877832,writer,1,Simon Kinberg,1334526,http://s3.amazonaws.com/brianfoo_art/hollywood/1334526.jpg,m,w,,,
-32,X-Men: Days of Future Past,1877832,writer,2,Jane Goldman,963359,http://s3.amazonaws.com/brianfoo_art/hollywood/963359.jpg,f,w,,,
-33,Maleficent,1587310,writer,1,Linda Woolverton,941314,http://s3.amazonaws.com/brianfoo_art/hollywood/941314.jpg,f,w,,,
-33,Maleficent,1587310,writer,2,Charles Perrault,674518,none,m,w,French,https://en.wikipedia.org/wiki/Charles_Perrault,
-33,Maleficent,1587310,writer,3,Milt Banta,52520,none,m,w,,,
-34,Transformers: Age of Extinction,2109248,writer,1,Ehren Kruger,472567,http://s3.amazonaws.com/brianfoo_art/hollywood/472567.jpg,m,w,,,
-35,The Hobbit: The Battle of the Five Armies,2310332,writer,1,Fran Walsh,909638,http://s3.amazonaws.com/brianfoo_art/hollywood/909638.jpg,f,w,Irish,https://en.wikipedia.org/wiki/Fran_Walsh#Early_life,
-35,The Hobbit: The Battle of the Five Armies,2310332,writer,2,Philippa Boyens,101991,http://s3.amazonaws.com/brianfoo_art/hollywood/101991.jpg,f,w,,,
-35,The Hobbit: The Battle of the Five Armies,2310332,writer,3,Peter Jackson,1392,http://s3.amazonaws.com/brianfoo_art/hollywood/1392.jpg,m,w,Parents immigrated from England to New Zealand,https://en.wikipedia.org/wiki/Peter_Jackson#Early_life,
-36,The LEGO Movie,1490017,writer,1,Phil Lord,520488,http://s3.amazonaws.com/brianfoo_art/hollywood/520488.jpg,m,"w,h",mother is Cuban refugee,http://www.huffingtonpost.com/2013/04/12/phil-lord-jay-z-cuba_n_3069831.html,
-36,The LEGO Movie,1490017,writer,2,Christopher Miller,588087,http://s3.amazonaws.com/brianfoo_art/hollywood/588087.jpg,m,w,,,
-36,The LEGO Movie,1490017,writer,3,Dan Hageman,1087952,none,m,w,,,
-37,Captain America: The Winter Soldier,1843866,writer,1,Christopher Markus,1321655,http://s3.amazonaws.com/brianfoo_art/hollywood/1321655.jpg,m,w,,,
-37,Captain America: The Winter Soldier,1843866,writer,2,Stephen McFeely,1321656,http://s3.amazonaws.com/brianfoo_art/hollywood/1321656.jpg,m,w,,,
-37,Captain America: The Winter Soldier,1843866,writer,3,Joe Simon,800209,none,m,w,,,
-38,Guardians of the Galaxy,2015381,writer,1,James Gunn,348181,http://s3.amazonaws.com/brianfoo_art/hollywood/348181.jpg,m,w,Irish Catholic,http://www.imdb.com/name/nm0348181/bio,
-38,Guardians of the Galaxy,2015381,writer,2,Nicole Perlman,2270979,http://s3.amazonaws.com/brianfoo_art/hollywood/2270979.jpg,f,w,,,
-38,Guardians of the Galaxy,2015381,writer,3,Dan Abnett,3966115,none,m,w,English,https://en.wikipedia.org/wiki/Dan_Abnett,
-39,The Hunger Games: Mockingjay - Part 1,1951265,writer,1,Peter Craig,185976,http://s3.amazonaws.com/brianfoo_art/hollywood/185976.jpg,m,w,,,
-39,The Hunger Games: Mockingjay - Part 1,1951265,writer,2,Danny Strong,834960,http://s3.amazonaws.com/brianfoo_art/hollywood/834960.jpg,m,w,"Lithuanian, Russian, and Polish",https://en.wikipedia.org/wiki/Danny_Strong#Early_life,
-39,The Hunger Games: Mockingjay - Part 1,1951265,writer,3,Suzanne Collins,1056741,http://s3.amazonaws.com/brianfoo_art/hollywood/1056741.jpg,f,w,,,
-40,American Sniper,2179136,writer,1,Jason Hall,355699,http://s3.amazonaws.com/brianfoo_art/hollywood/355699.jpg,m,w,,,
-40,American Sniper,2179136,writer,2,Chris Kyle,4881574,none,m,w,,,
-40,American Sniper,2179136,writer,3,Scott McEwen,6984200,none,m,w,,,
-41,Spectre,2379713,writer,1,John Logan,517589,http://s3.amazonaws.com/brianfoo_art/hollywood/517589.jpg,m,w,Irish,https://en.wikipedia.org/wiki/John_Logan_(writer)#Early_life,
-41,Spectre,2379713,writer,2,Neal Purvis,701031,none,m,w,,,
-41,Spectre,2379713,writer,3,Robert Wade,905498,none,m,w,,,
-42,Cinderella (2015),1661199,writer,1,Chris Weitz,919363,http://s3.amazonaws.com/brianfoo_art/hollywood/919363.jpg,m,"w,h","His father was a German Jewish immigrant, his maternal grandfather was a Czech Jewish immigrant, and his maternal grandmother was Mexican",http://www.imdb.com/name/nm0919363/bio,
-43,The Martian,3659388,writer,1,Drew Goddard,1206844,http://s3.amazonaws.com/brianfoo_art/hollywood/1206844.jpg,m,w,,,
-43,The Martian,3659388,writer,2,Andy Weir,1083982,none,m,w,,,
-44,The Hunger Games: Mockingjay - Part 2,1951266,writer,1,Peter Craig,185976,http://s3.amazonaws.com/brianfoo_art/hollywood/185976.jpg,m,w,,,
-44,The Hunger Games: Mockingjay - Part 2,1951266,writer,2,Danny Strong,834960,http://s3.amazonaws.com/brianfoo_art/hollywood/834960.jpg,m,w,"Lithuanian, Russian, and Polish",https://en.wikipedia.org/wiki/Danny_Strong#Early_life,
-44,The Hunger Games: Mockingjay - Part 2,1951266,writer,3,Suzanne Collins,1056741,http://s3.amazonaws.com/brianfoo_art/hollywood/1056741.jpg,f,w,,,
-45,Minions,2293640,writer,1,Brian Lynch,528244,none,m,w,,,
-46,Furious 7,2820852,writer,1,Chris Morgan,604555,none,m,w,,,
-46,Furious 7,2820852,writer,2,Gary Scott Thompson,860155,none,m,w,,,
-47,Inside Out,2096673,writer,1,Pete Docter,230032,http://s3.amazonaws.com/brianfoo_art/hollywood/230032.jpg,m,w,"German, Danish",http://www.imdb.com/name/nm0230032/bio,
-47,Inside Out,2096673,writer,2,Ronnie Del Carmen,215455,http://s3.amazonaws.com/brianfoo_art/hollywood/215455.jpg,m,a,Filipino,https://en.wikipedia.org/wiki/Ronnie_del_Carmen,
-48,Avengers: Age of Ultron,2395427,writer,1,Joss Whedon,923736,http://s3.amazonaws.com/brianfoo_art/hollywood/923736.jpg,m,w,,,
-48,Avengers: Age of Ultron,2395427,writer,2,Stan Lee,498278,http://s3.amazonaws.com/brianfoo_art/hollywood/498278.jpg,m,w,Romanian Jewish,http://www.imdb.com/name/nm0498278/bio,
-48,Avengers: Age of Ultron,2395427,writer,3,Jack Kirby,456158,none,m,w,Austrian Jewish,http://www.imdb.com/name/nm0456158/bio,
-49,Star Wars: The Force Awakens,2488496,writer,1,Lawrence Kasdan,1410,http://s3.amazonaws.com/brianfoo_art/hollywood/1410.jpg,m,w,,,
-49,Star Wars: The Force Awakens,2488496,writer,2,J.J. Abrams,9190,http://s3.amazonaws.com/brianfoo_art/hollywood/9190.jpg,m,w,Jewish,,
-49,Star Wars: The Force Awakens,2488496,writer,3,Michael Arndt,1578335,http://s3.amazonaws.com/brianfoo_art/hollywood/1578335.jpg,m,w,,,
-50,Jurassic World,369610,writer,1,Rick Jaffa,415425,none,m,w,,,
-50,Jurassic World,369610,writer,2,Amanda Silver,798646,none,f,w,,,
-50,Jurassic World,369610,writer,3,Colin Trevorrow,1119880,http://s3.amazonaws.com/brianfoo_art/hollywood/1119880.jpg,m,w,,,
+movie_name,movie_imdb_id,role,order,name,imdb_id,img,gender,races,note,reference_url,voice
+Thor,800369,cast,1,Chris Hemsworth,1165110,http://s3.amazonaws.com/brianfoo_art/hollywood/1165110.jpg,m,w,"Dutch (from his immigrant maternal grandfather), Irish, English, Scottish, and German",http://www.imdb.com/name/nm1165110/bio,0
+Thor,800369,cast,2,Natalie Portman,204,http://s3.amazonaws.com/brianfoo_art/hollywood/204.jpg,f,w,"Ashkenazi Jewish, Polish, Romanian, Austrian, Russian, Lithuanian",http://www.imdb.com/name/nm0000204/bio,0
+Thor,800369,cast,3,Tom Hiddleston,1089991,http://s3.amazonaws.com/brianfoo_art/hollywood/1089991.jpg,m,w,"His father is Scottish. His mother is English, and has English, Welsh, and German ancestry.",http://www.imdb.com/name/nm1089991/bio,0
+Thor,800369,cast,4,Anthony Hopkins,164,http://s3.amazonaws.com/brianfoo_art/hollywood/164.jpg,m,w,half Welsh and half English,http://www.imdb.com/name/nm0000164/bio,0
+Thor,800369,cast,5,Stellan Skarsgård,1745,http://s3.amazonaws.com/brianfoo_art/hollywood/1745.jpg,m,w,Swedish,http://www.imdb.com/name/nm0001745/bio,0
+Sherlock Holmes: A Game of Shadows,1515091,cast,1,Robert Downey Jr.,375,http://s3.amazonaws.com/brianfoo_art/hollywood/375.jpg,m,w,"Robert's father is of half Lithuanian Jewish, one quarter Hungarian Jewish, and one quarter Irish, descent, while Robert's mother was of English, Scottish, German, and Swiss-German",http://www.imdb.com/name/nm0000375/bio,0
+Sherlock Holmes: A Game of Shadows,1515091,cast,2,Jude Law,179,http://s3.amazonaws.com/brianfoo_art/hollywood/179.jpg,m,w,"English, Scottish",http://www.imdb.com/name/nm0000179/bio,0
+Sherlock Holmes: A Game of Shadows,1515091,cast,3,Noomi Rapace,636426,http://s3.amazonaws.com/brianfoo_art/hollywood/636426.jpg,f,"w,h","half Spanish, half Swedish",http://www.imdb.com/name/nm0636426/bio,0
+Sherlock Holmes: A Game of Shadows,1515091,cast,4,Rachel McAdams,1046097,http://s3.amazonaws.com/brianfoo_art/hollywood/1046097.jpg,f,w,"English, Welsh, Irish, and Scottish",http://www.imdb.com/name/nm1046097/bio,0
+Sherlock Holmes: A Game of Shadows,1515091,cast,5,Jared Harris,364813,http://s3.amazonaws.com/brianfoo_art/hollywood/364813.jpg,m,w,"Irish, Welsh",http://www.imdb.com/name/nm0364813/bio,0
+Cars 2,1216475,cast,1,Larry Guy the Cable,1249256,http://s3.amazonaws.com/brianfoo_art/hollywood/1249256.jpg,m,w,,,1
+Cars 2,1216475,cast,2,Owen Wilson,5562,http://s3.amazonaws.com/brianfoo_art/hollywood/5562.jpg,m,w,Irish-American,http://www.imdb.com/name/nm0005562/bio,1
+Cars 2,1216475,cast,3,Michael Caine,323,http://s3.amazonaws.com/brianfoo_art/hollywood/323.jpg,m,w,"His father had English, Irish, and, reportedly, gypsy ancestry",https://en.wikipedia.org/wiki/Michael_Caine#Early_life,1
+Cars 2,1216475,cast,4,Emily Mortimer,607865,http://s3.amazonaws.com/brianfoo_art/hollywood/607865.jpg,f,w,,,1
+Cars 2,1216475,cast,5,Eddie Izzard,412850,http://s3.amazonaws.com/brianfoo_art/hollywood/412850.jpg,m,w,English,https://en.wikipedia.org/wiki/Eddie_Izzard#Early_life,1
+Mission: Impossible - Ghost Protocol,1229238,cast,1,Tom Cruise,129,http://s3.amazonaws.com/brianfoo_art/hollywood/129.jpg,m,w,"Irish, German, and English",http://www.imdb.com/name/nm0000129/bio,0
+Mission: Impossible - Ghost Protocol,1229238,cast,2,Paula Patton,1745736,http://s3.amazonaws.com/brianfoo_art/hollywood/1745736.jpg,f,"w,b","Her father is African-American and her mother, who is caucasian, has German, English, and Dutch ancestry",http://www.imdb.com/name/nm1745736/bio,0
+Mission: Impossible - Ghost Protocol,1229238,cast,3,Simon Pegg,670408,http://s3.amazonaws.com/brianfoo_art/hollywood/670408.jpg,m,w,,,0
+Mission: Impossible - Ghost Protocol,1229238,cast,4,Jeremy Renner,719637,http://s3.amazonaws.com/brianfoo_art/hollywood/719637.jpg,m,w," German, English, Scottish, Irish, and Swedish; some of his forebears also lived in Panama",http://www.imdb.com/name/nm0719637/bio,0
+Mission: Impossible - Ghost Protocol,1229238,cast,5,Michael Nyqvist,638824,http://s3.amazonaws.com/brianfoo_art/hollywood/638824.jpg,m,w,"Swedish, Italian",http://www.imdb.com/name/nm0638824/bio,0
+Fast Five,1596343,cast,1,Vin Diesel,4874,http://s3.amazonaws.com/brianfoo_art/hollywood/4874.jpg,m,"w,b","Mother is English, German, Scottish, and Irish. Biological father's race not publicly known. Diesel identifies as person of color. Some sources say his biological father was African-American ",http://ethnicelebs.com/vin-diesel,0
+Fast Five,1596343,cast,2,Paul Walker,908094,http://s3.amazonaws.com/brianfoo_art/hollywood/908094.jpg,m,w,English and German,http://www.imdb.com/name/nm0908094/bio,0
+Fast Five,1596343,cast,3,Jordana Brewster,108287,http://s3.amazonaws.com/brianfoo_art/hollywood/108287.jpg,f,"w,h",Mother is Brazilian; Father is English and Scottish; technically not hispanic; identifies as Latina,http://www.huffingtonpost.com/2012/06/13/dallas-star-jordana-brewster_n_1595303.html,0
+Fast Five,1596343,cast,4,Tyrese Gibson,879085,http://s3.amazonaws.com/brianfoo_art/hollywood/879085.jpg,m,b,,http://www.imdb.com/name/nm0879085/awards,0
+Fast Five,1596343,cast,5,Ludacris,524839,http://s3.amazonaws.com/brianfoo_art/hollywood/524839.jpg,m,"b,b,w,o","African-American, English, Jewish, and Native American ancestry",https://en.wikipedia.org/wiki/Ludacris#Early_life,0
+Pirates of the Caribbean: On Stranger Tides,1298650,cast,1,Johnny Depp,136,http://s3.amazonaws.com/brianfoo_art/hollywood/136.jpg,m,w,"English, as well as Irish, Scots-Irish, Scottish, Welsh, French, Dutch, Belgian (Flemish), and German",http://www.imdb.com/name/nm0000136/bio,0
+Pirates of the Caribbean: On Stranger Tides,1298650,cast,2,Penélope Cruz,4851,http://s3.amazonaws.com/brianfoo_art/hollywood/4851.jpg,f,h,Spanish,http://www.imdb.com/name/nm0004851/bio,0
+Pirates of the Caribbean: On Stranger Tides,1298650,cast,3,Geoffrey Rush,1691,http://s3.amazonaws.com/brianfoo_art/hollywood/1691.jpg,m,w,"His mother was of German descent and his father had English, Irish, and Scottish ancestry",http://www.imdb.com/name/nm0001691/bio,0
+Pirates of the Caribbean: On Stranger Tides,1298650,cast,4,Ian McShane,574534,http://s3.amazonaws.com/brianfoo_art/hollywood/574534.jpg,m,w,His father was Scottish and his mother was of English and Irish descent,http://www.imdb.com/name/nm0574534/bio,0
+Pirates of the Caribbean: On Stranger Tides,1298650,cast,5,Kevin McNally,573618,http://s3.amazonaws.com/brianfoo_art/hollywood/573618.jpg,m,w,English,http://www.imdb.com/name/nm0573618/bio,0
+The Hangover Part II,1411697,cast,1,Bradley Cooper,177896,http://s3.amazonaws.com/brianfoo_art/hollywood/177896.jpg,m,w,His father was of Irish descent and his mother is of Italian ancestry,http://www.imdb.com/name/nm0177896/bio,0
+The Hangover Part II,1411697,cast,2,Ed Helms,1159180,http://s3.amazonaws.com/brianfoo_art/hollywood/1159180.jpg,m,w,"English, as well as smaller amounts of Scots-Irish (Northern Irish), German, Dutch, and French",http://www.imdb.com/name/nm1159180/bio,0
+The Hangover Part II,1411697,cast,3,Zach Galifianakis,302108,http://s3.amazonaws.com/brianfoo_art/hollywood/302108.jpg,m,w,His father is of Greek descent and his mother is of mostly English and Scottish ancestry,http://www.imdb.com/name/nm0302108/bio,0
+The Hangover Part II,1411697,cast,4,Justin Bartha,58581,http://s3.amazonaws.com/brianfoo_art/hollywood/58581.jpg,m,w,"His parents are both from Jewish families (their families moved to the U.S. from Austria, Germany, Russia, and Poland)",http://www.imdb.com/name/nm0058581/bio,0
+The Hangover Part II,1411697,cast,5,Ken Jeong,421822,http://s3.amazonaws.com/brianfoo_art/hollywood/421822.jpg,m,a,Korean,http://www.imdb.com/name/nm0421822/bio,0
+The Twilight Saga: Breaking Dawn Part 1,1324999,cast,1,Kristen Stewart,829576,http://s3.amazonaws.com/brianfoo_art/hollywood/829576.jpg,f,w,,,0
+The Twilight Saga: Breaking Dawn Part 1,1324999,cast,2,Robert Pattinson,1500155,http://s3.amazonaws.com/brianfoo_art/hollywood/1500155.jpg,m,w,,,0
+The Twilight Saga: Breaking Dawn Part 1,1324999,cast,3,Taylor Lautner,1210124,http://s3.amazonaws.com/brianfoo_art/hollywood/1210124.jpg,m,w,"Austrian, English, German, Swiss-German, French, Irish, and Dutch",http://www.imdb.com/name/nm1210124/bio,0
+The Twilight Saga: Breaking Dawn Part 1,1324999,cast,4,Billy Burke,121605,http://s3.amazonaws.com/brianfoo_art/hollywood/121605.jpg,m,w,,,0
+The Twilight Saga: Breaking Dawn Part 1,1324999,cast,5,Peter Facinelli,4906,http://s3.amazonaws.com/brianfoo_art/hollywood/4906.jpg,m,w,Italian,http://www.imdb.com/name/nm0004906/bio,0
+Transformers: Dark of the Moon,1399103,cast,1,Shia LaBeouf,479471,http://s3.amazonaws.com/brianfoo_art/hollywood/479471.jpg,m,w,"His mother is from an Ashkenazi Jewish family, while his father has Cajun (French) ancestry",http://www.imdb.com/name/nm0479471/bio,0
+Transformers: Dark of the Moon,1399103,cast,2,Rosie Huntington-Whiteley,2492819,http://s3.amazonaws.com/brianfoo_art/hollywood/2492819.jpg,f,w,Ashkenazi Jewish and English,http://www.imdb.com/name/nm2492819/bio,0
+Transformers: Dark of the Moon,1399103,cast,3,Josh Duhamel,241049,http://s3.amazonaws.com/brianfoo_art/hollywood/241049.jpg,m,w,"French-Canadian (from his great-great-grandfather; his last name is a very common last name among Francophones in the world), Norwegian, German, Irish, and English",http://www.imdb.com/name/nm0241049/bio,0
+Transformers: Dark of the Moon,1399103,cast,4,John Turturro,1806,http://s3.amazonaws.com/brianfoo_art/hollywood/1806.jpg,m,w,"The Turturro family originates from Sicily, Italy",http://www.imdb.com/name/nm0001806/bio,0
+Transformers: Dark of the Moon,1399103,cast,5,Tyrese Gibson,879085,http://s3.amazonaws.com/brianfoo_art/hollywood/879085.jpg,m,b,,http://www.imdb.com/name/nm0879085/awards,0
+Harry Potter and the Deathly Hallows Part 2,1201607,cast,1,Daniel Radcliffe,705356,http://s3.amazonaws.com/brianfoo_art/hollywood/705356.jpg,m,w,"His father is from a Northern Irish Protestant background, while his mother was born in South Africa, to a Jewish family (from Lithuania, Poland, Russia, and Germany)",http://www.imdb.com/name/nm0705356/bio,0
+Harry Potter and the Deathly Hallows Part 2,1201607,cast,2,Rupert Grint,342488,http://s3.amazonaws.com/brianfoo_art/hollywood/342488.jpg,m,w,English and 1/8th Irish,http://www.imdb.com/name/nm0342488/bio,0
+Harry Potter and the Deathly Hallows Part 2,1201607,cast,3,Emma Watson,914612,http://s3.amazonaws.com/brianfoo_art/hollywood/0914612.jpg,f,w,English,http://www.imdb.com/name/nm0914612/bio,0
+Harry Potter and the Deathly Hallows Part 2,1201607,cast,4,Helena Bonham Carter,307,http://s3.amazonaws.com/brianfoo_art/hollywood/307.jpg,f,"w,w,w,h","Father was of English ancestry; maternal grandfather was a half-Jewish/half-Catholic Spanish; maternal grandmother from a Jewish family (from Germany, Austria, France, Bohemia, and Ukraine)",http://www.imdb.com/name/nm0000307/bio,0
+Harry Potter and the Deathly Hallows Part 2,1201607,cast,5,Ralph Fiennes,146,http://s3.amazonaws.com/brianfoo_art/hollywood/146.jpg,m,w,"He is of English, Irish, and Scottish origin",http://www.imdb.com/name/nm0000146/bio,0
+Madagascar 3: Europe's Most Wanted,1277953,cast,1,Ben Stiller,1774,http://s3.amazonaws.com/brianfoo_art/hollywood/1774.jpg,m,w,"His father is of Austrian Jewish and Polish Jewish descent, and his mother was of Irish ancestry",http://www.imdb.com/name/nm0001774/bio,1
+Madagascar 3: Europe's Most Wanted,1277953,cast,2,Chris Rock,1674,http://s3.amazonaws.com/brianfoo_art/hollywood/1674.jpg,m,b,,https://en.wikipedia.org/wiki/Chris_Rock#Personal_life,1
+Madagascar 3: Europe's Most Wanted,1277953,cast,3,David Schwimmer,1710,http://s3.amazonaws.com/brianfoo_art/hollywood/1710.jpg,m,w,"Ashkenazi Jewish (from Ukraine, Austria, Russia, Germany, and Belarus)",http://www.imdb.com/name/nm0001710/bio,1
+Madagascar 3: Europe's Most Wanted,1277953,cast,4,Jada Pinkett Smith,586,http://s3.amazonaws.com/brianfoo_art/hollywood/586.jpg,f,b,Her father is of African-American descent and her mother is of Afro-Caribbean ancestry (from Barbados and Jamaica),http://www.imdb.com/name/nm0000586/bio,1
+Madagascar 3: Europe's Most Wanted,1277953,cast,5,Sacha Baron Cohen,56187,http://s3.amazonaws.com/brianfoo_art/hollywood/56187.jpg,m,w,"His father, born in Wales and raised in England, is of Eastern European Jewish descent, while his mother was born in Israel, to German Jewish parents",http://www.imdb.com/name/nm0056187/bio,1
+Ted,1637725,cast,1,Mark Wahlberg,242,http://s3.amazonaws.com/brianfoo_art/hollywood/242.jpg,m,w,"Irish, Swedish (from his paternal grandfather), and more distant French-Canadian and English",http://www.imdb.com/name/nm0000242/bio,0
+Ted,1637725,cast,2,Mila Kunis,5109,http://s3.amazonaws.com/brianfoo_art/hollywood/5109.jpg,f,w,Ashkenazi Jewish,http://www.imdb.com/name/nm0005109/bio,0
+Ted,1637725,cast,3,Seth MacFarlane,532235,http://s3.amazonaws.com/brianfoo_art/hollywood/532235.jpg,m,w,"English, Scottish, and Irish",http://www.imdb.com/name/nm0532235/bio,1
+Ted,1637725,cast,4,Joel McHale,570364,http://s3.amazonaws.com/brianfoo_art/hollywood/570364.jpg,m,w,"Norwegian, Finnish, and English",http://www.imdb.com/name/nm0570364/bio,0
+Ted,1637725,cast,5,Giovanni Ribisi,610,http://s3.amazonaws.com/brianfoo_art/hollywood/610.jpg,m,w,"Italian (from his paternal grandfather), English, and German ",http://www.imdb.com/name/nm0000610/bio,0
+Brave,1217209,cast,1,Kelly Macdonald,531808,http://s3.amazonaws.com/brianfoo_art/hollywood/531808.jpg,f,w,Scottish,http://www.imdb.com/name/nm0531808/bio,1
+Brave,1217209,cast,2,Billy Connolly,175262,http://s3.amazonaws.com/brianfoo_art/hollywood/175262.jpg,m,w,"Irish, Scottish",https://en.wikipedia.org/wiki/Billy_Connolly#Ancestry,1
+Brave,1217209,cast,3,Emma Thompson,668,http://s3.amazonaws.com/brianfoo_art/hollywood/668.jpg,f,w,"Scottish, English",http://www.imdb.com/name/nm0000668/bio,1
+Brave,1217209,cast,4,Julie Walters,910278,http://s3.amazonaws.com/brianfoo_art/hollywood/910278.jpg,f,w,"Irish, English",http://www.imdb.com/name/nm0910278/bio,1
+Brave,1217209,cast,5,Robbie Coltrane,1059,http://s3.amazonaws.com/brianfoo_art/hollywood/1059.jpg,m,w,Scottish,https://en.wikipedia.org/wiki/Robbie_Coltrane,1
+The Amazing Spider-Man,948470,cast,1,Andrew Garfield,1940449,http://s3.amazonaws.com/brianfoo_art/hollywood/1940449.jpg,m,w,"Polish, Russian, Romanian Jew",http://www.imdb.com/name/nm1940449/bio,0
+The Amazing Spider-Man,948470,cast,2,Emma Stone,1297015,http://s3.amazonaws.com/brianfoo_art/hollywood/1297015.jpg,f,w,"Swedish (from her paternal grandfather), English, German, Scottish, and Irish",http://www.imdb.com/name/nm1297015/bio,0
+The Amazing Spider-Man,948470,cast,3,Rhys Ifans,406975,http://s3.amazonaws.com/brianfoo_art/hollywood/406975.jpg,m,w,Welsh,http://www.imdb.com/name/nm0406975/bio,0
+The Amazing Spider-Man,948470,cast,4,Denis Leary,1459,http://s3.amazonaws.com/brianfoo_art/hollywood/1459.jpg,m,w,Irish,http://www.imdb.com/name/nm0001459/bio,0
+The Amazing Spider-Man,948470,cast,5,Martin Sheen,640,http://s3.amazonaws.com/brianfoo_art/hollywood/640.jpg,m,"w,h","Irish, Spanish",http://www.imdb.com/name/nm0000640/bio,0
+The Twilight Saga: Breaking Dawn Part 2,1673434,cast,1,Kristen Stewart,829576,http://s3.amazonaws.com/brianfoo_art/hollywood/829576.jpg,f,w,,,0
+The Twilight Saga: Breaking Dawn Part 2,1673434,cast,2,Robert Pattinson,1500155,http://s3.amazonaws.com/brianfoo_art/hollywood/1500155.jpg,m,w,,,0
+The Twilight Saga: Breaking Dawn Part 2,1673434,cast,3,Taylor Lautner,1210124,http://s3.amazonaws.com/brianfoo_art/hollywood/1210124.jpg,m,w,"Austrian, English, German, Swiss-German, French, Irish, and Dutch",http://www.imdb.com/name/nm1210124/bio,0
+The Twilight Saga: Breaking Dawn Part 2,1673434,cast,4,Peter Facinelli,4906,http://s3.amazonaws.com/brianfoo_art/hollywood/4906.jpg,m,w,Italian,http://www.imdb.com/name/nm0004906/bio,0
+The Twilight Saga: Breaking Dawn Part 2,1673434,cast,5,Elizabeth Reaser,714147,http://s3.amazonaws.com/brianfoo_art/hollywood/714147.jpg,f,w,"German, Swedish, English, Irish, and Scottish",http://www.imdb.com/name/nm0714147/bio,0
+The Hobbit: An Unexpected Journey,903624,cast,1,Ian McKellen,5212,http://s3.amazonaws.com/brianfoo_art/hollywood/5212.jpg,m,w,"Scottish, Northern Irish, and English",http://www.imdb.com/name/nm0005212/bio,0
+The Hobbit: An Unexpected Journey,903624,cast,2,Martin Freeman,293509,http://s3.amazonaws.com/brianfoo_art/hollywood/293509.jpg,m,w,English and Irish,http://www.imdb.com/name/nm0293509/bio,0
+The Hobbit: An Unexpected Journey,903624,cast,3,Richard Armitage,35514,http://s3.amazonaws.com/brianfoo_art/hollywood/35514.jpg,m,w,,,0
+The Hobbit: An Unexpected Journey,903624,cast,4,Ken Stott,832792,http://s3.amazonaws.com/brianfoo_art/hollywood/832792.jpg,m,w,His father was Scottish and his mother was Sicilian,http://www.imdb.com/name/nm0832792/bio,0
+The Hobbit: An Unexpected Journey,903624,cast,5,Graham McTavish,574615,http://s3.amazonaws.com/brianfoo_art/hollywood/574615.jpg,m,w,Scottish,http://www.imdb.com/name/nm0574615/bio,0
+Skyfall,1074638,cast,1,Daniel Craig,185819,http://s3.amazonaws.com/brianfoo_art/hollywood/185819.jpg,m,w,"English, as well as Welsh, Scottish, and Irish",http://www.imdb.com/name/nm0185819/bio,0
+Skyfall,1074638,cast,2,Judi Dench,1132,http://s3.amazonaws.com/brianfoo_art/hollywood/1132.jpg,f,w,Irish,https://en.wikipedia.org/wiki/Category:British_people_of_Irish_descent,0
+Skyfall,1074638,cast,3,Javier Bardem,849,http://s3.amazonaws.com/brianfoo_art/hollywood/849.jpg,m,h,Spanish,http://www.imdb.com/name/nm0000849/bio,0
+Skyfall,1074638,cast,4,Ralph Fiennes,146,http://s3.amazonaws.com/brianfoo_art/hollywood/146.jpg,m,w,"He is of English, Irish, and Scottish origin",http://www.imdb.com/name/nm0000146/bio,0
+Skyfall,1074638,cast,5,Naomie Harris,365140,http://s3.amazonaws.com/brianfoo_art/hollywood/365140.jpg,f,b,Her father is from Jamaica and her mother is from Trinidad,http://www.imdb.com/name/nm0365140/bio,0
+The Hunger Games,1392170,cast,1,Jennifer Lawrence,2225369,http://s3.amazonaws.com/brianfoo_art/hollywood/2225369.jpg,f,w,"English, German, Irish, and Scottish",http://www.imdb.com/name/nm2225369/bio,0
+The Hunger Games,1392170,cast,2,Josh Hutcherson,1242688,http://s3.amazonaws.com/brianfoo_art/hollywood/1242688.jpg,m,w," English, as well as Scottish, German, and distant Irish and French",http://www.imdb.com/name/nm1242688/bio,0
+The Hunger Games,1392170,cast,3,Liam Hemsworth,2955013,http://s3.amazonaws.com/brianfoo_art/hollywood/2955013.jpg,m,w,"Dutch (from his immigrant maternal grandfather), Irish, English, Scottish, and German",http://www.imdb.com/name/nm2955013/bio,0
+The Hunger Games,1392170,cast,4,Woody Harrelson,437,http://s3.amazonaws.com/brianfoo_art/hollywood/437.jpg,m,w,"English, Scottish, German, and distant Dutch and Welsh",http://www.imdb.com/name/nm0000437/bio,0
+The Hunger Games,1392170,cast,5,Elizabeth Banks,6969,http://s3.amazonaws.com/brianfoo_art/hollywood/6969.jpg,f,w,"English, Irish, Scottish, and more distant Dutch",http://www.imdb.com/name/nm0006969/bio,0
+The Dark Knight Rises,1345836,cast,1,Christian Bale,288,http://s3.amazonaws.com/brianfoo_art/hollywood/288.jpg,m,w,English,http://www.imdb.com/name/nm0000288/bio,0
+The Dark Knight Rises,1345836,cast,2,Gary Oldman,198,http://s3.amazonaws.com/brianfoo_art/hollywood/198.jpg,m,w,"English, with a smaller amount of Irish",http://www.imdb.com/name/nm0000198/bio,0
+The Dark Knight Rises,1345836,cast,3,Tom Hardy,362766,http://s3.amazonaws.com/brianfoo_art/hollywood/362766.jpg,m,w,English and Irish,http://www.imdb.com/name/nm0362766/bio,0
+The Dark Knight Rises,1345836,cast,4,Joseph Gordon-Levitt,330687,http://s3.amazonaws.com/brianfoo_art/hollywood/330687.jpg,m,w,"Russian, Lithuanian, Romanian, Polish Jewish",http://www.imdb.com/name/nm0330687/bio,0
+The Dark Knight Rises,1345836,cast,5,Anne Hathaway,4266,http://s3.amazonaws.com/brianfoo_art/hollywood/4266.jpg,f,w,"mostly Irish descent, along with English, German, and French",http://www.imdb.com/name/nm0004266/bio,0
+Marvel's The Avengers,848228,cast,1,Robert Downey Jr.,375,http://s3.amazonaws.com/brianfoo_art/hollywood/375.jpg,m,w,"Robert's father is of half Lithuanian Jewish, one quarter Hungarian Jewish, and one quarter Irish, descent, while Robert's mother was of English, Scottish, German, and Swiss-German",http://www.imdb.com/name/nm0000375/bio,0
+Marvel's The Avengers,848228,cast,2,Chris Evans,262635,http://s3.amazonaws.com/brianfoo_art/hollywood/262635.jpg,m,w,"Chris's father is of half German and half Welsh/English/Scottish ancestry, while Chris's mother is of half Italian and half Irish descent",http://www.imdb.com/name/nm0262635/bio,0
+Marvel's The Avengers,848228,cast,3,Mark Ruffalo,749263,http://s3.amazonaws.com/brianfoo_art/hollywood/749263.jpg,m,w,"His father's ancestry is Italian, and his mother is of half French-Canadian and half Italian descent",http://www.imdb.com/name/nm0749263/bio,0
+Marvel's The Avengers,848228,cast,4,Chris Hemsworth,1165110,http://s3.amazonaws.com/brianfoo_art/hollywood/1165110.jpg,m,w,"Dutch (from his immigrant maternal grandfather), Irish, English, Scottish, and German",http://www.imdb.com/name/nm1165110/bio,0
+Marvel's The Avengers,848228,cast,5,Scarlett Johansson,424060,http://s3.amazonaws.com/brianfoo_art/hollywood/424060.jpg,f,w,"Ashkenazi Jewish, Danish",http://www.imdb.com/name/nm0424060/bio,0
+Oz The Great and Powerful,1623205,cast,1,James Franco,290556,http://s3.amazonaws.com/brianfoo_art/hollywood/290556.jpg,m,w,"His father was of half Portuguese and half Swedish descent. His mother is from an Ashkenazi Jewish family (from Russia, Germany, Poland, and Lithuania).",http://www.imdb.com/name/nm0290556/bio,0
+Oz The Great and Powerful,1623205,cast,2,Mila Kunis,5109,http://s3.amazonaws.com/brianfoo_art/hollywood/5109.jpg,f,w,Ashkenazi Jewish,http://www.imdb.com/name/nm0005109/bio,0
+Oz The Great and Powerful,1623205,cast,3,Rachel Weisz,1838,http://s3.amazonaws.com/brianfoo_art/hollywood/1838.jpg,f,w,"Her father is a Hungarian Jewish immigrant, and her Austrian-born mother, who left Vienna in the 1930s, is of Italian and Austrian Jewish heritage",http://www.imdb.com/name/nm0001838/bio,0
+Oz The Great and Powerful,1623205,cast,4,Michelle Williams,931329,http://s3.amazonaws.com/brianfoo_art/hollywood/931329.jpg,f,w,"Norwegian, as well as German, English, Swedish, Swiss-German, Danish, Welsh, and Scottish",http://www.imdb.com/name/nm0931329/bio,0
+Oz The Great and Powerful,1623205,cast,5,Zach Braff,103785,http://s3.amazonaws.com/brianfoo_art/hollywood/103785.jpg,m,w,His father is of Ashkenazi Jewish descent (from a family from Austria and Russia). His mother is from a family with English and Scottish ancestry,http://www.imdb.com/name/nm0103785/bio,1
+Fast & Furious 6,1905041,cast,1,Vin Diesel,4874,http://s3.amazonaws.com/brianfoo_art/hollywood/4874.jpg,m,"w,b","Mother is English, German, Scottish, and Irish. Biological father's race not publicly known. Diesel identifies as person of color. Some sources say his biological father was African-American ",http://ethnicelebs.com/vin-diesel,0
+Fast & Furious 6,1905041,cast,2,Paul Walker,908094,http://s3.amazonaws.com/brianfoo_art/hollywood/908094.jpg,m,w,English and German,http://www.imdb.com/name/nm0908094/bio,0
+Fast & Furious 6,1905041,cast,3,Dwayne Johnson,425005,http://s3.amazonaws.com/brianfoo_art/hollywood/425005.jpg,m,"b,a","His father is black (of Black Nova Scotian descent), and his mother is of Samoan background",http://www.imdb.com/name/nm0425005/bio,0
+Fast & Furious 6,1905041,cast,4,Jordana Brewster,108287,http://s3.amazonaws.com/brianfoo_art/hollywood/108287.jpg,f,"w,h",Mother is Brazilian; Father is English and Scottish; technically not hispanic; identifies as Latina,http://www.huffingtonpost.com/2012/06/13/dallas-star-jordana-brewster_n_1595303.html,0
+Fast & Furious 6,1905041,cast,5,Michelle Rodriguez,735442,http://s3.amazonaws.com/brianfoo_art/hollywood/735442.jpg,f,h,Puerto Rican and Dominican,http://www.imdb.com/name/nm0735442/bio,0
+The Hobbit: The Desolation of Smaug,1170358,cast,1,Ian McKellen,5212,http://s3.amazonaws.com/brianfoo_art/hollywood/5212.jpg,m,w,"Scottish, Northern Irish, and English",http://www.imdb.com/name/nm0005212/bio,0
+The Hobbit: The Desolation of Smaug,1170358,cast,2,Martin Freeman,293509,http://s3.amazonaws.com/brianfoo_art/hollywood/293509.jpg,m,w,English and Irish,http://www.imdb.com/name/nm0293509/bio,0
+The Hobbit: The Desolation of Smaug,1170358,cast,3,Richard Armitage,35514,http://s3.amazonaws.com/brianfoo_art/hollywood/35514.jpg,m,w,,,0
+The Hobbit: The Desolation of Smaug,1170358,cast,4,Ken Stott,832792,http://s3.amazonaws.com/brianfoo_art/hollywood/832792.jpg,m,w,His father was Scottish and his mother was Sicilian,http://www.imdb.com/name/nm0832792/bio,0
+The Hobbit: The Desolation of Smaug,1170358,cast,5,Graham McTavish,574615,http://s3.amazonaws.com/brianfoo_art/hollywood/574615.jpg,m,w,Scottish,http://www.imdb.com/name/nm0574615/bio,0
+Monsters University,1453405,cast,1,Billy Crystal,345,http://s3.amazonaws.com/brianfoo_art/hollywood/345.jpg,m,w,"His family were Jewish immigrants from Russia, Austria, and Lithuania",http://www.imdb.com/name/nm0000345/bio,1
+Monsters University,1453405,cast,2,John Goodman,422,http://s3.amazonaws.com/brianfoo_art/hollywood/422.jpg,m,w,"English, Welsh, and German",http://www.imdb.com/name/nm0000422/bio,1
+Monsters University,1453405,cast,3,Steve Buscemi,114,http://s3.amazonaws.com/brianfoo_art/hollywood/114.jpg,m,w," Italian (father) and English, Dutch, and Irish (mother)",http://www.imdb.com/name/nm0000114/bio,1
+Monsters University,1453405,cast,4,Helen Mirren,545,http://s3.amazonaws.com/brianfoo_art/hollywood/545.jpg,f,w,"English, Russian",http://www.imdb.com/name/nm0000545/bio,1
+Monsters University,1453405,cast,5,Peter Sohn,812307,http://s3.amazonaws.com/brianfoo_art/hollywood/812307.jpg,m,a,Korean,https://en.wikipedia.org/wiki/Peter_Sohn#Life_and_career,1
+Gravity,1454468,cast,1,Sandra Bullock,113,http://s3.amazonaws.com/brianfoo_art/hollywood/113.jpg,f,w,"Irish, English, French, and German",http://www.imdb.com/name/nm0000113/bio,0
+Gravity,1454468,cast,2,George Clooney,123,http://s3.amazonaws.com/brianfoo_art/hollywood/123.jpg,m,w,"Irish, English, and German",http://www.imdb.com/name/nm0000123/bio,0
+Gravity,1454468,cast,3,Ed Harris,438,http://s3.amazonaws.com/brianfoo_art/hollywood/438.jpg,m,w,,,1
+Gravity,1454468,cast,4,Orto Ignatiussen,1241511,none,m,u,possibly Greenland Inuit,http://www.hollywoodreporter.com/news/gravity-spinoff-watch-side-sandra-657919,1
+Gravity,1454468,cast,5,Phaldut Sharma,2060857,http://s3.amazonaws.com/brianfoo_art/hollywood/2060857.jpg,m,a,Indian,http://www.telegraphindia.com/1131029/jsp/t2/story_17504261.jsp#.Vo3TsfkrL4Y,1
+Man of Steel,770828,cast,1,Henry Cavill,147147,http://s3.amazonaws.com/brianfoo_art/hollywood/147147.jpg,m,w,"Irish, Scottish, and English",http://www.imdb.com/name/nm0147147/bio,0
+Man of Steel,770828,cast,2,Amy Adams,10736,http://s3.amazonaws.com/brianfoo_art/hollywood/10736.jpg,f,w,"English, as well as smaller amounts of Danish, Swiss-German, and Norwegian",http://www.imdb.com/name/nm0010736/bio,0
+Man of Steel,770828,cast,3,Michael Shannon,788335,http://s3.amazonaws.com/brianfoo_art/hollywood/788335.jpg,m,w,,,0
+Man of Steel,770828,cast,4,Diane Lane,178,http://s3.amazonaws.com/brianfoo_art/hollywood/178.jpg,f,w,"English, and some German and Scots-Irish (Northern Irish)",http://www.imdb.com/name/nm0000178/bio,0
+Man of Steel,770828,cast,5,Russell Crowe,128,http://s3.amazonaws.com/brianfoo_art/hollywood/128.jpg,m,w,"Welsh (where his paternal grandfather was born, in Wrexham), English, Irish, Scottish, Norwegian, Swedish, and Maori (one of Crowe's maternal great-grandmothers, Erana Putiputi Hayes Heihi, was Maori)",http://www.imdb.com/name/nm0000128/bio,0
+Despicable Me 2,1690953,cast,1,Steve Carell,136797,http://s3.amazonaws.com/brianfoo_art/hollywood/136797.jpg,m,w,His mother is of Polish descent and his father is of Italian and German ancestry,http://www.imdb.com/name/nm0136797/bio,1
+Despicable Me 2,1690953,cast,2,Kristen Wiig,1325419,http://s3.amazonaws.com/brianfoo_art/hollywood/1325419.jpg,f,w,"Norwegian (from her paternal grandfather), Irish, English, and Scottish",http://www.imdb.com/name/nm1325419/bio,1
+Despicable Me 2,1690953,cast,3,Benjamin Bratt,973,http://s3.amazonaws.com/brianfoo_art/hollywood/973.jpg,m,"w,o","English, German, and Austrian descent on his father's side, and of Peruvian (Qechua) descent on his mother's side",http://www.imdb.com/name/nm0000973/bio,1
+Despicable Me 2,1690953,cast,4,Miranda Cosgrove,1388927,http://s3.amazonaws.com/brianfoo_art/hollywood/1388927.jpg,f,w,"English, Irish, and French",http://www.imdb.com/name/nm1388927/bio,1
+Despicable Me 2,1690953,cast,5,Russell Brand,1258970,http://s3.amazonaws.com/brianfoo_art/hollywood/1258970.jpg,m,w,English,http://www.imdb.com/name/nm1258970/bio,1
+Frozen,2294629,cast,1,Kristen Bell,68338,http://s3.amazonaws.com/brianfoo_art/hollywood/68338.jpg,f,w,Scottish and Polish,http://www.imdb.com/name/nm0068338/bio,1
+Frozen,2294629,cast,2,Idina Menzel,579953,http://s3.amazonaws.com/brianfoo_art/hollywood/579953.jpg,f,w,Russian and Eastern European Jewish,https://en.wikipedia.org/wiki/Idina_Menzel,1
+Frozen,2294629,cast,3,Jonathan Groff,2676147,http://s3.amazonaws.com/brianfoo_art/hollywood/2676147.jpg,m,w,,,1
+Frozen,2294629,cast,4,Josh Gad,1265802,http://s3.amazonaws.com/brianfoo_art/hollywood/1265802.jpg,m,w,"His father was born in Afghanistan, to an Afghan Jewish family. His mother, who is originally from New York, is of Ashkenazi Jewish background",http://www.imdb.com/name/nm1265802/bio,1
+Frozen,2294629,cast,5,Santino Fontana,2949014,http://s3.amazonaws.com/brianfoo_art/hollywood/2949014.jpg,m,w,"He is of half Italian, one quarter Portuguese, and one quarter Spanish, descent",https://en.wikipedia.org/wiki/Santino_Fontana#Life_and_career,1
+Iron Man 3,1300854,cast,1,Robert Downey Jr.,375,http://s3.amazonaws.com/brianfoo_art/hollywood/375.jpg,m,w,"Robert's father is of half Lithuanian Jewish, one quarter Hungarian Jewish, and one quarter Irish, descent, while Robert's mother was of English, Scottish, German, and Swiss-German",http://www.imdb.com/name/nm0000375/bio,0
+Iron Man 3,1300854,cast,2,Gwyneth Paltrow,569,http://s3.amazonaws.com/brianfoo_art/hollywood/569.jpg,f,w,"German, and some English and Irish; Eastern European",http://www.imdb.com/name/nm0000569/bio,0
+Iron Man 3,1300854,cast,3,Don Cheadle,332,http://s3.amazonaws.com/brianfoo_art/hollywood/332.jpg,m,b,,http://www.pbs.org/wnet/aalives/profiles/cheadle.html,0
+Iron Man 3,1300854,cast,4,Guy Pearce,1602,http://s3.amazonaws.com/brianfoo_art/hollywood/1602.jpg,m,w,English and Scottish,http://www.imdb.com/name/nm0001602/bio,0
+Iron Man 3,1300854,cast,5,Rebecca Hall,356017,http://s3.amazonaws.com/brianfoo_art/hollywood/356017.jpg,f,"w,w,w,w,b,o","Dutch, Scottish, Sioux, and African American",http://www.imdb.com/name/nm0356017/bio,0
+The Hunger Games: Catching Fire,1951264,cast,1,Jennifer Lawrence,2225369,http://s3.amazonaws.com/brianfoo_art/hollywood/2225369.jpg,f,w,"English, German, Irish, and Scottish",http://www.imdb.com/name/nm2225369/bio,0
+The Hunger Games: Catching Fire,1951264,cast,2,Josh Hutcherson,1242688,http://s3.amazonaws.com/brianfoo_art/hollywood/1242688.jpg,m,w," English, as well as Scottish, German, and distant Irish and French",http://www.imdb.com/name/nm1242688/bio,0
+The Hunger Games: Catching Fire,1951264,cast,3,Liam Hemsworth,2955013,http://s3.amazonaws.com/brianfoo_art/hollywood/2955013.jpg,m,w,"Dutch (from his immigrant maternal grandfather), Irish, English, Scottish, and German",http://www.imdb.com/name/nm2955013/bio,0
+The Hunger Games: Catching Fire,1951264,cast,4,Woody Harrelson,437,http://s3.amazonaws.com/brianfoo_art/hollywood/437.jpg,m,w,"English, Scottish, German, and distant Dutch and Welsh",http://www.imdb.com/name/nm0000437/bio,0
+The Hunger Games: Catching Fire,1951264,cast,5,Elizabeth Banks,6969,http://s3.amazonaws.com/brianfoo_art/hollywood/6969.jpg,f,w,"English, Irish, Scottish, and more distant Dutch",http://www.imdb.com/name/nm0006969/bio,0
+Big Hero 6,2245084,cast,1,Scott Adsit,12523,http://s3.amazonaws.com/brianfoo_art/hollywood/12523.jpg,m,w,,,1
+Big Hero 6,2245084,cast,2,Ryan Potter,3994407,http://s3.amazonaws.com/brianfoo_art/hollywood/3994407.jpg,m,"w,a",Japanese father and a caucasian American-Jewish mother,http://www.imdb.com/name/nm3994407/bio,1
+Big Hero 6,2245084,cast,3,Daniel Henney,2024644,http://s3.amazonaws.com/brianfoo_art/hollywood/2024644.jpg,m,"w,a","father (American of British descent), mother (American of Korean descent)",http://www.imdb.com/name/nm2024644/bio,1
+Big Hero 6,2245084,cast,4,T.J. Miller,2554352,http://s3.amazonaws.com/brianfoo_art/hollywood/2554352.jpg,m,w,,,1
+Big Hero 6,2245084,cast,5,Jamie Chung,1512166,http://s3.amazonaws.com/brianfoo_art/hollywood/1512166.jpg,f,a,Korean,http://www.imdb.com/name/nm1512166/bio,1
+X-Men: Days of Future Past,1877832,cast,1,Hugh Jackman,413168,http://s3.amazonaws.com/brianfoo_art/hollywood/413168.jpg,m,w,"English, Greek, Scottish",http://www.imdb.com/name/nm0413168/bio,0
+X-Men: Days of Future Past,1877832,cast,2,James McAvoy,564215,http://s3.amazonaws.com/brianfoo_art/hollywood/564215.jpg,m,w,,,0
+X-Men: Days of Future Past,1877832,cast,3,Michael Fassbender,1055413,http://s3.amazonaws.com/brianfoo_art/hollywood/1055413.jpg,m,w,"German, Irish",http://www.imdb.com/name/nm1055413/bio,0
+X-Men: Days of Future Past,1877832,cast,4,Jennifer Lawrence,2225369,http://s3.amazonaws.com/brianfoo_art/hollywood/2225369.jpg,f,w,"English, German, Irish, and Scottish",http://www.imdb.com/name/nm2225369/bio,0
+X-Men: Days of Future Past,1877832,cast,5,Halle Berry,932,http://s3.amazonaws.com/brianfoo_art/hollywood/932.jpg,f,"w,b","father was African-American, mother has English and German ancestry",http://www.imdb.com/name/nm0000932/bio,0
+Maleficent,1587310,cast,1,Angelina Jolie,1401,http://s3.amazonaws.com/brianfoo_art/hollywood/1401.jpg,f,w,"German and Slovak on her father's side, and French-Canadian, Dutch, German, Czech, and remote Huron",http://www.imdb.com/name/nm0001401/bio,0
+Maleficent,1587310,cast,2,Elle Fanning,1102577,http://s3.amazonaws.com/brianfoo_art/hollywood/1102577.jpg,f,w,"German, Irish, English, French, and Channel Islander",http://www.imdb.com/name/nm1102577/bio,0
+Maleficent,1587310,cast,3,Sharlto Copley,1663205,http://s3.amazonaws.com/brianfoo_art/hollywood/1663205.jpg,m,w,"English ethnicity, South African nationality",http://www.imdb.com/name/nm1663205/bio,0
+Maleficent,1587310,cast,4,Lesley Manville,544334,http://s3.amazonaws.com/brianfoo_art/hollywood/544334.jpg,f,w,,,0
+Maleficent,1587310,cast,5,Imelda Staunton,1767,http://s3.amazonaws.com/brianfoo_art/hollywood/1767.jpg,f,w,Irish,https://en.wikipedia.org/wiki/Imelda_Staunton#Early_life_and_education,0
+Transformers: Age of Extinction,2109248,cast,1,Mark Wahlberg,242,http://s3.amazonaws.com/brianfoo_art/hollywood/242.jpg,m,w,"Irish, Swedish (from his paternal grandfather), and more distant French-Canadian and English",http://www.imdb.com/name/nm0000242/bio,0
+Transformers: Age of Extinction,2109248,cast,2,Stanley Tucci,1804,http://s3.amazonaws.com/brianfoo_art/hollywood/1804.jpg,m,w,"His family is Italian-American, with origins in Calabria",http://www.imdb.com/name/nm0001804/bio,0
+Transformers: Age of Extinction,2109248,cast,3,Kelsey Grammer,1288,http://s3.amazonaws.com/brianfoo_art/hollywood/1288.jpg,m,w,"English, German, Irish and Scottish",http://www.imdb.com/name/nm0001288/bio,0
+Transformers: Age of Extinction,2109248,cast,4,Nicola Peltz,2443758,http://s3.amazonaws.com/brianfoo_art/hollywood/2443758.jpg,f,w,"Ashkenazi Jewish (from her father) and German, Welsh, and English (from her mother)",http://www.imdb.com/name/nm2443758/bio,0
+Transformers: Age of Extinction,2109248,cast,5,Jack Reynor,2930503,http://s3.amazonaws.com/brianfoo_art/hollywood/2930503.jpg,m,w,Irish mother,http://www.imdb.com/name/nm2930503/bio,0
+The Hobbit: The Battle of the Five Armies,2310332,cast,1,Ian McKellen,5212,http://s3.amazonaws.com/brianfoo_art/hollywood/5212.jpg,m,w,"Scottish, Northern Irish, and English",http://www.imdb.com/name/nm0005212/bio,0
+The Hobbit: The Battle of the Five Armies,2310332,cast,2,Martin Freeman,293509,http://s3.amazonaws.com/brianfoo_art/hollywood/293509.jpg,m,w,English and Irish,http://www.imdb.com/name/nm0293509/bio,0
+The Hobbit: The Battle of the Five Armies,2310332,cast,3,Richard Armitage,35514,http://s3.amazonaws.com/brianfoo_art/hollywood/35514.jpg,m,w,,,0
+The Hobbit: The Battle of the Five Armies,2310332,cast,4,Ken Stott,832792,http://s3.amazonaws.com/brianfoo_art/hollywood/832792.jpg,m,w,His father was Scottish and his mother was Sicilian,http://www.imdb.com/name/nm0832792/bio,0
+The Hobbit: The Battle of the Five Armies,2310332,cast,5,Graham McTavish,574615,http://s3.amazonaws.com/brianfoo_art/hollywood/574615.jpg,m,w,Scottish,http://www.imdb.com/name/nm0574615/bio,0
+The LEGO Movie,1490017,cast,1,Chris Pratt,695435,http://s3.amazonaws.com/brianfoo_art/hollywood/695435.jpg,m,w,"His mother is of Norwegian descent and his father had English, German, Swiss, and French-Canadian ancestry",http://www.imdb.com/name/nm0695435/bio,1
+The LEGO Movie,1490017,cast,2,Will Ferrell,2071,http://s3.amazonaws.com/brianfoo_art/hollywood/0002071.jpg,m,w,"English, with smaller amounts of Irish, German, and Welsh",http://www.imdb.com/name/nm0002071/bio,1
+The LEGO Movie,1490017,cast,3,Elizabeth Banks,6969,http://s3.amazonaws.com/brianfoo_art/hollywood/6969.jpg,f,w,"English, Irish, Scottish, and more distant Dutch",http://www.imdb.com/name/nm0006969/bio,1
+The LEGO Movie,1490017,cast,4,Will Arnett,4715,http://s3.amazonaws.com/brianfoo_art/hollywood/4715.jpg,m,w,,,1
+The LEGO Movie,1490017,cast,5,Nick Offerman,644406,http://s3.amazonaws.com/brianfoo_art/hollywood/0644406.jpg,m,w,German and Swiss-German,http://www.imdb.com/name/nm0644406/bio,1
+Captain America: The Winter Soldier,1843866,cast,1,Chris Evans,262635,http://s3.amazonaws.com/brianfoo_art/hollywood/262635.jpg,m,w,"Chris's father is of half German and half Welsh/English/Scottish ancestry, while Chris's mother is of half Italian and half Irish descent",http://www.imdb.com/name/nm0262635/bio,0
+Captain America: The Winter Soldier,1843866,cast,2,Samuel L. Jackson,168,,m,b,,http://www.imdb.com/name/nm0000168/bio,0
+Captain America: The Winter Soldier,1843866,cast,3,Scarlett Johansson,424060,http://s3.amazonaws.com/brianfoo_art/hollywood/424060.jpg,f,w,"Ashkenazi Jewish, Danish",http://www.imdb.com/name/nm0424060/bio,0
+Captain America: The Winter Soldier,1843866,cast,4,Robert Redford,602,http://s3.amazonaws.com/brianfoo_art/hollywood/602.jpg,m,w,"English, Irish, and Scottish",http://www.imdb.com/name/nm0000602/bio,0
+Captain America: The Winter Soldier,1843866,cast,5,Sebastian Stan,1659221,http://s3.amazonaws.com/brianfoo_art/hollywood/1659221.jpg,m,w,Romanian,http://www.imdb.com/name/nm1659221/bio,0
+Guardians of the Galaxy,2015381,cast,1,Chris Pratt,695435,http://s3.amazonaws.com/brianfoo_art/hollywood/695435.jpg,m,w,"His mother is of Norwegian descent and his father had English, German, Swiss, and French-Canadian ancestry",http://www.imdb.com/name/nm0695435/bio,0
+Guardians of the Galaxy,2015381,cast,2,Zoe Saldana,757855,http://s3.amazonaws.com/brianfoo_art/hollywood/757855.jpg,f,h,Her father had Dominican ancestry; her mother is Puerto Rican. She also has Haitian and Lebanese ancestry.,http://www.imdb.com/name/nm0757855/bio,0
+Guardians of the Galaxy,2015381,cast,3,Dave Bautista,1176985,http://s3.amazonaws.com/brianfoo_art/hollywood/1176985.jpg,m,"w,a","His father is Filipino, and his mother has Greek ancestry",http://www.imdb.com/name/nm1176985/bio,0
+Guardians of the Galaxy,2015381,cast,4,Vin Diesel,4874,http://s3.amazonaws.com/brianfoo_art/hollywood/4874.jpg,m,"w,b","Mother is English, German, Scottish, and Irish. Biological father's race not publicly known. Diesel identifies as person of color. Some sources say his biological father was African-American ",http://ethnicelebs.com/vin-diesel,1
+Guardians of the Galaxy,2015381,cast,5,Bradley Cooper,177896,http://s3.amazonaws.com/brianfoo_art/hollywood/177896.jpg,m,w,His father was of Irish descent and his mother is of Italian ancestry,http://www.imdb.com/name/nm0177896/bio,1
+The Hunger Games: Mockingjay - Part 1,1951265,cast,1,Jennifer Lawrence,2225369,http://s3.amazonaws.com/brianfoo_art/hollywood/2225369.jpg,f,w,"English, German, Irish, and Scottish",http://www.imdb.com/name/nm2225369/bio,0
+The Hunger Games: Mockingjay - Part 1,1951265,cast,2,Josh Hutcherson,1242688,http://s3.amazonaws.com/brianfoo_art/hollywood/1242688.jpg,m,w," English, as well as Scottish, German, and distant Irish and French",http://www.imdb.com/name/nm1242688/bio,0
+The Hunger Games: Mockingjay - Part 1,1951265,cast,3,Liam Hemsworth,2955013,http://s3.amazonaws.com/brianfoo_art/hollywood/2955013.jpg,m,w,"Dutch (from his immigrant maternal grandfather), Irish, English, Scottish, and German",http://www.imdb.com/name/nm2955013/bio,0
+The Hunger Games: Mockingjay - Part 1,1951265,cast,4,Woody Harrelson,437,http://s3.amazonaws.com/brianfoo_art/hollywood/437.jpg,m,w,"English, Scottish, German, and distant Dutch and Welsh",http://www.imdb.com/name/nm0000437/bio,0
+The Hunger Games: Mockingjay - Part 1,1951265,cast,5,Donald Sutherland,661,http://s3.amazonaws.com/brianfoo_art/hollywood/661.jpg,m,w,"Scottish, as well as German and English",http://www.imdb.com/name/nm0000661/bio,0
+American Sniper,2179136,cast,1,Bradley Cooper,177896,http://s3.amazonaws.com/brianfoo_art/hollywood/177896.jpg,m,w,His father was of Irish descent and his mother is of Italian ancestry,http://www.imdb.com/name/nm0177896/bio,0
+American Sniper,2179136,cast,2,Sienna Miller,1092227,http://s3.amazonaws.com/brianfoo_art/hollywood/1092227.jpg,f,w,South African-born English,http://www.imdb.com/name/nm1092227/bio,0
+American Sniper,2179136,cast,3,Max Charles,1934618,http://s3.amazonaws.com/brianfoo_art/hollywood/1934618.jpg,m,w,,,0
+American Sniper,2179136,cast,4,Luke Grimes,2093766,http://s3.amazonaws.com/brianfoo_art/hollywood/2093766.jpg,m,w,,,0
+American Sniper,2179136,cast,5,Kyle Gallner,973177,http://s3.amazonaws.com/brianfoo_art/hollywood/973177.jpg,m,w,Russian Jewish,http://www.imdb.com/name/nm0973177/bio,0
+Spectre,2379713,cast,1,Daniel Craig,185819,http://s3.amazonaws.com/brianfoo_art/hollywood/185819.jpg,m,w,"English, as well as Welsh, Scottish, and Irish",http://www.imdb.com/name/nm0185819/bio,0
+Spectre,2379713,cast,2,Christoph Waltz,910607,http://s3.amazonaws.com/brianfoo_art/hollywood/910607.jpg,m,w,"German, Austrian, Viennese",http://www.imdb.com/name/nm0910607/bio,0
+Spectre,2379713,cast,3,Léa Seydoux,2244205,http://s3.amazonaws.com/brianfoo_art/hollywood/2244205.jpg,f,w,"French and Alsatian German descent, with more distant Spanish-Venezuelan roots on her father's side",http://www.imdb.com/name/nm2244205/bio,0
+Spectre,2379713,cast,4,Ralph Fiennes,146,http://s3.amazonaws.com/brianfoo_art/hollywood/146.jpg,m,w,"He is of English, Irish, and Scottish origin",http://www.imdb.com/name/nm0000146/bio,0
+Spectre,2379713,cast,5,Monica Bellucci,899,http://s3.amazonaws.com/brianfoo_art/hollywood/899.jpg,f,w,Italian,http://www.imdb.com/name/nm0000899/bio,0
+Cinderella (2015),1661199,cast,1,Cate Blanchett,949,http://s3.amazonaws.com/brianfoo_art/hollywood/949.jpg,f,w," English, some Scottish, and remote French",http://www.imdb.com/name/nm0000949/bio,0
+Cinderella (2015),1661199,cast,2,Lily James,4141252,http://s3.amazonaws.com/brianfoo_art/hollywood/4141252.jpg,f,w,"Scottish, English, French, and more distant German",http://www.imdb.com/name/nm4141252/bio,0
+Cinderella (2015),1661199,cast,3,Richard Madden,534635,http://s3.amazonaws.com/brianfoo_art/hollywood/534635.jpg,m,w,Scottish,https://en.wikipedia.org/wiki/Richard_Madden,0
+Cinderella (2015),1661199,cast,4,Helena Bonham Carter,307,http://s3.amazonaws.com/brianfoo_art/hollywood/307.jpg,f,"w,w,w,h","Father was of English ancestry; maternal grandfather was a half-Jewish/half-Catholic Spanish; maternal grandmother from a Jewish family (from Germany, Austria, France, Bohemia, and Ukraine)",http://www.imdb.com/name/nm0000307/bio,0
+Cinderella (2015),1661199,cast,5,Nonso Anozie,1996829,http://s3.amazonaws.com/brianfoo_art/hollywood/1996829.jpg,m,b,Nigerian,https://en.wikipedia.org/wiki/Nonso_Anozie#Life_and_career,0
+The Martian,3659388,cast,1,Matt Damon,354,http://s3.amazonaws.com/brianfoo_art/hollywood/354.jpg,m,w," His father is of English and Scottish descent, and his mother is of Finnish and Swedish ancestry",http://www.imdb.com/name/nm0000354/bio,0
+The Martian,3659388,cast,2,Jessica Chastain,1567113,http://s3.amazonaws.com/brianfoo_art/hollywood/1567113.jpg,f,"w,w,w,h","one quarter Spanish/Basque, as well as of one eighth Greek, descent, with the remainder of her ancestry including English, German, French, Dutch, Scots-Irish (Northern Irish), and Scottish",http://www.imdb.com/name/nm1567113/bio,0
+The Martian,3659388,cast,3,Kristen Wiig,1325419,http://s3.amazonaws.com/brianfoo_art/hollywood/1325419.jpg,f,w,"Norwegian (from her paternal grandfather), Irish, English, and Scottish",http://www.imdb.com/name/nm1325419/bio,0
+The Martian,3659388,cast,4,Jeff Daniels,1099,http://s3.amazonaws.com/brianfoo_art/hollywood/1099.jpg,m,w,"English, Northern Irish (Scots-Irish), Scottish, and German",http://www.imdb.com/name/nm0001099/bio,0
+The Martian,3659388,cast,5,Michael Peña,671567,http://s3.amazonaws.com/brianfoo_art/hollywood/671567.jpg,m,h,Mexican-American,http://www.imdb.com/name/nm0671567/bio,0
+The Hunger Games: Mockingjay - Part 2,1951266,cast,1,Jennifer Lawrence,2225369,http://s3.amazonaws.com/brianfoo_art/hollywood/2225369.jpg,f,w,"English, German, Irish, and Scottish",http://www.imdb.com/name/nm2225369/bio,0
+The Hunger Games: Mockingjay - Part 2,1951266,cast,2,Josh Hutcherson,1242688,http://s3.amazonaws.com/brianfoo_art/hollywood/1242688.jpg,m,w," English, as well as Scottish, German, and distant Irish and French",http://www.imdb.com/name/nm1242688/bio,0
+The Hunger Games: Mockingjay - Part 2,1951266,cast,3,Liam Hemsworth,2955013,http://s3.amazonaws.com/brianfoo_art/hollywood/2955013.jpg,m,w,"Dutch (from his immigrant maternal grandfather), Irish, English, Scottish, and German",http://www.imdb.com/name/nm2955013/bio,0
+The Hunger Games: Mockingjay - Part 2,1951266,cast,4,Woody Harrelson,437,http://s3.amazonaws.com/brianfoo_art/hollywood/437.jpg,m,w,"English, Scottish, German, and distant Dutch and Welsh",http://www.imdb.com/name/nm0000437/bio,0
+The Hunger Games: Mockingjay - Part 2,1951266,cast,5,Donald Sutherland,661,http://s3.amazonaws.com/brianfoo_art/hollywood/661.jpg,m,w,"Scottish, as well as German and English",http://www.imdb.com/name/nm0000661/bio,0
+Minions,2293640,cast,1,Sandra Bullock,113,http://s3.amazonaws.com/brianfoo_art/hollywood/113.jpg,f,w,"Irish, English, French, and German",http://www.imdb.com/name/nm0000113/bio,1
+Minions,2293640,cast,2,Jon Hamm,358316,http://s3.amazonaws.com/brianfoo_art/hollywood/358316.jpg,m,w,"German, English, and Irish",http://www.imdb.com/name/nm0358316/bio,1
+Minions,2293640,cast,3,Michael Keaton,474,http://s3.amazonaws.com/brianfoo_art/hollywood/474.jpg,m,w,"Irish, as well as English, Scottish, and German",http://www.imdb.com/name/nm0000474/bio,1
+Minions,2293640,cast,4,Allison Janney,5049,http://s3.amazonaws.com/brianfoo_art/hollywood/5049.jpg,f,w,English and German,http://www.imdb.com/name/nm0005049/bio,1
+Minions,2293640,cast,5,Steve Coogan,176869,http://s3.amazonaws.com/brianfoo_art/hollywood/176869.jpg,m,w,Irish,http://www.imdb.com/name/nm0176869/bio,1
+Furious 7,2820852,cast,1,Vin Diesel,4874,http://s3.amazonaws.com/brianfoo_art/hollywood/4874.jpg,m,"w,b","Mother is English, German, Scottish, and Irish. Biological father's race not publicly known. Diesel identifies as person of color. Some sources say his biological father was African-American ",http://ethnicelebs.com/vin-diesel,0
+Furious 7,2820852,cast,2,Paul Walker,908094,http://s3.amazonaws.com/brianfoo_art/hollywood/908094.jpg,m,w,English and German,http://www.imdb.com/name/nm0908094/bio,0
+Furious 7,2820852,cast,3,Jason Statham,5458,http://s3.amazonaws.com/brianfoo_art/hollywood/5458.jpg,m,w,,,0
+Furious 7,2820852,cast,4,Michelle Rodriguez,735442,http://s3.amazonaws.com/brianfoo_art/hollywood/735442.jpg,f,h,Puerto Rican and Dominican,http://www.imdb.com/name/nm0735442/bio,0
+Furious 7,2820852,cast,5,Jordana Brewster,108287,http://s3.amazonaws.com/brianfoo_art/hollywood/108287.jpg,f,"w,h",Mother is Brazilian; Father is English and Scottish; technically not hispanic; identifies as Latina,http://www.huffingtonpost.com/2012/06/13/dallas-star-jordana-brewster_n_1595303.html,0
+Inside Out,2096673,cast,1,Amy Poehler,688132,http://s3.amazonaws.com/brianfoo_art/hollywood/688132.jpg,f,w,"Irish (from her mother) and English, German, and Portuguese (from her father)",http://www.imdb.com/name/nm0688132/bio,1
+Inside Out,2096673,cast,2,Phyllis Smith,809613,http://s3.amazonaws.com/brianfoo_art/hollywood/809613.jpg,f,w,,,1
+Inside Out,2096673,cast,3,Richard Kind,454236,http://s3.amazonaws.com/brianfoo_art/hollywood/454236.jpg,m,w,,,1
+Inside Out,2096673,cast,4,Bill Hader,352778,http://s3.amazonaws.com/brianfoo_art/hollywood/352778.jpg,m,w,"German, Danish, Irish, and English",http://www.imdb.com/name/nm0352778/bio,1
+Inside Out,2096673,cast,5,Lewis Black,85400,http://s3.amazonaws.com/brianfoo_art/hollywood/85400.jpg,m,w,,,1
+Avengers: Age of Ultron,2395427,cast,1,Robert Downey Jr.,375,http://s3.amazonaws.com/brianfoo_art/hollywood/375.jpg,m,w,"Robert's father is of half Lithuanian Jewish, one quarter Hungarian Jewish, and one quarter Irish, descent, while Robert's mother was of English, Scottish, German, and Swiss-German",http://www.imdb.com/name/nm0000375/bio,0
+Avengers: Age of Ultron,2395427,cast,2,Chris Hemsworth,1165110,http://s3.amazonaws.com/brianfoo_art/hollywood/1165110.jpg,m,w,"Dutch (from his immigrant maternal grandfather), Irish, English, Scottish, and German",http://www.imdb.com/name/nm1165110/bio,0
+Avengers: Age of Ultron,2395427,cast,3,Mark Ruffalo,749263,http://s3.amazonaws.com/brianfoo_art/hollywood/749263.jpg,m,w,"His father's ancestry is Italian, and his mother is of half French-Canadian and half Italian descent",http://www.imdb.com/name/nm0749263/bio,0
+Avengers: Age of Ultron,2395427,cast,4,Chris Evans,262635,http://s3.amazonaws.com/brianfoo_art/hollywood/262635.jpg,m,w,"Chris's father is of half German and half Welsh/English/Scottish ancestry, while Chris's mother is of half Italian and half Irish descent",http://www.imdb.com/name/nm0262635/bio,0
+Avengers: Age of Ultron,2395427,cast,5,Scarlett Johansson,424060,http://s3.amazonaws.com/brianfoo_art/hollywood/424060.jpg,f,w,"Ashkenazi Jewish, Danish",http://www.imdb.com/name/nm0424060/bio,0
+Star Wars: The Force Awakens,2488496,cast,1,Daisy Ridley,5397459,http://s3.amazonaws.com/brianfoo_art/hollywood/5397459.jpg,f,w,,,0
+Star Wars: The Force Awakens,2488496,cast,2,John Boyega,3915784,http://s3.amazonaws.com/brianfoo_art/hollywood/3915784.jpg,m,b,,http://www.imdb.com/name/nm3915784/bio,0
+Star Wars: The Force Awakens,2488496,cast,3,Harrison Ford,148,http://s3.amazonaws.com/brianfoo_art/hollywood/148.jpg,m,w,"His father was of Irish and German ancestry, while his maternal grandparents were Jewish immigrants from Minsk, Belarus",http://www.imdb.com/name/nm0000148/bio,0
+Star Wars: The Force Awakens,2488496,cast,4,Adam Driver,3485845,http://s3.amazonaws.com/brianfoo_art/hollywood/3485845.jpg,m,w,"English, as well as Dutch, German, Irish, and Scottish",http://www.imdb.com/name/nm3485845/bio,0
+Star Wars: The Force Awakens,2488496,cast,5,Oscar Isaac,1209966,http://s3.amazonaws.com/brianfoo_art/hollywood/1209966.jpg,m,h,"Guatemalan, Cuban",http://www.imdb.com/name/nm1209966/bio,0
+Jurassic World,369610,cast,1,Chris Pratt,695435,http://s3.amazonaws.com/brianfoo_art/hollywood/695435.jpg,m,w,"His mother is of Norwegian descent and his father had English, German, Swiss, and French-Canadian ancestry",http://www.imdb.com/name/nm0695435/bio,0
+Jurassic World,369610,cast,2,Bryce Dallas Howard,397171,http://s3.amazonaws.com/brianfoo_art/hollywood/397171.jpg,f,w,"German, English, Scottish, and Irish",http://www.imdb.com/name/nm0397171/bio,0
+Jurassic World,369610,cast,3,Irrfan Khan,451234,http://s3.amazonaws.com/brianfoo_art/hollywood/451234.jpg,m,a,Indian,http://www.imdb.com/name/nm0451234/bio,0
+Jurassic World,369610,cast,4,Vincent D'Onofrio,352,http://s3.amazonaws.com/brianfoo_art/hollywood/352.jpg,m,w,Italian,http://www.imdb.com/name/nm0000352/bio,0
+Jurassic World,369610,cast,5,Ty Simpkins,1339223,http://s3.amazonaws.com/brianfoo_art/hollywood/1339223.jpg,m,w,,,0
+Thor,800369,director,1,Kenneth Branagh,110,http://s3.amazonaws.com/brianfoo_art/hollywood/110.jpg,m,w,Irish,http://www.imdb.com/name/nm0000110/bio,
+Sherlock Holmes: A Game of Shadows,1515091,director,1,Guy Ritchie,5363,http://s3.amazonaws.com/brianfoo_art/hollywood/5363.jpg,m,w,English,https://en.wikipedia.org/wiki/Guy_Ritchie#Early_life,
+Cars 2,1216475,director,1,John Lasseter,5124,http://s3.amazonaws.com/brianfoo_art/hollywood/5124.jpg,m,w,,,
+Cars 2,1216475,director,2,Brad Lewis,506977,none,m,w,,,
+Mission: Impossible - Ghost Protocol,1229238,director,1,Brad Bird,83348,http://s3.amazonaws.com/brianfoo_art/hollywood/83348.jpg,m,w,Irish grandfather,https://en.wikipedia.org/wiki/Brad_Bird#Early_life,
+Fast Five,1596343,director,1,Justin Lin,510912,http://s3.amazonaws.com/brianfoo_art/hollywood/510912.jpg,m,a,Taiwanese,https://en.wikipedia.org/wiki/Justin_Lin,
+Pirates of the Caribbean: On Stranger Tides,1298650,director,1,Rob Marshall,551128,http://s3.amazonaws.com/brianfoo_art/hollywood/551128.jpg,m,w,,,
+The Hangover Part II,1411697,director,1,Todd Phillips,680846,http://s3.amazonaws.com/brianfoo_art/hollywood/680846.jpg,m,w,,,
+The Twilight Saga: Breaking Dawn Part 1,1324999,director,1,Bill Condon,174374,http://s3.amazonaws.com/brianfoo_art/hollywood/174374.jpg,m,w,Irish Catholic,http://www.films42.com/chats/bill_condon.asp,
+Transformers: Dark of the Moon,1399103,director,1,Michael Bay,881,http://s3.amazonaws.com/brianfoo_art/hollywood/881.jpg,m,w,Grandfather was Russian,https://en.wikipedia.org/wiki/Michael_Bay#Early_life,
+Harry Potter and the Deathly Hallows Part 2,1201607,director,1,David Yates,946734,,m,w,English,http://www.imdb.com/name/nm0946734/bio,
+Madagascar 3: Europe's Most Wanted,1277953,director,1,Eric Darnell,201509,http://s3.amazonaws.com/brianfoo_art/hollywood/201509.jpg,m,w,,,
+Madagascar 3: Europe's Most Wanted,1277953,director,2,Tom McGrath,569891,http://s3.amazonaws.com/brianfoo_art/hollywood/569891.jpg,m,w,,,
+Madagascar 3: Europe's Most Wanted,1277953,director,3,Conrad Vernon,970447,http://s3.amazonaws.com/brianfoo_art/hollywood/970447.jpg,m,w,,,
+Ted,1637725,director,1,Seth MacFarlane,532235,http://s3.amazonaws.com/brianfoo_art/hollywood/532235.jpg,m,w,"English, Scottish, and Irish",http://www.imdb.com/name/nm0532235/bio,
+Brave,1217209,director,1,Mark Andrews,28764,http://s3.amazonaws.com/brianfoo_art/hollywood/28764.jpg,m,w,,,
+Brave,1217209,director,2,Brenda Chapman,152312,http://s3.amazonaws.com/brianfoo_art/hollywood/152312.jpg,f,w,,,
+Brave,1217209,director,3,Steve Purcell,700760,none,m,w,,,
+The Amazing Spider-Man,948470,director,1,Marc Webb,1989536,http://s3.amazonaws.com/brianfoo_art/hollywood/1989536.jpg,m,w,,,
+The Twilight Saga: Breaking Dawn Part 2,1673434,director,1,Bill Condon,174374,http://s3.amazonaws.com/brianfoo_art/hollywood/174374.jpg,m,w,Irish Catholic,http://www.films42.com/chats/bill_condon.asp,
+The Hobbit: An Unexpected Journey,903624,director,1,Peter Jackson,1392,http://s3.amazonaws.com/brianfoo_art/hollywood/1392.jpg,m,w,Parents immigrated from England to New Zealand,https://en.wikipedia.org/wiki/Peter_Jackson#Early_life,
+Skyfall,1074638,director,1,Sam Mendes,5222,http://s3.amazonaws.com/brianfoo_art/hollywood/5222.jpg,m,w,"His father, who is from Trinidad, is of Portuguese and Italian descent, and his mother is an English Jew",https://en.wikipedia.org/wiki/Sam_Mendes#Early_years,
+The Hunger Games,1392170,director,1,Gary Ross,2657,http://s3.amazonaws.com/brianfoo_art/hollywood/2657.jpg,m,w,,,
+The Dark Knight Rises,1345836,director,1,Christopher Nolan,634240,http://s3.amazonaws.com/brianfoo_art/hollywood/634240.jpg,m,w,Irish descent,http://www.imdb.com/name/nm0634240/bio,
+Marvel's The Avengers,848228,director,1,Joss Whedon,923736,http://s3.amazonaws.com/brianfoo_art/hollywood/923736.jpg,m,w,,,
+Oz The Great and Powerful,1623205,director,1,Sam Raimi,600,http://s3.amazonaws.com/brianfoo_art/hollywood/600.jpg,m,w,Hungarian Jewish and Russian Jewish,http://www.imdb.com/name/nm0000600/bio,
+Fast & Furious 6,1905041,director,1,Justin Lin,510912,http://s3.amazonaws.com/brianfoo_art/hollywood/510912.jpg,m,a,Taiwanese,https://en.wikipedia.org/wiki/Justin_Lin,
+The Hobbit: The Desolation of Smaug,1170358,director,1,Peter Jackson,1392,http://s3.amazonaws.com/brianfoo_art/hollywood/1392.jpg,m,w,Parents immigrated from England to New Zealand,https://en.wikipedia.org/wiki/Peter_Jackson#Early_life,
+Monsters University,1453405,director,1,Dan Scanlon,768959,http://s3.amazonaws.com/brianfoo_art/hollywood/768959.jpg,m,w,,,
+Gravity,1454468,director,1,Alfonso Cuarón,190859,http://s3.amazonaws.com/brianfoo_art/hollywood/190859.jpg,m,h,Mexican,http://www.imdb.com/name/nm0190859/bio,
+Man of Steel,770828,director,1,Zack Snyder,811583,http://s3.amazonaws.com/brianfoo_art/hollywood/811583.jpg,m,w,,,
+Despicable Me 2,1690953,director,1,Pierre Coffin,1853544,http://s3.amazonaws.com/brianfoo_art/hollywood/1853544.jpg,m,"w,a","French, Indonesian",https://en.wikipedia.org/wiki/Pierre_Coffin#Life_and_career,
+Despicable Me 2,1690953,director,2,Chris Renaud,719208,http://s3.amazonaws.com/brianfoo_art/hollywood/719208.jpg,m,w,,,
+Frozen,2294629,director,1,Chris Buck,118333,http://s3.amazonaws.com/brianfoo_art/hollywood/118333.jpg,m,w,,,
+Frozen,2294629,director,2,Jennifer Lee,1601644,http://s3.amazonaws.com/brianfoo_art/hollywood/1601644.jpg,f,w,,,
+Iron Man 3,1300854,director,1,Shane Black,948,http://s3.amazonaws.com/brianfoo_art/hollywood/948.jpg,m,w,,,
+The Hunger Games: Catching Fire,1951264,director,1,Francis Lawrence,1349376,http://s3.amazonaws.com/brianfoo_art/hollywood/1349376.jpg,m,w,,,
+Big Hero 6,2245084,director,1,Don Hall,2320658,http://s3.amazonaws.com/brianfoo_art/hollywood/2320658.jpg,m,w,,,
+Big Hero 6,2245084,director,2,Chris Williams,930261,http://s3.amazonaws.com/brianfoo_art/hollywood/930261.jpg,m,w,,,
+X-Men: Days of Future Past,1877832,director,1,Bryan Singer,1741,http://s3.amazonaws.com/brianfoo_art/hollywood/1741.jpg,m,w,,,
+Maleficent,1587310,director,1,Robert Stromberg,834902,http://s3.amazonaws.com/brianfoo_art/hollywood/834902.jpg,m,w,,,
+Transformers: Age of Extinction,2109248,director,1,Michael Bay,881,http://s3.amazonaws.com/brianfoo_art/hollywood/881.jpg,m,w,Grandfather was Russian,https://en.wikipedia.org/wiki/Michael_Bay#Early_life,
+The Hobbit: The Battle of the Five Armies,2310332,director,1,Peter Jackson,1392,http://s3.amazonaws.com/brianfoo_art/hollywood/1392.jpg,m,w,Parents immigrated from England to New Zealand,https://en.wikipedia.org/wiki/Peter_Jackson#Early_life,
+The LEGO Movie,1490017,director,1,Phil Lord,520488,http://s3.amazonaws.com/brianfoo_art/hollywood/520488.jpg,m,"w,h",mother is Cuban refugee,http://www.huffingtonpost.com/2013/04/12/phil-lord-jay-z-cuba_n_3069831.html,
+The LEGO Movie,1490017,director,2,Christopher Miller,588087,http://s3.amazonaws.com/brianfoo_art/hollywood/588087.jpg,m,w,,,
+Captain America: The Winter Soldier,1843866,director,1,Anthony Russo,751577,http://s3.amazonaws.com/brianfoo_art/hollywood/751577.jpg,m,w,,,
+Captain America: The Winter Soldier,1843866,director,2,Joe Russo,751648,http://s3.amazonaws.com/brianfoo_art/hollywood/751648.jpg,m,w,,,
+Guardians of the Galaxy,2015381,director,1,James Gunn,348181,http://s3.amazonaws.com/brianfoo_art/hollywood/348181.jpg,m,w,Irish Catholic,http://www.imdb.com/name/nm0348181/bio,
+The Hunger Games: Mockingjay - Part 1,1951265,director,1,Francis Lawrence,1349376,http://s3.amazonaws.com/brianfoo_art/hollywood/1349376.jpg,m,w,,,
+American Sniper,2179136,director,1,Clint Eastwood,142,http://s3.amazonaws.com/brianfoo_art/hollywood/142.jpg,m,w,"English, as well as Scottish, Irish, Dutch, and German",http://www.imdb.com/name/nm0000142/bio,
+Spectre,2379713,director,1,Sam Mendes,5222,http://s3.amazonaws.com/brianfoo_art/hollywood/5222.jpg,m,w,"His father, who is from Trinidad, is of Portuguese and Italian descent, and his mother is an English Jew",https://en.wikipedia.org/wiki/Sam_Mendes#Early_years,
+Cinderella (2015),1661199,director,1,Kenneth Branagh,110,http://s3.amazonaws.com/brianfoo_art/hollywood/110.jpg,m,w,Irish,http://www.imdb.com/name/nm0000110/bio,
+The Martian,3659388,director,1,Ridley Scott,631,http://s3.amazonaws.com/brianfoo_art/hollywood/631.jpg,m,w,English,http://www.imdb.com/name/nm0000631/bio,
+The Hunger Games: Mockingjay - Part 2,1951266,director,1,Francis Lawrence,1349376,http://s3.amazonaws.com/brianfoo_art/hollywood/1349376.jpg,m,w,,,
+Minions,2293640,director,1,Kyle Balda,49633,none,m,w,Maltese,https://en.wikipedia.org/wiki/Kyle_Balda#Early_life,
+Minions,2293640,director,2,Pierre Coffin,1853544,http://s3.amazonaws.com/brianfoo_art/hollywood/1853544.jpg,m,"w,a","French, Indonesian",https://en.wikipedia.org/wiki/Pierre_Coffin#Life_and_career,
+Furious 7,2820852,director,1,James Wan,1490123,http://s3.amazonaws.com/brianfoo_art/hollywood/1490123.jpg,m,a,Malaysian,http://www.imdb.com/name/nm1490123/bio,
+Inside Out,2096673,director,1,Pete Docter,230032,http://s3.amazonaws.com/brianfoo_art/hollywood/230032.jpg,m,w,"German, Danish",http://www.imdb.com/name/nm0230032/bio,
+Inside Out,2096673,director,2,Ronnie Del Carmen,215455,http://s3.amazonaws.com/brianfoo_art/hollywood/215455.jpg,m,a,Filipino,https://en.wikipedia.org/wiki/Ronnie_del_Carmen,
+Avengers: Age of Ultron,2395427,director,1,Joss Whedon,923736,http://s3.amazonaws.com/brianfoo_art/hollywood/923736.jpg,m,w,,,
+Star Wars: The Force Awakens,2488496,director,1,J.J. Abrams,9190,http://s3.amazonaws.com/brianfoo_art/hollywood/9190.jpg,m,w,Jewish,,
+Jurassic World,369610,director,1,Colin Trevorrow,1119880,http://s3.amazonaws.com/brianfoo_art/hollywood/1119880.jpg,m,w,,,
+Thor,800369,writer,1,Ashley Miller,1005420,none,m,w,,,
+Thor,800369,writer,2,Zack Stentz,826714,none,m,w,,,
+Thor,800369,writer,3,Don Payne,668309,none,m,w,,,
+Sherlock Holmes: A Game of Shadows,1515091,writer,1,Michele Mulroney,1802251,http://s3.amazonaws.com/brianfoo_art/hollywood/1802251.jpg,f,w,,,
+Sherlock Holmes: A Game of Shadows,1515091,writer,2,Kieran Mulroney,612487,http://s3.amazonaws.com/brianfoo_art/hollywood/612487.jpg,m,w,"Irish, German; reference link refers to Dermot Mulroney, his brother",http://www.imdb.com/name/nm0000551/bio?ref_=nm_ov_bio_sm,
+Sherlock Holmes: A Game of Shadows,1515091,writer,3,Arthur Conan Doyle,236279,http://s3.amazonaws.com/brianfoo_art/hollywood/236279.jpg,m,w,"English, Irish",https://en.wikipedia.org/wiki/Arthur_Conan_Doyle#Early_life,
+Cars 2,1216475,writer,1,John Lasseter,5124,http://s3.amazonaws.com/brianfoo_art/hollywood/5124.jpg,m,w,,,
+Cars 2,1216475,writer,2,Brad Lewis,506977,none,m,w,,,
+Cars 2,1216475,writer,3,Dan Fogelman,1557594,http://s3.amazonaws.com/brianfoo_art/hollywood/1557594.jpg,m,w,Jewish,,
+Mission: Impossible - Ghost Protocol,1229238,writer,1,Bruce Geller,312367,none,m,w,,,
+Mission: Impossible - Ghost Protocol,1229238,writer,2,Josh Appelbaum,32227,none,m,w,,,
+Mission: Impossible - Ghost Protocol,1229238,writer,3,André Nemec,625858,http://s3.amazonaws.com/brianfoo_art/hollywood/625858.jpg,m,w,,,
+Fast Five,1596343,writer,1,Chris Morgan,604555,none,m,w,,,
+Fast Five,1596343,writer,2,Gary Scott Thompson,860155,none,m,w,,,
+Pirates of the Caribbean: On Stranger Tides,1298650,writer,1,Ted Elliott,254645,none,m,w,,,
+Pirates of the Caribbean: On Stranger Tides,1298650,writer,2,Terry Rossio,744429,none,m,w,,,
+The Hangover Part II,1411697,writer,1,Craig Mazin,563301,http://s3.amazonaws.com/brianfoo_art/hollywood/563301.jpg,m,w,,,
+The Hangover Part II,1411697,writer,2,Scot Armstrong,35905,none,m,w,,,
+The Hangover Part II,1411697,writer,3,Todd Phillips,680846,http://s3.amazonaws.com/brianfoo_art/hollywood/680846.jpg,m,w,,,
+The Twilight Saga: Breaking Dawn Part 1,1324999,writer,1,Melissa Rosenberg,742279,http://s3.amazonaws.com/brianfoo_art/hollywood/742279.jpg,f,w,"Irish Catholic, Jewish",https://en.wikipedia.org/wiki/Melissa_Rosenberg#Early_life,
+The Twilight Saga: Breaking Dawn Part 1,1324999,writer,2,Stephenie Meyer,2769412,http://s3.amazonaws.com/brianfoo_art/hollywood/2769412.jpg,f,w,,,
+Transformers: Dark of the Moon,1399103,writer,1,Ehren Kruger,472567,http://s3.amazonaws.com/brianfoo_art/hollywood/472567.jpg,m,w,,,
+Harry Potter and the Deathly Hallows Part 2,1201607,writer,1,Steve Kloves,460141,none,m,w,,,
+Harry Potter and the Deathly Hallows Part 2,1201607,writer,2,J.K. Rowling,746830,http://s3.amazonaws.com/brianfoo_art/hollywood/746830.jpg,f,w,Her mother was half-French and half-Scottish,http://www.imdb.com/name/nm0746830/bio,
+Madagascar 3: Europe's Most Wanted,1277953,writer,1,Eric Darnell,201509,http://s3.amazonaws.com/brianfoo_art/hollywood/201509.jpg,m,w,,,
+Madagascar 3: Europe's Most Wanted,1277953,writer,2,Noah Baumbach,876,http://s3.amazonaws.com/brianfoo_art/hollywood/876.jpg,m,w,,,
+Ted,1637725,writer,1,Seth MacFarlane,532235,http://s3.amazonaws.com/brianfoo_art/hollywood/532235.jpg,m,w,"English, Scottish, and Irish",http://www.imdb.com/name/nm0532235/bio,
+Ted,1637725,writer,2,Alec Sulkin,1273148,http://s3.amazonaws.com/brianfoo_art/hollywood/1273148.jpg,m,w,,,
+Ted,1637725,writer,3,Wellesley Wild,1273397,none,m,w,,,
+Brave,1217209,writer,1,Brenda Chapman,152312,http://s3.amazonaws.com/brianfoo_art/hollywood/152312.jpg,f,w,,,
+Brave,1217209,writer,2,Mark Andrews,28764,http://s3.amazonaws.com/brianfoo_art/hollywood/28764.jpg,m,w,,,
+Brave,1217209,writer,3,Steve Purcell,700760,none,m,w,,,
+The Amazing Spider-Man,948470,writer,1,James Vanderbilt,888743,http://s3.amazonaws.com/brianfoo_art/hollywood/888743.jpg,m,w,The Vanderbilt family is an American family of Dutch origin,https://en.wikipedia.org/wiki/James_Vanderbilt#Early_life_and_education,
+The Amazing Spider-Man,948470,writer,2,Alvin Sargent,765091,none,m,w,,,
+The Amazing Spider-Man,948470,writer,3,Steve Kloves,460141,none,m,w,,,
+The Twilight Saga: Breaking Dawn Part 2,1673434,writer,1,Melissa Rosenberg,742279,http://s3.amazonaws.com/brianfoo_art/hollywood/742279.jpg,f,w,"Irish Catholic, Jewish",https://en.wikipedia.org/wiki/Melissa_Rosenberg#Early_life,
+The Twilight Saga: Breaking Dawn Part 2,1673434,writer,2,Stephenie Meyer,2769412,http://s3.amazonaws.com/brianfoo_art/hollywood/2769412.jpg,f,w,,,
+The Hobbit: An Unexpected Journey,903624,writer,1,Fran Walsh,909638,http://s3.amazonaws.com/brianfoo_art/hollywood/909638.jpg,f,w,Irish,https://en.wikipedia.org/wiki/Fran_Walsh#Early_life,
+The Hobbit: An Unexpected Journey,903624,writer,2,Philippa Boyens,101991,http://s3.amazonaws.com/brianfoo_art/hollywood/101991.jpg,f,w,,,
+The Hobbit: An Unexpected Journey,903624,writer,3,Peter Jackson,1392,http://s3.amazonaws.com/brianfoo_art/hollywood/1392.jpg,m,w,Parents immigrated from England to New Zealand,https://en.wikipedia.org/wiki/Peter_Jackson#Early_life,
+Skyfall,1074638,writer,1,Neal Purvis,701031,none,m,w,,,
+Skyfall,1074638,writer,2,Robert Wade,905498,none,m,w,,,
+Skyfall,1074638,writer,3,John Logan,517589,http://s3.amazonaws.com/brianfoo_art/hollywood/517589.jpg,m,w,Irish,https://en.wikipedia.org/wiki/John_Logan_(writer)#Early_life,
+The Hunger Games,1392170,writer,1,Gary Ross,2657,http://s3.amazonaws.com/brianfoo_art/hollywood/2657.jpg,m,w,,,
+The Hunger Games,1392170,writer,2,Suzanne Collins,1056741,http://s3.amazonaws.com/brianfoo_art/hollywood/1056741.jpg,f,w,,,
+The Hunger Games,1392170,writer,3,Billy Ray,712753,http://s3.amazonaws.com/brianfoo_art/hollywood/712753.jpg,m,w,,,
+The Dark Knight Rises,1345836,writer,1,Jonathan Nolan,634300,http://s3.amazonaws.com/brianfoo_art/hollywood/634300.jpg,m,w,English-American,https://en.wikipedia.org/wiki/Jonathan_Nolan,
+The Dark Knight Rises,1345836,writer,2,Christopher Nolan,634240,http://s3.amazonaws.com/brianfoo_art/hollywood/634240.jpg,m,w,Irish descent,http://www.imdb.com/name/nm0634240/bio,
+Marvel's The Avengers,848228,writer,1,Joss Whedon,923736,http://s3.amazonaws.com/brianfoo_art/hollywood/923736.jpg,m,w,,,
+Marvel's The Avengers,848228,writer,2,Zak Penn,672015,http://s3.amazonaws.com/brianfoo_art/hollywood/672015.jpg,m,w,,,
+Oz The Great and Powerful,1623205,writer,1,Mitchell Kapner,438449,none,m,w,,,
+Oz The Great and Powerful,1623205,writer,2,David Lindsay-Abaire,1865755,http://s3.amazonaws.com/brianfoo_art/hollywood/1865755.jpg,m,w,,,
+Fast & Furious 6,1905041,writer,1,Chris Morgan,604555,none,m,w,,,
+Fast & Furious 6,1905041,writer,2,Gary Scott Thompson,860155,none,m,w,,,
+The Hobbit: The Desolation of Smaug,1170358,writer,1,Fran Walsh,909638,http://s3.amazonaws.com/brianfoo_art/hollywood/909638.jpg,f,w,Irish,https://en.wikipedia.org/wiki/Fran_Walsh#Early_life,
+The Hobbit: The Desolation of Smaug,1170358,writer,2,Philippa Boyens,101991,http://s3.amazonaws.com/brianfoo_art/hollywood/101991.jpg,f,w,,,
+The Hobbit: The Desolation of Smaug,1170358,writer,3,Peter Jackson,1392,http://s3.amazonaws.com/brianfoo_art/hollywood/1392.jpg,m,w,Parents immigrated from England to New Zealand,https://en.wikipedia.org/wiki/Peter_Jackson#Early_life,
+Monsters University,1453405,writer,1,Dan Scanlon,768959,http://s3.amazonaws.com/brianfoo_art/hollywood/768959.jpg,m,w,,,
+Monsters University,1453405,writer,2,Daniel Gerson,314870,none,m,w,,,
+Monsters University,1453405,writer,3,Robert L. Baird,47916,none,m,w,,,
+Gravity,1454468,writer,1,Alfonso Cuarón,190859,http://s3.amazonaws.com/brianfoo_art/hollywood/190859.jpg,m,h,Mexican,http://www.imdb.com/name/nm0190859/bio,
+Gravity,1454468,writer,2,Jonás Cuarón,190861,http://s3.amazonaws.com/brianfoo_art/hollywood/190861.jpg,m,h,Mexican,http://www.imdb.com/name/nm0190861/bio,
+Gravity,1454468,writer,3,George Clooney,123,http://s3.amazonaws.com/brianfoo_art/hollywood/123.jpg,m,w,"Irish, English, and German",http://www.imdb.com/name/nm0000123/bio,
+Man of Steel,770828,writer,1,David S. Goyer,333060,http://s3.amazonaws.com/brianfoo_art/hollywood/333060.jpg,m,w,,,
+Man of Steel,770828,writer,3,Christopher Nolan,634240,http://s3.amazonaws.com/brianfoo_art/hollywood/634240.jpg,m,w,Irish descent,http://www.imdb.com/name/nm0634240/bio,
+Despicable Me 2,1690953,writer,1,Cinco Paul,666791,none,m,w,,,
+Despicable Me 2,1690953,writer,2,Ken Daurio,202425,http://s3.amazonaws.com/brianfoo_art/hollywood/202425.jpg,m,w,,,
+Frozen,2294629,writer,1,Jennifer Lee,1601644,http://s3.amazonaws.com/brianfoo_art/hollywood/1601644.jpg,f,w,,,
+Frozen,2294629,writer,2,Hans Christian Andersen,26153,none,m,w,Danish,https://en.wikipedia.org/wiki/Hans_Christian_Andersen,
+Frozen,2294629,writer,3,Chris Buck,118333,http://s3.amazonaws.com/brianfoo_art/hollywood/118333.jpg,m,w,,,
+Iron Man 3,1300854,writer,1,Drew Pearce,1510800,http://s3.amazonaws.com/brianfoo_art/hollywood/1510800.jpg,m,w,,,
+Iron Man 3,1300854,writer,2,Shane Black,948,http://s3.amazonaws.com/brianfoo_art/hollywood/948.jpg,m,w,,,
+Iron Man 3,1300854,writer,3,Stan Lee,498278,http://s3.amazonaws.com/brianfoo_art/hollywood/498278.jpg,m,w,Romanian Jewish,http://www.imdb.com/name/nm0498278/bio,
+The Hunger Games: Catching Fire,1951264,writer,1,Simon Beaufoy,64479,http://s3.amazonaws.com/brianfoo_art/hollywood/64479.jpg,m,w,,,
+The Hunger Games: Catching Fire,1951264,writer,2,Michael Arndt,1578335,http://s3.amazonaws.com/brianfoo_art/hollywood/1578335.jpg,m,w,,,
+The Hunger Games: Catching Fire,1951264,writer,3,Suzanne Collins,1056741,http://s3.amazonaws.com/brianfoo_art/hollywood/1056741.jpg,f,w,,,
+Big Hero 6,2245084,writer,1,Jordan Roberts,1471001,none,m,w,,,
+Big Hero 6,2245084,writer,2,Robert L. Baird,47916,none,m,w,,,
+Big Hero 6,2245084,writer,3,Daniel Gerson,314870,none,m,w,,,
+X-Men: Days of Future Past,1877832,writer,1,Simon Kinberg,1334526,http://s3.amazonaws.com/brianfoo_art/hollywood/1334526.jpg,m,w,,,
+X-Men: Days of Future Past,1877832,writer,2,Jane Goldman,963359,http://s3.amazonaws.com/brianfoo_art/hollywood/963359.jpg,f,w,,,
+Maleficent,1587310,writer,1,Linda Woolverton,941314,http://s3.amazonaws.com/brianfoo_art/hollywood/941314.jpg,f,w,,,
+Maleficent,1587310,writer,2,Charles Perrault,674518,none,m,w,French,https://en.wikipedia.org/wiki/Charles_Perrault,
+Maleficent,1587310,writer,3,Milt Banta,52520,none,m,w,,,
+Transformers: Age of Extinction,2109248,writer,1,Ehren Kruger,472567,http://s3.amazonaws.com/brianfoo_art/hollywood/472567.jpg,m,w,,,
+The Hobbit: The Battle of the Five Armies,2310332,writer,1,Fran Walsh,909638,http://s3.amazonaws.com/brianfoo_art/hollywood/909638.jpg,f,w,Irish,https://en.wikipedia.org/wiki/Fran_Walsh#Early_life,
+The Hobbit: The Battle of the Five Armies,2310332,writer,2,Philippa Boyens,101991,http://s3.amazonaws.com/brianfoo_art/hollywood/101991.jpg,f,w,,,
+The Hobbit: The Battle of the Five Armies,2310332,writer,3,Peter Jackson,1392,http://s3.amazonaws.com/brianfoo_art/hollywood/1392.jpg,m,w,Parents immigrated from England to New Zealand,https://en.wikipedia.org/wiki/Peter_Jackson#Early_life,
+The LEGO Movie,1490017,writer,1,Phil Lord,520488,http://s3.amazonaws.com/brianfoo_art/hollywood/520488.jpg,m,"w,h",mother is Cuban refugee,http://www.huffingtonpost.com/2013/04/12/phil-lord-jay-z-cuba_n_3069831.html,
+The LEGO Movie,1490017,writer,2,Christopher Miller,588087,http://s3.amazonaws.com/brianfoo_art/hollywood/588087.jpg,m,w,,,
+The LEGO Movie,1490017,writer,3,Dan Hageman,1087952,none,m,w,,,
+Captain America: The Winter Soldier,1843866,writer,1,Christopher Markus,1321655,http://s3.amazonaws.com/brianfoo_art/hollywood/1321655.jpg,m,w,,,
+Captain America: The Winter Soldier,1843866,writer,2,Stephen McFeely,1321656,http://s3.amazonaws.com/brianfoo_art/hollywood/1321656.jpg,m,w,,,
+Captain America: The Winter Soldier,1843866,writer,3,Joe Simon,800209,none,m,w,,,
+Guardians of the Galaxy,2015381,writer,1,James Gunn,348181,http://s3.amazonaws.com/brianfoo_art/hollywood/348181.jpg,m,w,Irish Catholic,http://www.imdb.com/name/nm0348181/bio,
+Guardians of the Galaxy,2015381,writer,2,Nicole Perlman,2270979,http://s3.amazonaws.com/brianfoo_art/hollywood/2270979.jpg,f,w,,,
+Guardians of the Galaxy,2015381,writer,3,Dan Abnett,3966115,none,m,w,English,https://en.wikipedia.org/wiki/Dan_Abnett,
+The Hunger Games: Mockingjay - Part 1,1951265,writer,1,Peter Craig,185976,http://s3.amazonaws.com/brianfoo_art/hollywood/185976.jpg,m,w,,,
+The Hunger Games: Mockingjay - Part 1,1951265,writer,2,Danny Strong,834960,http://s3.amazonaws.com/brianfoo_art/hollywood/834960.jpg,m,w,"Lithuanian, Russian, and Polish",https://en.wikipedia.org/wiki/Danny_Strong#Early_life,
+The Hunger Games: Mockingjay - Part 1,1951265,writer,3,Suzanne Collins,1056741,http://s3.amazonaws.com/brianfoo_art/hollywood/1056741.jpg,f,w,,,
+American Sniper,2179136,writer,1,Jason Hall,355699,http://s3.amazonaws.com/brianfoo_art/hollywood/355699.jpg,m,w,,,
+American Sniper,2179136,writer,2,Chris Kyle,4881574,none,m,w,,,
+American Sniper,2179136,writer,3,Scott McEwen,6984200,none,m,w,,,
+Spectre,2379713,writer,1,John Logan,517589,http://s3.amazonaws.com/brianfoo_art/hollywood/517589.jpg,m,w,Irish,https://en.wikipedia.org/wiki/John_Logan_(writer)#Early_life,
+Spectre,2379713,writer,2,Neal Purvis,701031,none,m,w,,,
+Spectre,2379713,writer,3,Robert Wade,905498,none,m,w,,,
+Cinderella (2015),1661199,writer,1,Chris Weitz,919363,http://s3.amazonaws.com/brianfoo_art/hollywood/919363.jpg,m,"w,h","His father was a German Jewish immigrant, his maternal grandfather was a Czech Jewish immigrant, and his maternal grandmother was Mexican",http://www.imdb.com/name/nm0919363/bio,
+The Martian,3659388,writer,1,Drew Goddard,1206844,http://s3.amazonaws.com/brianfoo_art/hollywood/1206844.jpg,m,w,,,
+The Martian,3659388,writer,2,Andy Weir,1083982,none,m,w,,,
+The Hunger Games: Mockingjay - Part 2,1951266,writer,1,Peter Craig,185976,http://s3.amazonaws.com/brianfoo_art/hollywood/185976.jpg,m,w,,,
+The Hunger Games: Mockingjay - Part 2,1951266,writer,2,Danny Strong,834960,http://s3.amazonaws.com/brianfoo_art/hollywood/834960.jpg,m,w,"Lithuanian, Russian, and Polish",https://en.wikipedia.org/wiki/Danny_Strong#Early_life,
+The Hunger Games: Mockingjay - Part 2,1951266,writer,3,Suzanne Collins,1056741,http://s3.amazonaws.com/brianfoo_art/hollywood/1056741.jpg,f,w,,,
+Minions,2293640,writer,1,Brian Lynch,528244,none,m,w,,,
+Furious 7,2820852,writer,1,Chris Morgan,604555,none,m,w,,,
+Furious 7,2820852,writer,2,Gary Scott Thompson,860155,none,m,w,,,
+Inside Out,2096673,writer,1,Pete Docter,230032,http://s3.amazonaws.com/brianfoo_art/hollywood/230032.jpg,m,w,"German, Danish",http://www.imdb.com/name/nm0230032/bio,
+Inside Out,2096673,writer,2,Ronnie Del Carmen,215455,http://s3.amazonaws.com/brianfoo_art/hollywood/215455.jpg,m,a,Filipino,https://en.wikipedia.org/wiki/Ronnie_del_Carmen,
+Avengers: Age of Ultron,2395427,writer,1,Joss Whedon,923736,http://s3.amazonaws.com/brianfoo_art/hollywood/923736.jpg,m,w,,,
+Avengers: Age of Ultron,2395427,writer,2,Stan Lee,498278,http://s3.amazonaws.com/brianfoo_art/hollywood/498278.jpg,m,w,Romanian Jewish,http://www.imdb.com/name/nm0498278/bio,
+Avengers: Age of Ultron,2395427,writer,3,Jack Kirby,456158,none,m,w,Austrian Jewish,http://www.imdb.com/name/nm0456158/bio,
+Star Wars: The Force Awakens,2488496,writer,1,Lawrence Kasdan,1410,http://s3.amazonaws.com/brianfoo_art/hollywood/1410.jpg,m,w,,,
+Star Wars: The Force Awakens,2488496,writer,2,J.J. Abrams,9190,http://s3.amazonaws.com/brianfoo_art/hollywood/9190.jpg,m,w,Jewish,,
+Star Wars: The Force Awakens,2488496,writer,3,Michael Arndt,1578335,http://s3.amazonaws.com/brianfoo_art/hollywood/1578335.jpg,m,w,,,
+Jurassic World,369610,writer,1,Rick Jaffa,415425,none,m,w,,,
+Jurassic World,369610,writer,2,Amanda Silver,798646,none,f,w,,,
+Jurassic World,369610,writer,3,Colin Trevorrow,1119880,http://s3.amazonaws.com/brianfoo_art/hollywood/1119880.jpg,m,w,,,

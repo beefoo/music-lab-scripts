@@ -42,7 +42,6 @@ with open(MOVIE_FILE, 'rb') as f:
     rows = csv.DictReader(f)
     for row in rows:
         movies.append({
-            'id': row['movie_id'],
             'imdb_id': row['imdb_id'],
             'year': int(row['year']),
             'rank': int(row['rank']),
@@ -57,7 +56,6 @@ with open(PEOPLE_FILE, 'rb') as f:
     for row in rows:
         if row['role'] in valid_roles:
             people.append({
-                'movie_id': row['movie_id'],
                 'movie_imdb_id': row['movie_imdb_id'],
                 'order': int(row['order']),
                 'name': row['name'],
@@ -71,7 +69,7 @@ with open(PEOPLE_FILE, 'rb') as f:
 
 # Add people to movies
 for i, m in enumerate(movies):
-    movie_people = [p for p in people if p['movie_id']==m['id']]
+    movie_people = [p for p in people if p['movie_imdb_id']==m['imdb_id']]
     movie_people = sorted(movie_people, key=lambda k: k['order'])
     movies[i]['people'] = movie_people
 
