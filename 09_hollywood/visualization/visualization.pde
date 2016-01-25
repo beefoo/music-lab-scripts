@@ -6,7 +6,7 @@
 // output
 int fps = 30;
 String outputFrameFile = "output/frames/frames-#####.png";
-boolean captureFrames = true;
+boolean captureFrames = false;
 
 // resolution
 int canvasW = 1280;
@@ -178,7 +178,7 @@ class Person
     name = _person.getString("name");
     gender = _person.getString("gender");
     voice = (_person.getInt("voice") > 0);
-    image = loadImage("people/"+_person.getString("imdb_id")+"_"+_person.getString("movie_id")+".jpg");
+    image = loadImage("people/"+_person.getString("imdb_id")+"_"+_person.getString("movie_imdb_id")+".jpg");
     my_races = _person.getJSONObject("races");
   }
 

@@ -58,6 +58,7 @@ with open(PEOPLE_FILE, 'rb') as f:
         if row['role'] in valid_roles:
             people.append({
                 'movie_id': row['movie_id'],
+                'movie_imdb_id': row['movie_imdb_id'],
                 'order': int(row['order']),
                 'name': row['name'],
                 'imdb_id': row['imdb_id'],
@@ -72,8 +73,6 @@ with open(PEOPLE_FILE, 'rb') as f:
 for i, m in enumerate(movies):
     movie_people = [p for p in people if p['movie_id']==m['id']]
     movie_people = sorted(movie_people, key=lambda k: k['order'])
-    for j, p in enumerate(movie_people):
-        movie_people[j]['movie_imdb_id'] = m['imdb_id']
     movies[i]['people'] = movie_people
 
 # Write to file
