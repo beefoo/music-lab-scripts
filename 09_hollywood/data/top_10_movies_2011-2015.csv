@@ -1,0 +1,51 @@
+movie_id,year,rank,name,theaters,total_gross,studio,imdb_id,imdb_title
+1,2011,10,Thor,3963,181030624,Par.,800369,Thor (2011)
+2,2011,9,Sherlock Holmes: A Game of Shadows,3703,186848418,WB,1515091,Sherlock Holmes: A Game of Shadows (2011)
+3,2011,8,Cars 2,4115,191452396,BV,1216475,Cars 2 (2011)
+4,2011,7,Mission: Impossible - Ghost Protocol,3555,209397903,Par.,1229238,Mission: Impossible - Ghost Protocol (2011)
+5,2011,6,Fast Five,3793,209837675,Uni.,1596343,Fast Five (2011)
+6,2011,5,Pirates of the Caribbean: On Stranger Tides,4164,241071802,BV,1298650,Pirates of the Caribbean: On Stranger Tides (2011)
+7,2011,4,The Hangover Part II,3675,254464305,WB,1411697,"Hangover Part II, The (2011)"
+8,2011,3,The Twilight Saga: Breaking Dawn Part 1,4066,281287133,Sum.,1324999,"Twilight Saga: Breaking Dawn - Part 1, The (2011)"
+9,2011,2,Transformers: Dark of the Moon,4088,352390543,P/DW,1399103,Transformers: Dark of the Moon (2011)
+10,2011,1,Harry Potter and the Deathly Hallows Part 2,4375,381011219,WB,1201607,Harry Potter and the Deathly Hallows: Part 2 (2011)
+11,2012,10,Madagascar 3: Europe's Most Wanted,4263,216391482,P/DW,1277953,Madagascar 3: Europe's Most Wanted (2012)
+12,2012,9,Ted,3303,218815487,Uni.,1637725,Ted (2012)
+13,2012,8,Brave,4164,237283207,BV,1217209,Brave (2012)
+14,2012,7,The Amazing Spider-Man,4318,262030663,Sony,948470,"Amazing Spider-Man, The (2012)"
+15,2012,6,The Twilight Saga: Breaking Dawn Part 2,4070,292324737,LG/S,1673434,"Twilight Saga: Breaking Dawn - Part 2, The (2012)"
+16,2012,5,The Hobbit: An Unexpected Journey,4100,303003568,WB,903624,"Hobbit: An Unexpected Journey, The (2012)"
+17,2012,4,Skyfall,3526,304360277,Sony,1074638,Skyfall (2012)
+18,2012,3,The Hunger Games,4137,408010692,LGF,1392170,"Hunger Games, The (2012)"
+19,2012,2,The Dark Knight Rises,4404,448139099,WB,1345836,"Dark Knight Rises, The (2012)"
+20,2012,1,Marvel's The Avengers,4349,623357910,BV,848228,"Avengers, The (2012)"
+21,2013,10,Oz The Great and Powerful,3912,234911825,BV,1623205,Oz the Great and Powerful (2013)
+22,2013,9,Fast & Furious 6,3771,238679850,Uni.,1905041,Furious 6 (2013)
+23,2013,8,The Hobbit: The Desolation of Smaug,3928,258366855,WB,1170358,"Hobbit: The Desolation of Smaug, The (2013)"
+24,2013,7,Monsters University,4004,268492764,BV,1453405,Monsters University (2013)
+25,2013,6,Gravity,3820,274092705,WB,1454468,Gravity (2013)
+26,2013,5,Man of Steel,4207,291045518,WB,770828,Man of Steel (2013)
+27,2013,4,Despicable Me 2,4003,368061265,Uni.,1690953,Despicable Me 2 (2013)
+28,2013,3,Frozen,3742,400738009,BV,2294629,Frozen (I) (2013)
+29,2013,2,Iron Man 3,4253,409013994,BV,1300854,Iron Man 3 (2013)
+30,2013,1,The Hunger Games: Catching Fire,4163,424668047,LGF,1951264,"Hunger Games: Catching Fire, The (2013)"
+31,2014,10,Big Hero 6,3773,222527828,BV,2245084,Big Hero 6 (2014)
+32,2014,9,X-Men: Days of Future Past,4001,233921534,Fox,1877832,X-Men: Days of Future Past (2014)
+33,2014,8,Maleficent,3948,241410378,BV,1587310,Maleficent (2014)
+34,2014,7,Transformers: Age of Extinction,4233,245439076,Par.,2109248,Transformers: Age of Extinction (2014)
+35,2014,6,The Hobbit: The Battle of the Five Armies,3875,255119788,WB,2310332,"Hobbit: The Battle of the Five Armies, The (2014)"
+36,2014,5,The LEGO Movie,3890,257760692,WB,1490017,"Lego Movie, The (2014)"
+37,2014,4,Captain America: The Winter Soldier,3938,259766572,BV,1843866,Captain America: The Winter Soldier (2014)
+38,2014,3,Guardians of the Galaxy,4088,333176600,BV,2015381,Guardians of the Galaxy (2014)
+39,2014,2,The Hunger Games: Mockingjay - Part 1,4151,337135885,LGF,1951265,"Hunger Games: Mockingjay - Part 1, The (2014)"
+40,2014,1,American Sniper,3885,349973107,WB,2179136,American Sniper (2014)
+41,2015,10,Spectre,3929,197104955,Sony,2379713,Spectre (2015)
+42,2015,9,Cinderella (2015),3848,201151353,BV,1661199,Cinderella (2015)
+43,2015,8,The Martian,3854,225345402,Fox,3659388,The Martian (2015)
+44,2015,7,The Hunger Games: Mockingjay - Part 2,4175,269597959,LGF,1951266,The Hunger Games: Mockingjay - Part 2 (2015)
+45,2015,6,Minions,4311,336045770,Uni.,2293640,Minions (2015)
+46,2015,5,Furious 7,4022,353007020,Uni.,2820852,Furious 7 (2015)
+47,2015,4,Inside Out,4158,356461711,BV,2096673,Inside Out (2015)
+48,2015,3,Avengers: Age of Ultron,4276,459005868,BV,2395427,Avengers: Age of Ultron (2015)
+49,2015,2,Star Wars: The Force Awakens,4134,651965583,BV,2488496,Star Wars: The Force Awakens (2015)
+50,2015,1,Jurassic World,4291,652270625,Uni.,369610,Jurassic World (2015)
