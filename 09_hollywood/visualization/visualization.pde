@@ -18,15 +18,49 @@ ArrayList<Race> races;
 JSONArray races_json_array;
 JSONArray movies_json_array;
 String races_file = "../data/races.json";
-String movies_file = "../data/top_10_movies_2011-2015.json";
+String movies_file = "../data/top_10_movies_2006-2015.json";
 
 // color
 color bgColor = #232020;
 
 // text
 color textC = #f4f3ef;
-int fontSize = 42;
-PFont font = createFont("OpenSans-Semibold", fontSize, true);
+
+// components
+float componentMargin = 30;
+float componentMarginSmall = 10;
+
+// race
+float raceH = 10;
+
+// cast component
+float castW = 180;
+float castH = castW;
+float castLeft = 100;
+float castTextH = 60;
+float featuredLeft = ((castW * 3 + componentMargin*2) - (castW * 2 + componentMargin)) / 2;
+int castFontSize = 18;
+PFont castFont = createFont("OpenSans-Regular", castFontSize, true);
+int castTextLeading = castFontSize + 6;
+float castTop = (1.0 * canvasH - (castH * 2 + castTextH * 2 + componentMarginSmall*4 + raceH*2)) / 2;
+
+// movie component
+float movieW = 300;
+float movieTop = 80;
+float movieLeft = (1.0 * canvasW - (movieW + castW * 3 + componentMargin * 2 + castLeft)) / 2;
+int movieFontSize = 24;
+PFont movieFont = createFont("OpenSans-Semibold", movieFontSize, true);
+int movieTextLeading = movieFontSize + 6;
+float movieTextH = 100;
+
+// legend
+float legendH = 30;
+float legendW = castW * 3 + componentMargin * 2;
+float legendTop = 30;
+int legendFontSize = 16;
+float legendColW = 0;
+PFont legendFont = createFont("OpenSans-Regular", legendFontSize, true);
+int legendTextLeading = int(legendH);
 
 // time
 float startMs = 0;
@@ -51,6 +85,7 @@ void setup() {
     JSONObject race_json = races_json_array.getJSONObject(i);
     races.add(new Race(race_json));
   }
+  legendColW = 1.0 * canvasW / races.size();
 
   // load the movie data
   movies = new ArrayList<Movie>();
@@ -80,11 +115,61 @@ void draw(){
 
   background(bgColor);
 
-  // draw the movie image and info
+  float marginY = movieTop;
+  float marginX = movieLeft;
+
+  // draw the movie image
+  float movieH = movieW / current_movie.getImageRatio();
+  image(current_movie.getImage(), marginX, marginY, movieW, movieH);
+
+  // draw the movie text
+  marginY += movieH + componentMargin;
   fill(textC);
-  textAlign(LEFT, TOP);
-  textFont(font);
-  text(current_movie.getName(), 20, 20);
+  textAlign(CENTER, TOP);
+  textFont(movieFont);
+  textLeading(movieTextLeading);
+  text(current_movie.getLabel(), marginX, marginY, movieW, movieTextH);
+
+  // draw the cast
+  float movieLeftOffset = marginX + movieW + castLeft;
+  marginY = castTop;
+  marginX = movieLeftOffset + featuredLeft;
+  textFont(castFont);
+  textLeading(castTextLeading);
+  ArrayList<Person> cast = current_movie.getPeople();
+  for(int i=0; i<2; i++) {
+    if (cast.size()-1 < i) break;
+    Person p = cast.get(i);
+    image(p.getImage(), marginX, marginY, castW, castH);
+    rect(marginX, marginY + castH, castW, raceH);
+    text(p.getLabel(), marginX, marginY + componentMarginSmall + castH + raceH, castW, castTextH);
+    marginX += componentMargin + castW;
+  }
+  marginX = movieLeftOffset;
+  marginY += componentMarginSmall*2 + castH + castTextH + raceH;
+  for(int i=2; i<5; i++) {
+    if (cast.size()-1 < i) break;
+    Person p = cast.get(i);
+    image(p.getImage(), marginX, marginY, castW, castH);
+    rect(marginX, marginY + castH, castW, raceH);
+    text(p.getLabel(), marginX, marginY + componentMarginSmall + castH + raceH, castW, castTextH);
+    marginX += componentMargin + castW;
+  }
+
+  // draw legend
+  marginY = canvasH - legendH;
+  marginX = 0;
+  textAlign(CENTER, CENTER);
+  textFont(legendFont);
+  textLeading(legendTextLeading);
+  for (int i = 0; i < races.size(); i++) {
+    Race r = races.get(i);
+    fill(r.getColor());
+    rect(marginX, marginY, legendColW, legendH);
+    fill(#000000);
+    text(r.getLabel(), marginX, marginY, legendColW, legendH);
+    marginX += legendColW;
+  }
 
   // increment time
   elapsedMs += frameMs;
@@ -105,6 +190,10 @@ void draw(){
 void mousePressed() {
   saveFrame("output/frame.png");
   exit();
+}
+
+void drawPersonRace(float x, float y, float w, float h, JSONObject race, ArrayList<Race> race_list) {
+
 }
 
 class Movie
@@ -145,8 +234,12 @@ class Movie
     return image;
   }
 
-  int getIndex(){
-    return index;
+  float getImageRatio(){
+    return 1.0 * image.width / image.height;
+  }
+
+  String getLabel(){
+    return name + " (" + year + ")";
   }
 
   String getName(){
@@ -171,7 +264,7 @@ class Person
 {
   String name, gender;
   boolean voice;
-  PImage image;
+  PImage image, image_character;
   JSONObject my_races;
 
   Person(JSONObject _person) {
@@ -179,6 +272,11 @@ class Person
     gender = _person.getString("gender");
     voice = (_person.getInt("voice") > 0);
     image = loadImage("people/"+_person.getString("imdb_id")+"_"+_person.getString("movie_imdb_id")+".jpg");
+    if (voice) {
+      image_character = loadImage("characters/"+_person.getString("imdb_id")+"_"+_person.getString("movie_imdb_id")+".jpg");
+    } else {
+      image_character = createImage(10, 10, RGB);
+    }
     my_races = _person.getJSONObject("races");
   }
 
@@ -188,6 +286,18 @@ class Person
 
   PImage getImage(){
     return image;
+  }
+
+  PImage getImageCharacter(){
+    return image_character;
+  }
+
+  String getLabel(){
+    String label = name;
+    if (isVoice()) {
+      label += " (voice)";
+    }
+    return label;
   }
 
   String getName(){
