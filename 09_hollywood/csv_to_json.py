@@ -19,7 +19,7 @@ valid_roles = ['cast']
 race_config = [
     {"key": "w", "label": "White", "color": "#00a9ff"},
     {"key": "b", "label": "Black", "color": "#81db7a"},
-    {"key": "h", "label": "Hispanic", "color": "#e0d44e"},
+    {"key": "h", "label": "Hispanic/Latino", "color": "#e0d44e"},
     {"key": "a", "label": "Asian/Pacific Islander", "color": "#dd6868"},
     {"key": "o", "label": "American Indian", "color": "#c46bd6"},
     {"key": "u", "label": "Other/Unknown", "color": "#c9bbbb"}
