@@ -43,6 +43,10 @@ int castFontSize = 18;
 PFont castFont = createFont("OpenSans-Regular", castFontSize, true);
 int castTextLeading = castFontSize + 6;
 float castTop = (1.0 * canvasH - (castH * 2 + castTextH * 2 + componentMarginSmall*4 + raceH*2)) / 2;
+float voicePercent = 0.8;
+float animatedPercent = 0.4;
+float animatedW = castW * animatedPercent;
+float animatedH = animatedW;
 
 // movie component
 float movieW = 300;
@@ -56,7 +60,6 @@ float movieTextH = 100;
 // legend
 float legendH = 30;
 float legendW = castW * 3 + componentMargin * 2;
-float legendTop = 30;
 int legendFontSize = 16;
 float legendColW = 0;
 PFont legendFont = createFont("OpenSans-Regular", legendFontSize, true);
@@ -67,7 +70,7 @@ float startMs = 0;
 float stopMs = 0;
 float elapsedMs = startMs;
 float frameMs = (1.0/fps) * 1000;
-float movieMs = 1000;
+float movieMs = 2000;
 
 void setup() {
   // set the stage
@@ -138,21 +141,15 @@ void draw(){
   textLeading(castTextLeading);
   ArrayList<Person> cast = current_movie.getPeople();
   for(int i=0; i<2; i++) {
-    if (cast.size()-1 < i) break;
     Person p = cast.get(i);
-    image(p.getImage(), marginX, marginY, castW, castH);
-    rect(marginX, marginY + castH, castW, raceH);
-    text(p.getLabel(), marginX, marginY + componentMarginSmall + castH + raceH, castW, castTextH);
+    drawPerson(p, marginX, marginY);
     marginX += componentMargin + castW;
   }
   marginX = movieLeftOffset;
   marginY += componentMarginSmall*2 + castH + castTextH + raceH;
   for(int i=2; i<5; i++) {
-    if (cast.size()-1 < i) break;
     Person p = cast.get(i);
-    image(p.getImage(), marginX, marginY, castW, castH);
-    rect(marginX, marginY + castH, castW, raceH);
-    text(p.getLabel(), marginX, marginY + componentMarginSmall + castH + raceH, castW, castTextH);
+    drawPerson(p, marginX, marginY);
     marginX += componentMargin + castW;
   }
 
@@ -166,8 +163,8 @@ void draw(){
     Race r = races.get(i);
     fill(r.getColor());
     rect(marginX, marginY, legendColW, legendH);
-    fill(#000000);
-    text(r.getLabel(), marginX, marginY, legendColW, legendH);
+    fill(bgColor);
+    text(r.getLabel(), marginX, marginY - 2, legendColW, legendH);
     marginX += legendColW;
   }
 
@@ -192,8 +189,32 @@ void mousePressed() {
   exit();
 }
 
-void drawPersonRace(float x, float y, float w, float h, JSONObject race, ArrayList<Race> race_list) {
+void drawPerson(Person p, float marginX, float marginY){
+  if (p.isVoice()) {
+    image(p.getImage(), marginX, marginY, castW*voicePercent, castH*voicePercent);
+    image(p.getImageCharacter(), marginX + (castW-animatedW), marginY + (castH-animatedH), animatedW, animatedH);
+  } else {
+    image(p.getImage(), marginX, marginY, castW, castH);
+  }
+  drawPersonRace(marginX, marginY + castH, castW, raceH, p.getRaces(), races);
+  fill(textC);
+  text(p.getLabel(), marginX, marginY + componentMarginSmall + castH + raceH, castW, castTextH);
+}
 
+void drawPersonRace(float x, float y, float w, float h, JSONObject race, ArrayList<Race> race_list) {
+  for(int i=0; i<race_list.size(); i++) {
+    Race r = race_list.get(i);
+    if (race.isNull(r.getKey())) {
+      continue;
+    }
+    float racePercent = race.getFloat(r.getKey());
+    if (racePercent > 0) {
+      float rw = racePercent * w;
+      fill(r.getColor());
+      rect(x, y, rw, h);
+      x += rw;
+    }
+  }
 }
 
 class Movie
