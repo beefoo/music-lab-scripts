@@ -26,26 +26,27 @@ Echo echo;
 
 // chorus
 Chorus chrs;
-0.2 => chrs.modFreq;
-0.2 => chrs.modDepth;
-0.5 => chrs.mix;
+0.4 => chrs.modFreq;
+0.4 => chrs.modDepth;
+0.4 => chrs.mix;
 
 // pitch shift
 PitShift pts;
 0.7 => pts.mix;
-0.5 => pts.shift;
+0.4 => pts.shift;
 
 // sndbuf
 SndBuf instrument;
-me.dir() + "/dating/instruments/strings2b.wav" => instrument.read;
+me.dir() + "/instruments/cello_As2_15_piano_arco-normal.wav" => instrument.read;
 instrument.samples() => instrument.pos;
 
-instrument => adsr => echo => rvb => dac;
+// instrument => adsr => echo => rvb => dac;
 // instrument => adsr => rvb => dac;
 // instrument => echo => rvb => chrs => dac;
 // instrument => pts => rvb => dac;
 // instrument => chrs => dac;
 // instrument => echo => dac;
+instrument => pts => dac;
 // instrument => dac;
 
 while(true) {    

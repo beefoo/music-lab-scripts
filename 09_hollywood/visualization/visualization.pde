@@ -19,6 +19,7 @@ JSONArray races_json_array;
 JSONArray movies_json_array;
 String races_file = "../data/races.json";
 String movies_file = "../data/top_10_movies_2006-2015.json";
+boolean showLabels = false;
 
 // color
 color bgColor = #232020;
@@ -70,7 +71,7 @@ float startMs = 0;
 float stopMs = 0;
 float elapsedMs = startMs;
 float frameMs = (1.0/fps) * 1000;
-float movieMs = 2000;
+float movieMs = 10000;
 
 void setup() {
   // set the stage
@@ -154,18 +155,20 @@ void draw(){
   }
 
   // draw legend
-  marginY = canvasH - legendH;
-  marginX = 0;
-  textAlign(CENTER, CENTER);
-  textFont(legendFont);
-  textLeading(legendTextLeading);
-  for (int i = 0; i < races.size(); i++) {
-    Race r = races.get(i);
-    fill(r.getColor());
-    rect(marginX, marginY, legendColW, legendH);
-    fill(bgColor);
-    text(r.getLabel(), marginX, marginY - 2, legendColW, legendH);
-    marginX += legendColW;
+  if (showLabels) {
+    marginY = canvasH - legendH;
+    marginX = 0;
+    textAlign(CENTER, CENTER);
+    textFont(legendFont);
+    textLeading(legendTextLeading);
+    for (int i = 0; i < races.size(); i++) {
+      Race r = races.get(i);
+      fill(r.getColor());
+      rect(marginX, marginY, legendColW, legendH);
+      fill(bgColor);
+      text(r.getLabel(), marginX, marginY - 2, legendColW, legendH);
+      marginX += legendColW;
+    }
   }
 
   // increment time
@@ -196,7 +199,9 @@ void drawPerson(Person p, float marginX, float marginY){
   } else {
     image(p.getImage(), marginX, marginY, castW, castH);
   }
-  drawPersonRace(marginX, marginY + castH, castW, raceH, p.getRaces(), races);
+  if (showLabels) {
+    drawPersonRace(marginX, marginY + castH, castW, raceH, p.getRaces(), races);
+  }
   fill(textC);
   text(p.getLabel(), marginX, marginY + componentMarginSmall + castH + raceH, castW, castTextH);
 }

@@ -1,0 +1,11 @@
+file,gender,race,from_gain,to_gain,from_tempo,to_tempo,tempo_offset,interval_phase,interval,interval_offset,active
+cello_As2_15_piano_arco-normal.wav,m,w,1,1,0.5,0.5,0,1,1,0,1
+cello_As3_15_mezzo-piano_arco-normal.wav,f,w,1,1,0.5,0.5,0,1,1,0,1
+cello_C3_15_piano_arco-normal.wav,m,b,1,1,0.5,0.5,0,1,1,0,1
+cello_C4_15_mezzo-piano_arco-normal.wav,f,b,1,1,0.5,0.5,0,1,1,0,1
+cello_D2_15_mezzo-piano_arco-normal.wav,m,h,1,1,0.5,0.5,0,1,1,0,1
+cello_D3_15_mezzo-piano_arco-normal.wav,f,h,1,1,0.5,0.5,0,1,1,0,1
+cello_Ds2_15_piano_arco-normal_1.wav,m,a,1,1,0.5,0.5,0,1,1,0,1
+cello_Ds2_15_piano_arco-normal.wav,f,a,1,1,0.5,0.5,0,1,1,0,1
+cello_F2_15_piano_arco-normal.wav,m,o,1,1,0.5,0.5,0,1,1,0,1
+cello_F3_15_piano_arco-normal.wav,f,o,1,1,0.5,0.5,0,1,1,0,1
