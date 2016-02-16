@@ -3,6 +3,7 @@
 # Paul's Extreme Sound Stretch (Paulstretch) - Python version
 # Batch processing adapted from https://github.com/paulnasca/paulstretch_python/blob/master/paulstretch_stereo.py
 #
+# Usage: python paulstretch.py ../09_hollywood/data/stretch.csv ../09_hollywood/instruments/ ../09_hollywood/instruments/
 
 import csv
 from numpy import *

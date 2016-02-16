@@ -21,7 +21,7 @@ DIVISIONS_PER_BEAT = 8 # e.g. 4 = quarter notes, 8 = eighth notes, etc
 VARIANCE_MS = 20 # +/- milliseconds an instrument note should be off by to give it a little more "natural" feel
 GAIN = 0.4 # base gain
 TEMPO = 1.0 # base tempo
-MS_PER_MOVIE = 10000
+MS_PER_MOVIE = 5000
 INSTRUMENT_OFFSET = 0.1
 
 # Files
@@ -70,7 +70,7 @@ def roundToNearest(n, nearest):
 with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
     r = csv.reader(f, delimiter=',')
     next(r, None) # remove header
-    for file, gender, race, from_gain, to_gain, from_tempo, to_tempo, tempo_offset, interval_phase, interval, interval_offset, active in r:
+    for file, gender, race, min_diversity, max_diversity, from_gain, to_gain, from_tempo, to_tempo, tempo_offset, interval_phase, interval, interval_offset, active in r:
         if int(active):
             index = len(instruments)
             # build instrument object
@@ -80,6 +80,8 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
                 'file': INSTRUMENTS_DIR + file,
                 'gender': gender,
                 'race': race,
+                'min_diversity': int(min_diversity),
+                'max_diversity': int(max_diversity),
                 'from_gain': float(from_gain) * GAIN,
                 'to_gain': float(to_gain) * GAIN,
                 'from_tempo': float(from_tempo) * TEMPO,
@@ -183,22 +185,33 @@ def addBeatsToSequence(instrument, duration, ms, round_to, offset):
 
 # Build sequence
 for i in instruments:
-    ms = 0
+    ms = None
+    queue_duration = 0
 
     # Go through each movie
-    for m in movies:
+    for mi, m in enumerate(movies):
 
         offset = 0
+        races = [p['races'].keys() for p in m['people']]
+        diversity = len(set([r for r in races for r in r]))
 
         for p in m['people']:
 
-            if p['gender']==i['gender'] and i['race'] in p['races'].keys():
+            is_valid = p['gender']==i['gender'] and i['race'] in p['races'].keys() and diversity >= i['min_diversity'] and diversity <= i['max_diversity']
 
-                addBeatsToSequence(i.copy(), MS_PER_MOVIE, ms, ROUND_TO_NEAREST, offset)
+            if not is_valid and queue_duration > 0 and ms != None:
+                addBeatsToSequence(i.copy(), queue_duration, ms, ROUND_TO_NEAREST, offset)
+                ms = None
+                queue_duration = 0
 
-            offset += 1
+            if is_valid:
+                if ms==None:
+                    ms = mi * MS_PER_MOVIE
+                queue_duration += MS_PER_MOVIE
+                # offset += 1
 
-        ms += MS_PER_MOVIE
+    if queue_duration > 0 and ms != None:
+        addBeatsToSequence(i.copy(), queue_duration, ms, ROUND_TO_NEAREST, offset)
 
 # Sort sequence
 sequence = sorted(sequence, key=lambda k: k['elapsed_ms'])

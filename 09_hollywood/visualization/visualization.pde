@@ -19,7 +19,7 @@ JSONArray races_json_array;
 JSONArray movies_json_array;
 String races_file = "../data/races.json";
 String movies_file = "../data/top_10_movies_2006-2015.json";
-boolean showLabels = false;
+boolean showLabels = true;
 
 // color
 color bgColor = #232020;
