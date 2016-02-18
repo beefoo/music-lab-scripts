@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 ##
 # TRACK 9
-# COLOR IN FILM
+# HOLLYWOOD IN C
 # Brian Foo (brianfoo.com)
 # This file builds the sequence file for use with ChucK from the data supplied
 ##
 
 # Library dependancies
+import collections
 import csv
 import json
 import math
@@ -21,7 +22,7 @@ DIVISIONS_PER_BEAT = 8 # e.g. 4 = quarter notes, 8 = eighth notes, etc
 VARIANCE_MS = 20 # +/- milliseconds an instrument note should be off by to give it a little more "natural" feel
 GAIN = 0.4 # base gain
 TEMPO = 1.0 # base tempo
-MS_PER_MOVIE = 5000
+MS_PER_MOVIE = 4000
 INSTRUMENT_OFFSET = 0.1
 
 # Files
@@ -70,7 +71,7 @@ def roundToNearest(n, nearest):
 with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
     r = csv.reader(f, delimiter=',')
     next(r, None) # remove header
-    for file, gender, race, min_diversity, max_diversity, from_gain, to_gain, from_tempo, to_tempo, tempo_offset, interval_phase, interval, interval_offset, active in r:
+    for file, phrase, gender, race, min_count, max_count, from_gain, to_gain, from_tempo, to_tempo, tempo_offset, interval_phase, interval, interval_offset, active in r:
         if int(active):
             index = len(instruments)
             # build instrument object
@@ -80,8 +81,8 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
                 'file': INSTRUMENTS_DIR + file,
                 'gender': gender,
                 'race': race,
-                'min_diversity': int(min_diversity),
-                'max_diversity': int(max_diversity),
+                'min_count': int(min_count),
+                'max_count': int(max_count),
                 'from_gain': float(from_gain) * GAIN,
                 'to_gain': float(to_gain) * GAIN,
                 'from_tempo': float(from_tempo) * TEMPO,
@@ -192,23 +193,26 @@ for i in instruments:
     for mi, m in enumerate(movies):
 
         offset = 0
+        genders = [p['gender'] for p in m['people']]
         races = [p['races'].keys() for p in m['people']]
-        diversity = len(set([r for r in races for r in r]))
+        races = [r for r in races for r in r]
+        race_counts = collections.Counter(races)
+        race_count = 0
+        if i['race'] in race_counts:
+            race_count = race_counts[i['race']]
 
-        for p in m['people']:
+        is_valid = i['gender'] in genders and i['race'] in races and race_count >= i['min_count'] and race_count <= i['max_count']
 
-            is_valid = p['gender']==i['gender'] and i['race'] in p['races'].keys() and diversity >= i['min_diversity'] and diversity <= i['max_diversity']
+        if not is_valid and queue_duration > 0 and ms != None:
+            addBeatsToSequence(i.copy(), queue_duration, ms, ROUND_TO_NEAREST, offset)
+            ms = None
+            queue_duration = 0
 
-            if not is_valid and queue_duration > 0 and ms != None:
-                addBeatsToSequence(i.copy(), queue_duration, ms, ROUND_TO_NEAREST, offset)
-                ms = None
-                queue_duration = 0
-
-            if is_valid:
-                if ms==None:
-                    ms = mi * MS_PER_MOVIE
-                queue_duration += MS_PER_MOVIE
-                # offset += 1
+        if is_valid:
+            if ms==None:
+                ms = mi * MS_PER_MOVIE
+            queue_duration += MS_PER_MOVIE
+            # offset += 1
 
     if queue_duration > 0 and ms != None:
         addBeatsToSequence(i.copy(), queue_duration, ms, ROUND_TO_NEAREST, offset)
