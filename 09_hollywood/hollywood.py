@@ -20,10 +20,11 @@ import time
 BPM = 60 # Beats per minute, e.g. 60, 75, 100, 120, 150
 DIVISIONS_PER_BEAT = 8 # e.g. 4 = quarter notes, 8 = eighth notes, etc
 VARIANCE_MS = 20 # +/- milliseconds an instrument note should be off by to give it a little more "natural" feel
-GAIN = 0.4 # base gain
+GAIN = 0.6 # base gain
 TEMPO = 1.0 # base tempo
-MS_PER_MOVIE = 4000
-INSTRUMENT_OFFSET = 0.1
+MS_PER_MOVIE = 3000
+MIN_GAIN = 0.6
+MAX_GAIN = 1.0
 
 # Files
 INSTRUMENTS_INPUT_FILE = 'data/instruments.csv'
@@ -66,6 +67,10 @@ def floorToNearest(n, nearest):
 # round {n} to nearest {nearest}
 def roundToNearest(n, nearest):
     return 1.0 * round(1.0*n/nearest) * nearest
+
+# interpolate values
+def lerp(amt, min_val, max_val):
+    return (max_val - min_val) * amt + min_val
 
 # Read instruments from file
 with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
@@ -146,7 +151,7 @@ def isValidInterval(instrument, elapsed_ms):
     return int(math.floor(1.0*elapsed_ms/interval_ms)) % interval == interval_offset
 
 # Add beats to sequence
-def addBeatsToSequence(instrument, duration, ms, round_to, offset):
+def addBeatsToSequence(instrument, duration, ms, round_to, gain_multiplier):
     global sequence
     global hindex
 
@@ -175,7 +180,7 @@ def addBeatsToSequence(instrument, duration, ms, round_to, offset):
                 'instrument': instrument,
                 'position': 0,
                 'rate': 1,
-                'gain': getGain(instrument, percent_complete),
+                'gain': getGain(instrument, percent_complete) * gain_multiplier,
                 'elapsed_ms': max([elapsed_ms + variance, 0]),
                 'duration': min([this_beat_ms, MS_PER_MOVIE])
             })
@@ -196,15 +201,21 @@ for i in instruments:
         genders = [p['gender'] for p in m['people']]
         races = [p['races'].keys() for p in m['people']]
         races = [r for r in races for r in r]
+
+        # Calculate individual's w/ instrument's race
         race_counts = collections.Counter(races)
         race_count = 0
         if i['race'] in race_counts:
             race_count = race_counts[i['race']]
 
+        # Calculate percent race
+        race_percent = 1.0 * race_count / len(races)
+        gain_multiplier = lerp(race_percent, MIN_GAIN, MAX_GAIN)
+
         is_valid = i['gender'] in genders and i['race'] in races and race_count >= i['min_count'] and race_count <= i['max_count']
 
         if not is_valid and queue_duration > 0 and ms != None:
-            addBeatsToSequence(i.copy(), queue_duration, ms, ROUND_TO_NEAREST, offset)
+            addBeatsToSequence(i.copy(), queue_duration, ms, ROUND_TO_NEAREST, gain_multiplier)
             ms = None
             queue_duration = 0
 
@@ -215,7 +226,7 @@ for i in instruments:
             # offset += 1
 
     if queue_duration > 0 and ms != None:
-        addBeatsToSequence(i.copy(), queue_duration, ms, ROUND_TO_NEAREST, offset)
+        addBeatsToSequence(i.copy(), queue_duration, ms, ROUND_TO_NEAREST, gain_multiplier)
 
 # Sort sequence
 sequence = sorted(sequence, key=lambda k: k['elapsed_ms'])
