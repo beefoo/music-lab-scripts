@@ -29,6 +29,7 @@ MAX_GAIN = 1.0
 # Files
 INSTRUMENTS_INPUT_FILE = 'data/instruments.csv'
 MOVIES_INPUT_FILE = 'data/top_10_movies_2006-2015.json'
+SUMMARY_OUTPUT_FILE = 'data/report_summary.csv'
 SUMMARY_SEQUENCE_OUTPUT_FILE = 'data/report_sequence.csv'
 INSTRUMENTS_OUTPUT_FILE = 'data/ck_instruments.csv'
 SEQUENCE_OUTPUT_FILE = 'data/ck_sequence.csv'
@@ -264,6 +265,16 @@ if WRITE_SEQUENCE and len(sequence) > 0:
 
 # Write summary files
 if WRITE_REPORT and len(sequence) > 0:
+
+    with open(SUMMARY_OUTPUT_FILE, 'wb') as f:
+        w = csv.writer(f)
+        w.writerow(['Movie', 'Time', 'Gender', 'POC', 'Diversity'])
+        elapsed = 0
+        for m in movies:
+            elapsed_f = time.strftime('%M:%S', time.gmtime(int(elapsed/1000)))
+            w.writerow([m['name'], elapsed_f, m['gender_score'], m['poc_score'], m['diversity_score']])
+            elapsed += MS_PER_MOVIE
+        print('Successfully wrote report to file: '+SUMMARY_OUTPUT_FILE)
 
     with open(SUMMARY_SEQUENCE_OUTPUT_FILE, 'wb') as f:
         w = csv.writer(f)
