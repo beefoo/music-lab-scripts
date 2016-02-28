@@ -195,16 +195,18 @@ def addBeatsToSequence(instrument, duration, ms, round_to, gain_multiplier=1.0):
 for mi, m in enumerate(movies):
 
     m_instruments = [i for i in instruments if mi % phrases == i['phrase'] and i['phrase'] >= 0]
+    m_poc = [p for p in m['people'] if p['poc'] > 0]
 
-    for ii, i in enumerate(m_instruments):
+    for pi, p in enumerate(m_poc):
 
-        if m['poc'] > ii:
-            addBeatsToSequence(i.copy(), MS_PER_MOVIE, mi * MS_PER_MOVIE, ROUND_TO_NEAREST)
+        if pi >= len(m_instruments):
+            break
 
-        # else:
-        #     default_instrument = m_instruments[0].copy()
-        #     default_instrument['tempo_offset'] = i['tempo_offset']
-        #     addBeatsToSequence(default_instrument, MS_PER_MOVIE, mi * MS_PER_MOVIE, ROUND_TO_NEAREST)
+        if p['identifies_poc']:
+            addBeatsToSequence(m_instruments[pi].copy(), MS_PER_MOVIE, mi * MS_PER_MOVIE, ROUND_TO_NEAREST)
+
+        else:
+            addBeatsToSequence(m_instruments[pi].copy(), MS_PER_MOVIE, mi * MS_PER_MOVIE, ROUND_TO_NEAREST, p['poc'])
 
 # Build sequence
 for i in instruments:
