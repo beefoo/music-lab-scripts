@@ -33,13 +33,18 @@ people = []
 def normalize(val, min_val, max_val):
     return 1.0 * (val - min_val) / (max_val - min_val)
 
+def getPOC(races):
+    _races = races.split(",")
+    races_poc = len([r for r in _races if r!='w'])
+    return 1.0 * races_poc / len(_races)
+
 def getRaces(races):
     global race_key
     the_races = {}
-    races = races.split(",")
-    unique_races = set(races)
+    _races = races.split(",")
+    unique_races = set(_races)
     for r in unique_races:
-        the_races[r] = 1.0 * len([_r for _r in races if _r==r]) / len(races)
+        the_races[r] = 1.0 * len([_r for _r in _races if _r==r]) / len(_races)
     return the_races
 
 # Read in movies
@@ -67,9 +72,11 @@ with open(PEOPLE_FILE, 'rb') as f:
             'imdb_id': row['imdb_id'],
             'gender': row['gender'],
             'races': getRaces(row['races']),
+            'poc': getPOC(row['races']),
             'note': row['note'],
             'reference_url': row['reference_url'],
-            'voice': int(row['voice'])
+            'voice': int(row['voice']),
+            'identifies_poc': int(row['poc'])
         })
 
 # Add people to movies
@@ -89,12 +96,16 @@ for i, m in enumerate(movies):
 
     # get races
     races = dict(zip([r['key'] for r in race_config], [0] * len(race_config)))
+    poc = 0
     for p in movie_people:
         for key, value in p['races'].iteritems():
             races[key] += value
+        if len([r for r in p['races'].keys() if r != 'w']) > 0:
+            poc += 1
     for key, value in races.iteritems():
         races[key] = 1.0 * value / len(movie_people)
     movies[i]['races'] = races
+    movies[i]['poc'] = poc
 
     # gender score is higher w/ more females
     movies[i]['gender_score'] = round(genders['f'] - genders['m'], 2)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##
 # TRACK 9
-# HOLLYWOOD IN C
+# DAFT HOLLYWOOD
 # Brian Foo (brianfoo.com)
 # This file builds the sequence file for use with ChucK from the data supplied
 ##
@@ -17,12 +17,12 @@ import sys
 import time
 
 # Config
-BPM = 60 # Beats per minute, e.g. 60, 75, 100, 120, 150
-DIVISIONS_PER_BEAT = 8 # e.g. 4 = quarter notes, 8 = eighth notes, etc
+BPM = 120 # Beats per minute, e.g. 60, 75, 100, 120, 150
+DIVISIONS_PER_BEAT = 16 # e.g. 4 = quarter notes, 8 = eighth notes, etc
 VARIANCE_MS = 20 # +/- milliseconds an instrument note should be off by to give it a little more "natural" feel
 GAIN = 0.6 # base gain
 TEMPO = 1.0 # base tempo
-MS_PER_MOVIE = 3000
+MS_PER_MOVIE = 2000
 MIN_GAIN = 0.6
 MAX_GAIN = 1.0
 
@@ -77,18 +77,20 @@ def lerp(amt, min_val, max_val):
 with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
     r = csv.reader(f, delimiter=',')
     next(r, None) # remove header
-    for file, phrase, gender, race, min_count, max_count, from_gain, to_gain, from_tempo, to_tempo, tempo_offset, interval_phase, interval, interval_offset, active in r:
+    for file, phrase, race, min_gender, max_gender, min_poc, max_poc, from_gain, to_gain, from_tempo, to_tempo, tempo_offset, interval_phase, interval, interval_offset, active in r:
         if int(active):
             index = len(instruments)
             # build instrument object
             _beat_ms = int(round(BEAT_MS/TEMPO))
             instrument = {
                 'index': index,
+                'phrase': int(phrase),
                 'file': INSTRUMENTS_DIR + file,
-                'gender': gender,
-                'race': race,
-                'min_count': int(min_count),
-                'max_count': int(max_count),
+                'race': race.split(','),
+                'min_gender': float(min_gender),
+                'max_gender': float(max_gender),
+                'min_poc': float(min_poc),
+                'max_poc': float(max_poc),
                 'from_gain': float(from_gain) * GAIN,
                 'to_gain': float(to_gain) * GAIN,
                 'from_tempo': float(from_tempo) * TEMPO,
@@ -111,6 +113,7 @@ with open(MOVIES_INPUT_FILE) as data_file:
 # Calculate total time
 total_ms = len(movies) * MS_PER_MOVIE
 total_seconds = int(1.0*total_ms/1000)
+phrases = len(set([i['phrase'] for i in instruments if i['phrase'] >= 0]))
 print('Main sequence time: '+time.strftime('%M:%S', time.gmtime(total_seconds)) + ' (' + str(total_seconds) + 's)')
 print('Ms per beat: ' + str(BEAT_MS))
 print('Beats per movie: ' + str(BEATS_PER_MOVIE))
@@ -152,14 +155,12 @@ def isValidInterval(instrument, elapsed_ms):
     return int(math.floor(1.0*elapsed_ms/interval_ms)) % interval == interval_offset
 
 # Add beats to sequence
-def addBeatsToSequence(instrument, duration, ms, round_to, gain_multiplier):
+def addBeatsToSequence(instrument, duration, ms, round_to, gain_multiplier=1.0):
     global sequence
     global hindex
 
     beat_ms = int(roundToNearest(instrument['beat_ms'], round_to))
     offset_ms = int(instrument['tempo_offset'] * instrument['from_beat_ms'])
-    if offset > 0:
-        offset_ms = int(offset * instrument['beat_ms'])
     ms += offset_ms
     previous_ms = int(ms)
     from_beat_ms = instrument['from_beat_ms']
@@ -190,44 +191,52 @@ def addBeatsToSequence(instrument, duration, ms, round_to, gain_multiplier):
         elapsed_duration += this_beat_ms
         ms += this_beat_ms
 
+# Go through each movie
+for mi, m in enumerate(movies):
+
+    m_instruments = [i for i in instruments if mi % phrases == i['phrase'] and i['phrase'] >= 0]
+
+    for ii, i in enumerate(m_instruments):
+
+        if m['poc'] > ii:
+            addBeatsToSequence(i.copy(), MS_PER_MOVIE, mi * MS_PER_MOVIE, ROUND_TO_NEAREST)
+
+        # else:
+        #     default_instrument = m_instruments[0].copy()
+        #     default_instrument['tempo_offset'] = i['tempo_offset']
+        #     addBeatsToSequence(default_instrument, MS_PER_MOVIE, mi * MS_PER_MOVIE, ROUND_TO_NEAREST)
+
 # Build sequence
 for i in instruments:
     ms = None
     queue_duration = 0
 
+    if i['phrase'] >= 0:
+        continue
+
     # Go through each movie
     for mi, m in enumerate(movies):
 
-        offset = 0
-        genders = [p['gender'] for p in m['people']]
-        races = [p['races'].keys() for p in m['people']]
-        races = [r for r in races for r in r]
+        valid_race = len([k for k, v in m['races'].iteritems() if v > 0 and k in i['race']])
 
-        # Calculate individual's w/ instrument's race
-        race_counts = collections.Counter(races)
-        race_count = 0
-        if i['race'] in race_counts:
-            race_count = race_counts[i['race']]
-
-        # Calculate percent race
-        race_percent = 1.0 * race_count / len(races)
-        gain_multiplier = lerp(race_percent, MIN_GAIN, MAX_GAIN)
-
-        is_valid = i['gender'] in genders and i['race'] in races and race_count >= i['min_count'] and race_count <= i['max_count']
-
-        if not is_valid and queue_duration > 0 and ms != None:
-            addBeatsToSequence(i.copy(), queue_duration, ms, ROUND_TO_NEAREST, gain_multiplier)
-            ms = None
-            queue_duration = 0
+        is_valid = ('any' in i['race'] or valid_race) and i['min_gender'] <= m['gender_score'] < i['max_gender'] and i['min_poc'] <= m['poc_score'] < i['max_poc']
 
         if is_valid:
-            if ms==None:
-                ms = mi * MS_PER_MOVIE
-            queue_duration += MS_PER_MOVIE
-            # offset += 1
+            addBeatsToSequence(i.copy(), MS_PER_MOVIE, mi * MS_PER_MOVIE, ROUND_TO_NEAREST)
 
-    if queue_duration > 0 and ms != None:
-        addBeatsToSequence(i.copy(), queue_duration, ms, ROUND_TO_NEAREST, gain_multiplier)
+    #     if not is_valid and queue_duration > 0 and ms != None:
+    #         addBeatsToSequence(i.copy(), queue_duration, ms, ROUND_TO_NEAREST)
+    #         ms = None
+    #         queue_duration = 0
+    #
+    #     if is_valid:
+    #         if ms==None:
+    #             ms = mi * MS_PER_MOVIE
+    #         queue_duration += MS_PER_MOVIE
+    #         # offset += 1
+    #
+    # if queue_duration > 0 and ms != None:
+    #     addBeatsToSequence(i.copy(), queue_duration, ms, ROUND_TO_NEAREST)
 
 # Sort sequence
 sequence = sorted(sequence, key=lambda k: k['elapsed_ms'])
