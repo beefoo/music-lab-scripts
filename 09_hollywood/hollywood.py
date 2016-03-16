@@ -17,12 +17,12 @@ import sys
 import time
 
 # Config
-BPM = 120 # Beats per minute, e.g. 60, 75, 100, 120, 150
+BPM = 150 # Beats per minute, e.g. 60, 75, 100, 120, 150, 180
 DIVISIONS_PER_BEAT = 16 # e.g. 4 = quarter notes, 8 = eighth notes, etc
 VARIANCE_MS = 20 # +/- milliseconds an instrument note should be off by to give it a little more "natural" feel
 GAIN = 0.6 # base gain
 TEMPO = 1.0 # base tempo
-MS_PER_MOVIE = 2000
+BEATS_PER_MOVIE = 5
 MIN_GAIN = 0.6
 MAX_GAIN = 1.0
 
@@ -42,7 +42,7 @@ WRITE_REPORT = True
 # Calculations
 BEAT_MS = round(60.0 / BPM * 1000)
 ROUND_TO_NEAREST = round(BEAT_MS / DIVISIONS_PER_BEAT)
-BEATS_PER_MOVIE = round(MS_PER_MOVIE / BEAT_MS)
+MS_PER_MOVIE = BEATS_PER_MOVIE * BEAT_MS
 
 # Init
 movies = []
@@ -73,19 +73,27 @@ def roundToNearest(n, nearest):
 def lerp(amt, min_val, max_val):
     return (max_val - min_val) * amt + min_val
 
+def fraction(s):
+    if '/' in s:
+        parts = s.split('/')
+        return float(parts[0]) / float(parts[1])
+    else:
+        return float(s)
+
 # Read instruments from file
 with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
     r = csv.reader(f, delimiter=',')
     next(r, None) # remove header
-    for file, phrase, race, min_gender, max_gender, min_poc, max_poc, from_gain, to_gain, from_tempo, to_tempo, tempo_offset, interval_phase, interval, interval_offset, active in r:
+    for file, poc, gender, race, min_gender, max_gender, min_poc, max_poc, from_gain, to_gain, from_tempo, to_tempo, tempo_offset, interval_phase, interval, interval_offset, active in r:
         if int(active):
             index = len(instruments)
             # build instrument object
             _beat_ms = int(round(BEAT_MS/TEMPO))
             instrument = {
                 'index': index,
-                'phrase': int(phrase),
                 'file': INSTRUMENTS_DIR + file,
+                'poc': int(poc),
+                'gender': gender,
                 'race': race.split(','),
                 'min_gender': float(min_gender),
                 'max_gender': float(max_gender),
@@ -93,14 +101,14 @@ with open(INSTRUMENTS_INPUT_FILE, 'rb') as f:
                 'max_poc': float(max_poc),
                 'from_gain': float(from_gain) * GAIN,
                 'to_gain': float(to_gain) * GAIN,
-                'from_tempo': float(from_tempo) * TEMPO,
-                'to_tempo': float(to_tempo) * TEMPO,
+                'from_tempo': fraction(from_tempo) * TEMPO,
+                'to_tempo': fraction(to_tempo) * TEMPO,
                 'tempo_offset': float(tempo_offset),
                 'interval_ms': int(int(interval_phase)*_beat_ms),
                 'interval': int(interval),
                 'interval_offset': int(interval_offset),
-                'from_beat_ms': int(round(BEAT_MS/(float(from_tempo)*TEMPO))),
-                'to_beat_ms': int(round(BEAT_MS/(float(to_tempo)*TEMPO))),
+                'from_beat_ms': int(round(BEAT_MS/(fraction(from_tempo)*TEMPO))),
+                'to_beat_ms': int(round(BEAT_MS/(fraction(to_tempo)*TEMPO))),
                 'beat_ms': _beat_ms
             }
             # add instrument to instruments
@@ -113,7 +121,7 @@ with open(MOVIES_INPUT_FILE) as data_file:
 # Calculate total time
 total_ms = len(movies) * MS_PER_MOVIE
 total_seconds = int(1.0*total_ms/1000)
-phrases = len(set([i['phrase'] for i in instruments if i['phrase'] >= 0]))
+print('Moves: %s' % len(movies))
 print('Main sequence time: '+time.strftime('%M:%S', time.gmtime(total_seconds)) + ' (' + str(total_seconds) + 's)')
 print('Ms per beat: ' + str(BEAT_MS))
 print('Beats per movie: ' + str(BEATS_PER_MOVIE))
@@ -192,28 +200,31 @@ def addBeatsToSequence(instrument, duration, ms, round_to, gain_multiplier=1.0):
         ms += this_beat_ms
 
 # Go through each movie
+m_instruments = [i for i in instruments if i['max_gender']  < 0]
 for mi, m in enumerate(movies):
 
-    m_instruments = [i for i in instruments if mi % phrases == i['phrase'] and i['phrase'] >= 0]
-    m_poc = [p for p in m['people'] if p['poc'] > 0]
+    m_ms = mi * MS_PER_MOVIE
+    m_poc = len([p for p in m['people'] if p['poc'] > 0])
+    m_white = len(m['people']) - m_poc
 
-    for pi, p in enumerate(m_poc):
+    for p in m['people']:
 
-        if pi >= len(m_instruments):
-            break
+        for i in m_instruments:
 
-        if p['identifies_poc']:
-            addBeatsToSequence(m_instruments[pi].copy(), MS_PER_MOVIE, mi * MS_PER_MOVIE, ROUND_TO_NEAREST)
+            valid_race = len(list(set(p['races'].keys()) & set(i['race']))) > 0
 
-        else:
-            addBeatsToSequence(m_instruments[pi].copy(), MS_PER_MOVIE, mi * MS_PER_MOVIE, ROUND_TO_NEAREST, p['poc'])
+            if p['gender']==i['gender'] and p['poc']==i['poc'] and valid_race:
+                addBeatsToSequence(i.copy(), BEAT_MS, m_ms, ROUND_TO_NEAREST)
+
+        m_ms += BEAT_MS
+
 
 # Build sequence
 for i in instruments:
     ms = None
     queue_duration = 0
 
-    if i['phrase'] >= 0:
+    if i['max_gender']  < 0:
         continue
 
     # Go through each movie

@@ -1,9 +1,9 @@
 movie_id,year,rank,name,theaters,total_gross,studio,imdb_id,imdb_title
-1,2006,10,The Pursuit of Happyness,3169,163566459,Sony,454921,"Pursuit of Happyness, The (2006)"
 2,2006,9,Casino Royale,3443,167445960,Sony,381061,Casino Royale (2006)
 3,2006,8,Ice Age: The Meltdown,3969,195330621,Fox,438097,Ice Age: The Meltdown (2006)
 4,2006,7,Happy Feet,3804,198000317,WB,366548,Happy Feet (2006)
 5,2006,6,Superman Returns,4065,200081192,WB,348150,Superman Returns (2006)
+1,2006,10,The Pursuit of Happyness,3169,163566459,Sony,454921,"Pursuit of Happyness, The (2006)"
 6,2006,5,The Da Vinci Code,3757,217536138,Sony,382625,"Da Vinci Code, The (2006)"
 7,2006,4,X-Men: The Last Stand,3714,234362462,Fox,376994,X-Men: The Last Stand (2006)
 8,2006,3,Cars,3988,244082982,BV,317219,Cars (2006)
