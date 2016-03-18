@@ -15,63 +15,55 @@ int canvasH = 720;
 // data
 ArrayList<Movie> movies;
 ArrayList<Race> races;
+ArrayList<Category> categories;
 JSONArray races_json_array;
 JSONArray movies_json_array;
 String races_file = "../data/races.json";
 String movies_file = "../data/top_10_movies_2006-2015.json";
 boolean showLabels = true;
+int castPerMovie = 5;
 
 // color
-color bgColor = #232020;
+color bgColor = #161414;
+color labelBgColor = #0a0909;
 
 // text
 color textC = #f4f3ef;
+int castFontSize = 16;
+PFont castFont = createFont("OpenSans-Regular", castFontSize, true);
+int categoryFontSize = 18;
+PFont categoryFont = createFont("OpenSans-Regular", castFontSize, true);
 
 // components
-float componentMargin = 30;
-float componentMarginSmall = 10;
+float movieW = 360;
+float categoryW = (1.0 * canvasW - movieW) / 4;
+float categoryH = 60;
+float castMargin = 40;
+float castW = categoryW - castMargin*2;
+float castLabelH = 40;
+float raceW = castW;
+float raceH = 0;
+float castH = castW + castLabelH + raceH + 10;
+float movieH = castH * castPerMovie;
+int graphicsW = canvasW;
+int graphicsH = int(movieH);
 
-// race
-float raceH = 10;
-
-// cast component
-float castW = 180;
-float castH = castW;
-float castLeft = 100;
-float castTextH = 60;
-float featuredLeft = ((castW * 3 + componentMargin*2) - (castW * 2 + componentMargin)) / 2;
-int castFontSize = 18;
-PFont castFont = createFont("OpenSans-Regular", castFontSize, true);
-int castTextLeading = castFontSize + 6;
-float castTop = (1.0 * canvasH - (castH * 2 + castTextH * 2 + componentMarginSmall*4 + raceH*2)) / 2;
-float voicePercent = 0.8;
-float animatedPercent = 0.4;
-float animatedW = castW * animatedPercent;
-float animatedH = animatedW;
-
-// movie component
-float movieW = 300;
-float movieTop = 80;
-float movieLeft = (1.0 * canvasW - (movieW + castW * 3 + componentMargin * 2 + castLeft)) / 2;
-int movieFontSize = 24;
-PFont movieFont = createFont("OpenSans-Semibold", movieFontSize, true);
-int movieTextLeading = movieFontSize + 6;
-float movieTextH = 100;
-
-// legend
-float legendH = 30;
-float legendW = castW * 3 + componentMargin * 2;
-int legendFontSize = 16;
-float legendColW = 0;
-PFont legendFont = createFont("OpenSans-Regular", legendFontSize, true);
-int legendTextLeading = int(legendH);
+// labels
+PGraphics pg_categories;
 
 // time
 float startMs = 0;
 float stopMs = 0;
 float elapsedMs = startMs;
 float frameMs = (1.0/fps) * 1000;
-float movieMs = 10000;
+float movieMs = 2000;
+float movieStartPx = -movieH;
+float movieStopPx = 1.0 * canvasH;
+
+// to be define
+float pxPerMs = 0;
+float msPerPx = 0;
+float movieLeadingMs = 0;
 
 void setup() {
   // set the stage
@@ -82,6 +74,19 @@ void setup() {
   noStroke();
   noFill();
 
+  // make timing calculations
+  pxPerMs = movieH / movieMs;
+  msPerPx = 1.0 / pxPerMs;
+
+  movieLeadingMs = (1.0 * canvasH - categoryH) * msPerPx;
+
+  // load categories
+  categories = new ArrayList<Category>();
+  categories.add(new Category("Identifies as\nWhite Male", "#282828", "m", false, 0));
+  categories.add(new Category("Identifies as\nWhite Female", "#333333", "f", false, 1));
+  categories.add(new Category("Identifies as\nMale Person of Color", "#282828", "m", true, 2));
+  categories.add(new Category("Identifies as\nFemale Person of Color", "#333333", "f", true, 3));
+
   // load the race data
   races = new ArrayList<Race>();
   races_json_array = loadJSONArray(races_file);
@@ -89,87 +94,61 @@ void setup() {
     JSONObject race_json = races_json_array.getJSONObject(i);
     races.add(new Race(race_json));
   }
-  legendColW = 1.0 * canvasW / races.size();
 
   // load the movie data
   movies = new ArrayList<Movie>();
   movies_json_array = loadJSONArray(movies_file);
   for (int i = 0; i < movies_json_array.size(); i++) {
     JSONObject movie_json = movies_json_array.getJSONObject(i);
-    movies.add(new Movie(movie_json, i, movieMs));
+    float start = movieMs * i;
+    float duration = movieMs + movieLeadingMs;
+    movies.add(new Movie(movie_json, i, start, start + duration));
+
+    if (i > 10) { break; }
   }
 
   // determine length
   stopMs = movies.get(movies.size()-1).getEndMs();
+
+  buildCategories();
 
   // noLoop();
 }
 
 void draw(){
 
-  // get current movie
-  Movie current_movie = movies.get(movies.size()-1);
-  for (int i = 0; i < movies.size(); i++) {
+  // get active movies
+  ArrayList<Movie> visible_movies = new ArrayList<Movie>();
+  int active_movie_index = -1;
+  for (int i=0; i<movies.size(); i++) {
     Movie m = movies.get(i);
+    if (m.isVisible(elapsedMs)) {
+      visible_movies.add(m);
+    }
     if (m.isActive(elapsedMs)) {
-      current_movie = m;
-      break;
+      active_movie_index = i;
     }
   }
 
   background(bgColor);
 
-  float marginY = movieTop;
-  float marginX = movieLeft;
-
-  // draw the movie image
-  float movieH = movieW / current_movie.getImageRatio();
-  image(current_movie.getImage(), marginX, marginY, movieW, movieH);
-
-  // draw the movie text
-  marginY += movieH + componentMargin;
-  fill(textC);
-  textAlign(CENTER, TOP);
-  textFont(movieFont);
-  textLeading(movieTextLeading);
-  text(current_movie.getLabel(), marginX, marginY, movieW, movieTextH);
-
-  // draw the cast
-  float movieLeftOffset = marginX + movieW + castLeft;
-  marginY = castTop;
-  marginX = movieLeftOffset + featuredLeft;
-  textFont(castFont);
-  textLeading(castTextLeading);
-  ArrayList<Person> cast = current_movie.getPeople();
-  for(int i=0; i<2; i++) {
-    Person p = cast.get(i);
-    drawPerson(p, marginX, marginY);
-    marginX += componentMargin + castW;
-  }
-  marginX = movieLeftOffset;
-  marginY += componentMarginSmall*2 + castH + castTextH + raceH;
-  for(int i=2; i<5; i++) {
-    Person p = cast.get(i);
-    drawPerson(p, marginX, marginY);
-    marginX += componentMargin + castW;
+  // draw movies
+  for (Movie m : visible_movies) {
+    float percentProgress = m.getProgress(elapsedMs);
+    float y = lerp(movieStartPx, movieStopPx, percentProgress);
+    image(m.getGraphics(), 0, y, graphicsW, graphicsH);
   }
 
-  // draw legend
-  if (showLabels) {
-    marginY = canvasH - legendH;
-    marginX = 0;
-    textAlign(CENTER, CENTER);
-    textFont(legendFont);
-    textLeading(legendTextLeading);
-    for (int i = 0; i < races.size(); i++) {
-      Race r = races.get(i);
-      fill(r.getColor());
-      rect(marginX, marginY, legendColW, legendH);
-      fill(bgColor);
-      text(r.getLabel(), marginX, marginY - 2, legendColW, legendH);
-      marginX += legendColW;
-    }
+  // update categories if necessary
+  if (active_movie_index >= 0) {
+    Movie active_movie = movies.get(active_movie_index);
+    Person active_person = active_movie.getPersonActive(elapsedMs);
+    Category active_category = active_person.getCategory();
+    updateCategories(active_category.getIndex(), active_person.getProgress(elapsedMs));
   }
+
+  // draw category labels
+  image(pg_categories, movieW, canvasH - categoryH, categoryW * 4, categoryH);
 
   // increment time
   elapsedMs += frameMs;
@@ -192,34 +171,34 @@ void mousePressed() {
   exit();
 }
 
-void drawPerson(Person p, float marginX, float marginY){
-  if (p.isVoice()) {
-    image(p.getImage(), marginX, marginY, castW*voicePercent, castH*voicePercent);
-    image(p.getImageCharacter(), marginX + (castW-animatedW), marginY + (castH-animatedH), animatedW, animatedH);
-  } else {
-    image(p.getImage(), marginX, marginY, castW, castH);
-  }
-  if (showLabels) {
-    drawPersonRace(marginX, marginY + castH, castW, raceH, p.getRaces(), races);
-  }
-  fill(textC);
-  text(p.getLabel(), marginX, marginY + componentMarginSmall + castH + raceH, castW, castTextH);
+void buildCategories(){
+  // setup category graphics
+  pg_categories = createGraphics(int(categoryW*4), int(categoryH));
+  updateCategories(-1, -1);
 }
 
-void drawPersonRace(float x, float y, float w, float h, JSONObject race, ArrayList<Race> race_list) {
-  for(int i=0; i<race_list.size(); i++) {
-    Race r = race_list.get(i);
-    if (race.isNull(r.getKey())) {
-      continue;
+void updateCategories(int active, float amount){
+  pg_categories.beginDraw();
+  pg_categories.clear();
+  pg_categories.noStroke();
+  pg_categories.textFont(categoryFont);
+  pg_categories.textAlign(CENTER, CENTER);
+
+  for(int i=0; i<categories.size(); i++){
+    Category c = categories.get(i);
+    if (i==active) {
+      color lerpedColor = lerpColor(c.getColorActive(), c.getColor(), amount);
+      pg_categories.fill(lerpedColor);
+    } else {
+      pg_categories.fill(c.getColor());
     }
-    float racePercent = race.getFloat(r.getKey());
-    if (racePercent > 0) {
-      float rw = racePercent * w;
-      fill(r.getColor());
-      rect(x, y, rw, h);
-      x += rw;
-    }
+
+    pg_categories.rect(i*categoryW, 0, categoryW, categoryH);
+    pg_categories.fill(#ffffff);
+    pg_categories.text(c.getLabel(), i*categoryW, 0, categoryW, categoryH);
   }
+
+  pg_categories.endDraw();
 }
 
 class Movie
@@ -229,58 +208,97 @@ class Movie
   String name, gross, year;
   ArrayList<Person> people;
   PImage image;
+  PGraphics pg;
 
-  Movie(JSONObject _movie, int _index, float _movieMs) {
+  Movie(JSONObject _movie, int _index, float _startMs, float _endMs) {
     index = _index;
     name = _movie.getString("name");
     gross = _movie.getString("gross_f");
     year = "" + _movie.getInt("year");
-    start_ms = _index * _movieMs;
-    end_ms = (_index+1) * _movieMs;
+    start_ms = _startMs;
+    end_ms = _endMs;
     image = loadImage("movies/"+_movie.getString("imdb_id")+".jpg");
 
     // look through movie's people
     people = new ArrayList<Person>();
     JSONArray people_json_array = _movie.getJSONArray("people");
+    float person_duration = movieMs / castPerMovie;
     for (int i = 0; i < people_json_array.size(); i++) {
       JSONObject person_json = people_json_array.getJSONObject(i);
-      people.add(new Person(person_json));
+      float p_start_ms = start_ms+movieLeadingMs+person_duration*i;
+      people.add(new Person(person_json, i, p_start_ms, p_start_ms+person_duration));
     }
+
+    // build graphics
+    buildGraphics();
+  }
+
+  void buildGraphics(){
+    float imgRatio = 1.0 * image.width / image.height;
+    float imgW = movieW;
+    float imgH = imgW / imgRatio;
+    pg = createGraphics(graphicsW, graphicsH);
+
+    // init
+    pg.beginDraw();
+    pg.background(bgColor);
+    pg.colorMode(RGB, 255, 255, 255, 100);
+    pg.noStroke();
+    pg.textAlign(CENTER, CENTER);
+
+    // place the movie image
+    pg.image(image, 0, graphicsH - imgH, imgW, imgH);
+
+    // place the cast
+    float offsetY = 0;
+    for (Person p : people) {
+      float x = movieW;
+      if (p.getGender().equals("f")) { x += categoryW; }
+      if (p.isPoc()) { x += categoryW * 2; }
+      float y = graphicsH - castH - offsetY;
+
+      // draw person
+      pg.image(p.getGraphics(), x+castMargin, y, castW, castH);
+
+      offsetY += castH;
+    }
+
+    pg.endDraw();
   }
 
   float getEndMs(){
     return end_ms;
   }
 
-  String getGross(){
-    return gross;
+  PGraphics getGraphics(){
+    return pg;
   }
 
-  PImage getImage(){
-    return image;
+  Person getPersonActive(float ms){
+    float p = getProgressActive(ms);
+    int i = floor(p * castPerMovie);
+    return people.get(i);
   }
 
-  float getImageRatio(){
-    return 1.0 * image.width / image.height;
+  float getProgress(float ms){
+    float p = (ms - start_ms) / (end_ms - start_ms);
+    p = min(p, 1);
+    p = max(p, 0);
+    return p;
   }
 
-  String getLabel(){
-    return name + " (" + year + ")";
-  }
-
-  String getName(){
-    return name;
-  }
-
-  ArrayList<Person> getPeople(){
-    return people;
-  }
-
-  String getYear(){
-    return year;
+  float getProgressActive(float ms){
+    float p = (ms - (start_ms+movieLeadingMs)) / (end_ms - (start_ms+movieLeadingMs));
+    p = min(p, 1);
+    p = max(p, 0);
+    return p;
   }
 
   boolean isActive(float ms) {
+    return ms >= (start_ms+movieLeadingMs) && ms < end_ms;
+  }
+
+  boolean isVisible(float ms) {
     return ms >= start_ms && ms < end_ms;
   }
 
@@ -289,25 +307,97 @@ class Movie
 class Person
 {
   String name, gender;
-  boolean voice;
+  boolean voice, poc;
   PImage image, image_character;
   JSONObject my_races;
+  PGraphics pg;
+  Category category;
+  int index;
+  float start_ms, end_ms;
 
-  Person(JSONObject _person) {
+  Person(JSONObject _person, int _index, float _start_ms, float _end_ms) {
     name = _person.getString("name");
     gender = _person.getString("gender");
     voice = (_person.getInt("voice") > 0);
+    poc = (_person.getInt("poc") > 0);
     image = loadImage("people/"+_person.getString("imdb_id")+"_"+_person.getString("movie_imdb_id")+".jpg");
+    index = _index;
+    start_ms = _start_ms;
+    end_ms = _end_ms;
     if (voice) {
       image_character = loadImage("characters/"+_person.getString("imdb_id")+"_"+_person.getString("movie_imdb_id")+".jpg");
     } else {
       image_character = createImage(10, 10, RGB);
     }
     my_races = _person.getJSONObject("races");
+
+    for(Category c : categories){
+      if (gender.equals(c.getGender()) && poc == c.getPoc()) {
+        category = c;
+      }
+    }
+
+    buildGraphics();
+  }
+
+  void buildGraphics(){
+    pg = createGraphics(int(castW), int(castH));
+
+    // init
+    pg.beginDraw();
+    pg.background(bgColor);
+    pg.noStroke();
+    pg.textFont(castFont);
+    pg.textAlign(CENTER, CENTER);
+
+    float x = 0;
+    float y = 0;
+
+    // place the image
+    pg.image(image, x, y, castW, castW);
+    // place character image
+    if (voice){
+      float resize = 0.35;
+      float offset = (castW-castW*resize);
+      pg.image(image_character, x + offset, y + offset, castW * resize, castW * resize);
+    }
+    y += castW;
+
+    // place the races
+    if (raceH > 0) {
+      for(Race r : races) {
+        if (my_races.isNull(r.getKey())) { continue; }
+        float racePercent = my_races.getFloat(r.getKey());
+        if (racePercent > 0) {
+          float rw = racePercent * castW;
+          pg.fill(r.getColor());
+          pg.rect(x, y, rw, raceH);
+          x += rw;
+        }
+      }
+      x = 0;
+      y += raceH;
+    }
+
+    // place the label
+    pg.fill(labelBgColor);
+    pg.rect(x, y, castW, castLabelH);
+    pg.fill(#ffffff);
+    pg.text(getLabel(), x, y, castW, castLabelH);
+
+    pg.endDraw();
+  }
+
+  Category getCategory(){
+    return category;
   }
 
   String getGender(){
     return gender;
+  }
+
+  PGraphics getGraphics(){
+    return pg;
   }
 
   PImage getImage(){
@@ -330,8 +420,19 @@ class Person
     return name;
   }
 
+  float getProgress(float ms){
+    float p = (ms - start_ms) / (end_ms - start_ms);
+    p = min(p, 1);
+    p = max(p, 0);
+    return p;
+  }
+
   JSONObject getRaces(){
     return my_races;
+  }
+
+  boolean isPoc(){
+    return poc;
   }
 
   boolean isVoice(){
@@ -363,6 +464,49 @@ class Race
 
   String getLabel(){
     return label;
+  }
+
+}
+
+class Category
+{
+  int index;
+  boolean poc;
+  String label, gender;
+  color my_color, active_color;
+
+  Category(String _label, String _color, String _gender, boolean _poc, int _index) {
+    label = _label;
+    _color = "FF" + _color.substring(1);
+    my_color = unhex(_color);
+    gender = _gender;
+    poc = _poc;
+    index = _index;
+    active_color = lerpColor(my_color, #ffffff, 0.5);
+  }
+
+  color getColor(){
+    return my_color;
+  }
+
+  color getColorActive(){
+    return active_color;
+  }
+
+  String getGender(){
+    return gender;
+  }
+
+  int getIndex(){
+    return index;
+  }
+
+  String getLabel(){
+    return label;
+  }
+
+  boolean getPoc(){
+    return poc;
   }
 
 }
