@@ -104,7 +104,7 @@ void setup() {
     float duration = movieMs + movieLeadingMs;
     movies.add(new Movie(movie_json, i, start, start + duration));
 
-    if (i > 10) { break; }
+    // if (i > 10) { break; }
   }
 
   // determine length
@@ -118,15 +118,27 @@ void setup() {
 void draw(){
 
   // get active movies
+  boolean foundVisible = false;
+  boolean foundActive = false;
   ArrayList<Movie> visible_movies = new ArrayList<Movie>();
-  int active_movie_index = -1;
-  for (int i=0; i<movies.size(); i++) {
+  Movie active_movie = movies.get(0);
+  for (int i=movies.size()-1; i>=0; i--) {
     Movie m = movies.get(i);
+    // visible movie found
     if (m.isVisible(elapsedMs)) {
-      visible_movies.add(m);
+      visible_movies.add(0, m);
+      foundVisible = true;
+
+    // we're finished with this movie, free up memory and garbage collect
+    } else if (foundVisible) {
+      m.clearFromMemory();
+      movies.remove(i);
+      System.gc();
     }
+    // active movie found
     if (m.isActive(elapsedMs)) {
-      active_movie_index = i;
+      active_movie = m;
+      foundActive = true;
     }
   }
 
@@ -136,12 +148,12 @@ void draw(){
   for (Movie m : visible_movies) {
     float percentProgress = m.getProgress(elapsedMs);
     float y = lerp(movieStartPx, movieStopPx, percentProgress);
+    if (!m.isGraphicsInitialized()) { m.buildGraphics(); }
     image(m.getGraphics(), 0, y, graphicsW, graphicsH);
   }
 
   // update categories if necessary
-  if (active_movie_index >= 0) {
-    Movie active_movie = movies.get(active_movie_index);
+  if (foundActive) {
     Person active_person = active_movie.getPersonActive(elapsedMs);
     Category active_category = active_person.getCategory();
     updateCategories(active_category.getIndex(), active_person.getProgress(elapsedMs));
@@ -203,9 +215,10 @@ void updateCategories(int active, float amount){
 
 class Movie
 {
+  boolean graphicsInitialized;
   int index;
   float start_ms, end_ms;
-  String name, gross, year;
+  String name, gross, year, imageFileString;
   ArrayList<Person> people;
   PImage image;
   PGraphics pg;
@@ -217,7 +230,7 @@ class Movie
     year = "" + _movie.getInt("year");
     start_ms = _startMs;
     end_ms = _endMs;
-    image = loadImage("movies/"+_movie.getString("imdb_id")+".jpg");
+    imageFileString = "movies/"+_movie.getString("imdb_id")+".jpg";
 
     // look through movie's people
     people = new ArrayList<Person>();
@@ -230,21 +243,30 @@ class Movie
     }
 
     // build graphics
-    buildGraphics();
+    graphicsInitialized = false;
+    // buildGraphics();
   }
 
   void buildGraphics(){
-    float imgRatio = 1.0 * image.width / image.height;
-    float imgW = movieW;
-    float imgH = imgW / imgRatio;
     pg = createGraphics(graphicsW, graphicsH);
+
+    image = loadImage(imageFileString);
 
     // init
     pg.beginDraw();
-    pg.background(bgColor);
+    if (index % 2 == 0) {
+      pg.background(lerpColor(bgColor, #000000, 0.75));
+    } else {
+      pg.background(bgColor);
+    }
+
     pg.colorMode(RGB, 255, 255, 255, 100);
     pg.noStroke();
     pg.textAlign(CENTER, CENTER);
+
+    float imgRatio = 1.0 * image.width / image.height;
+    float imgW = movieW;
+    float imgH = imgW / imgRatio;
 
     // place the movie image
     pg.image(image, 0, graphicsH - imgH, imgW, imgH);
@@ -258,12 +280,28 @@ class Movie
       float y = graphicsH - castH - offsetY;
 
       // draw person
+      if (!p.isGraphicsInitialized()) { p.buildGraphics(); }
       pg.image(p.getGraphics(), x+castMargin, y, castW, castH);
 
       offsetY += castH;
     }
 
     pg.endDraw();
+    graphicsInitialized = true;
+  }
+
+  void clearFromMemory(){
+    if (graphicsInitialized) {
+      pg.beginDraw();
+      pg.clear();
+      pg.endDraw();
+      g.removeCache(image);
+      image = null;
+      pg = null;
+      for(Person p : people) {
+        p.clearFromMemory();
+      }
+    }
   }
 
   float getEndMs(){
@@ -298,6 +336,10 @@ class Movie
     return ms >= (start_ms+movieLeadingMs) && ms < end_ms;
   }
 
+  boolean isGraphicsInitialized() {
+    return graphicsInitialized;
+  }
+
   boolean isVisible(float ms) {
     return ms >= start_ms && ms < end_ms;
   }
@@ -306,8 +348,8 @@ class Movie
 
 class Person
 {
-  String name, gender;
-  boolean voice, poc;
+  String name, gender, imageFileName, imageCharFileName;
+  boolean voice, poc, graphicsInitialized;
   PImage image, image_character;
   JSONObject my_races;
   PGraphics pg;
@@ -320,14 +362,13 @@ class Person
     gender = _person.getString("gender");
     voice = (_person.getInt("voice") > 0);
     poc = (_person.getInt("poc") > 0);
-    image = loadImage("people/"+_person.getString("imdb_id")+"_"+_person.getString("movie_imdb_id")+".jpg");
+    imageFileName = "people/"+_person.getString("imdb_id")+"_"+_person.getString("movie_imdb_id")+".jpg";
     index = _index;
     start_ms = _start_ms;
     end_ms = _end_ms;
+    imageCharFileName = "";
     if (voice) {
-      image_character = loadImage("characters/"+_person.getString("imdb_id")+"_"+_person.getString("movie_imdb_id")+".jpg");
-    } else {
-      image_character = createImage(10, 10, RGB);
+      imageCharFileName = "characters/"+_person.getString("imdb_id")+"_"+_person.getString("movie_imdb_id")+".jpg";
     }
     my_races = _person.getJSONObject("races");
 
@@ -337,11 +378,19 @@ class Person
       }
     }
 
-    buildGraphics();
+    // buildGraphics();
+    graphicsInitialized = false;
   }
 
   void buildGraphics(){
     pg = createGraphics(int(castW), int(castH));
+
+    image = loadImage(imageFileName);
+    if (voice){
+      image_character = loadImage(imageCharFileName);
+    } else {
+      image_character = createImage(10, 10, RGB);
+    }
 
     // init
     pg.beginDraw();
@@ -386,6 +435,21 @@ class Person
     pg.text(getLabel(), x, y, castW, castLabelH);
 
     pg.endDraw();
+
+    graphicsInitialized = true;
+  }
+
+  void clearFromMemory(){
+    if (graphicsInitialized) {
+      pg.beginDraw();
+      pg.clear();
+      pg.endDraw();
+      g.removeCache(image);
+      g.removeCache(image_character);
+      image = null;
+      image_character = null;
+      pg = null;
+    }
   }
 
   Category getCategory(){
@@ -429,6 +493,10 @@ class Person
 
   JSONObject getRaces(){
     return my_races;
+  }
+
+  boolean isGraphicsInitialized() {
+    return graphicsInitialized;
   }
 
   boolean isPoc(){
