@@ -213,8 +213,11 @@ for mi, m in enumerate(movies):
 
             valid_race = len(list(set(p['races'].keys()) & set(i['race']))) > 0
 
-            if p['gender']==i['gender'] and p['poc']==i['poc'] and valid_race:
-                addBeatsToSequence(i.copy(), BEAT_MS, m_ms, ROUND_TO_NEAREST)
+            if p['gender']==i['gender'] and p['identifies_poc']==i['poc'] and valid_race:
+                gain_multiplier = 1.0
+                if p['identifies_poc'] > 0:
+                    gain_multiplier = p['poc']
+                addBeatsToSequence(i.copy(), BEAT_MS, m_ms, ROUND_TO_NEAREST, gain_multiplier)
 
         m_ms += BEAT_MS
 
