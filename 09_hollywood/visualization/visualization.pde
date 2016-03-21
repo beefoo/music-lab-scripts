@@ -6,7 +6,9 @@
 // output
 int fps = 30;
 String outputFrameFile = "output/frames/frames-#####.png";
+String outputFrameFileMulti = "output/frames{i}/frames-#####.png";
 boolean captureFrames = false;
+int outputFolders = 2;
 
 // resolution
 int canvasW = 1280;
@@ -38,12 +40,12 @@ PFont categoryFont = createFont("OpenSans-Regular", castFontSize, true);
 float movieW = 360;
 float categoryW = (1.0 * canvasW - movieW) / 4;
 float categoryH = 60;
-float castMargin = 40;
+float castMargin = 70;
 float castW = categoryW - castMargin*2;
 float castLabelH = 40;
 float raceW = castW;
 float raceH = 0;
-float castH = castW + castLabelH + raceH + 10;
+float castH = castW + castLabelH + raceH;
 float movieH = castH * castPerMovie;
 int graphicsW = canvasW;
 int graphicsH = int(movieH);
@@ -53,10 +55,10 @@ PGraphics pg_categories;
 
 // time
 float startMs = 0;
-float stopMs = 0;
+float stopMs = 20000;
 float elapsedMs = startMs;
 float frameMs = (1.0/fps) * 1000;
-float movieMs = 2000;
+float movieMs = 4000;
 float movieStartPx = -movieH;
 float movieStopPx = 1.0 * canvasH;
 
@@ -64,6 +66,8 @@ float movieStopPx = 1.0 * canvasH;
 float pxPerMs = 0;
 float msPerPx = 0;
 float movieLeadingMs = 0;
+float totalFrames = 0;
+float framesPerFolder = 0;
 
 void setup() {
   // set the stage
@@ -108,7 +112,13 @@ void setup() {
   }
 
   // determine length
-  stopMs = movies.get(movies.size()-1).getEndMs();
+  if (stopMs <= 0) {
+    stopMs = movies.get(movies.size()-1).getEndMs();
+  }
+
+  // determine the frames
+  totalFrames = stopMs * 0.001 * fps;
+  framesPerFolder = totalFrames / outputFolders;
 
   buildCategories();
 
@@ -167,6 +177,11 @@ void draw(){
 
   // save image
   if(captureFrames) {
+    // check which folder if more than one output folders
+    if (outputFolders > 1) {
+      int folder = int(frameCount / framesPerFolder)
+      outputFrameFile = outputFrameFileMulti.replace("{i}", ""+folder);
+    }
     saveFrame(outputFrameFile);
   }
 
@@ -281,7 +296,7 @@ class Movie
 
       // draw person
       if (!p.isGraphicsInitialized()) { p.buildGraphics(); }
-      pg.image(p.getGraphics(), x+castMargin, y, castW, castH);
+      pg.image(p.getGraphics(), x, y, categoryW, castH);
 
       offsetY += castH;
     }
@@ -361,7 +376,7 @@ class Person
     name = _person.getString("name");
     gender = _person.getString("gender");
     voice = (_person.getInt("voice") > 0);
-    poc = (_person.getInt("poc") > 0);
+    poc = (_person.getInt("identifies_poc") > 0);
     imageFileName = "people/"+_person.getString("imdb_id")+"_"+_person.getString("movie_imdb_id")+".jpg";
     index = _index;
     start_ms = _start_ms;
@@ -383,7 +398,7 @@ class Person
   }
 
   void buildGraphics(){
-    pg = createGraphics(int(castW), int(castH));
+    pg = createGraphics(int(categoryW), int(castH));
 
     image = loadImage(imageFileName);
     if (voice){
@@ -394,12 +409,12 @@ class Person
 
     // init
     pg.beginDraw();
-    pg.background(bgColor);
+    // pg.background(bgColor);
     pg.noStroke();
     pg.textFont(castFont);
     pg.textAlign(CENTER, CENTER);
 
-    float x = 0;
+    float x = castMargin;
     float y = 0;
 
     // place the image
@@ -429,10 +444,11 @@ class Person
     }
 
     // place the label
-    pg.fill(labelBgColor);
-    pg.rect(x, y, castW, castLabelH);
+    // pg.fill(labelBgColor);
+    // pg.rect(x, y, castW, castLabelH);
+    x = 0;
     pg.fill(#ffffff);
-    pg.text(getLabel(), x, y, castW, castLabelH);
+    pg.text(getLabel(), x, y, categoryW, castLabelH);
 
     pg.endDraw();
 
