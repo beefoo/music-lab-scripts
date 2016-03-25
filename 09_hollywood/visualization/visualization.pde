@@ -55,7 +55,7 @@ PGraphics pg_categories;
 
 // time
 float startMs = 0;
-float stopMs = 20000;
+float stopMs = 0;
 float elapsedMs = startMs;
 float frameMs = (1.0/fps) * 1000;
 float movieMs = 4000;
@@ -152,7 +152,8 @@ void draw(){
     }
   }
 
-  background(bgColor);
+  background(lerpColor(bgColor, #000000, 0.75));
+  // background(bgColor);
 
   // draw movies
   for (Movie m : visible_movies) {
@@ -179,7 +180,7 @@ void draw(){
   if(captureFrames) {
     // check which folder if more than one output folders
     if (outputFolders > 1) {
-      int folder = int(frameCount / framesPerFolder)
+      int folder = floor(frameCount / framesPerFolder) + 1;
       outputFrameFile = outputFrameFileMulti.replace("{i}", ""+folder);
     }
     saveFrame(outputFrameFile);
@@ -270,7 +271,8 @@ class Movie
     // init
     pg.beginDraw();
     if (index % 2 == 0) {
-      pg.background(lerpColor(bgColor, #000000, 0.75));
+      //pg.background(lerpColor(bgColor, #000000, 0.75));
+      pg.background(bgColor);
     } else {
       pg.background(bgColor);
     }
@@ -421,9 +423,9 @@ class Person
     pg.image(image, x, y, castW, castW);
     // place character image
     if (voice){
-      float resize = 0.35;
+      float resize = 0.5;
       float offset = (castW-castW*resize);
-      pg.image(image_character, x + offset, y + offset, castW * resize, castW * resize);
+      pg.image(image_character, x + offset + castW*resize*0.6, y + offset, castW * resize, castW * resize);
     }
     y += castW;
 
