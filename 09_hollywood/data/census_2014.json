@@ -1,0 +1,12 @@
+[
+  {"label": "White Males", "gender": "m", "race": "w", "value": 100265582},
+  {"label": "African American/Black Males", "gender": "m", "race": "b", "value": 20231811},
+  {"label": "Males of Hispanic Origin", "gender": "m", "race": "h", "value": 28935156},
+  {"label": "Asian and Pacific Islander Males", "gender": "m", "race": "a", "value": 9765243},
+  {"label": "American Indian and Alaska Native Males", "gender": "m", "race": "o", "value": 2060748},
+  {"label": "White Females", "gender": "f", "race": "w", "value": 103241339},
+  {"label": "African American/Black Females", "gender": "f", "race": "b", "value": 22084576},
+  {"label": "Females of Hispanic Origin", "gender": "f", "race": "h", "value": 28295091},
+  {"label": "Asian and Pacific Islander Females", "gender": "f", "race": "a", "value": 10605930},
+  {"label": "American Indian and Alaska Native Females", "gender": "f", "race": "o", "value": 2163984}
+]
