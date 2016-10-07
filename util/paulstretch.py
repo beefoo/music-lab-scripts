@@ -5,6 +5,7 @@
 #
 # Usage: python paulstretch.py ../09_hollywood/data/stretch.csv ../09_hollywood/instruments/ ../09_hollywood/instruments/
 
+import contextlib
 import csv
 from numpy import *
 import scipy.io.wavfile
@@ -122,6 +123,14 @@ def paulstretch(samplerate,smp,stretch,windowsize_seconds,outfilename):
 
     outfile.close()
 
+def getDuration(fname):
+    with contextlib.closing(wave.open(fname,'r')) as f:
+        frames = f.getnframes()
+        rate = f.getframerate()
+        duration = frames / float(rate)
+        print "%s: %s" % (fname, duration)
+        return duration
+
 if len(sys.argv) < 3:
     print ("Usage: "+sys.argv[0]+" <inputfile> <inputdir> <outputdir>")
     print ("      <inputfile> is a .csv file with two columns: filename (string, e.g. sound.wav) and multiplier (float, e.g. 8.0)")
@@ -137,16 +146,23 @@ WINDOW_SIZE = 0.25
 # Read files from file
 with open(INPUT_FILE, 'rb') as f:
     r = csv.reader(f, delimiter=',')
-    for filename,multiply in r:
-        if filename.endswith('.wav') and multiply.isdigit():
+    for filename,multiply,duration in r:
+        if filename.endswith('.wav') and (multiply.isdigit() or duration.isdigit()):
             input_file = INPUT_DIR + filename
-            output_file = OUTPUT_DIR + filename.replace('.wav', '-x'+multiply+'.wav')
-            stretch = float(multiply)
             (samplerate,smp)=load_wav(input_file)
-            print ("Processing: "+input_file+" "+multiply+"x")
-            paulstretch(samplerate,smp,stretch,WINDOW_SIZE,output_file)
-            print ("Wrote to file: "+output_file)
+
+            multiply = float(multiply)
+            if multiply <= 0:
+                file_duration = getDuration(input_file)
+                multiply = float(duration) / file_duration
+            multiply = max(multiply, 1.0)
+
+            output_file = OUTPUT_DIR + filename.replace('.wav', '-x'+str(int(multiply))+'.wav')
+
+            print "Processing: %s %sx" % (input_file, multiply)
+            paulstretch(samplerate,smp,multiply,WINDOW_SIZE,output_file)
+            print "Wrote to file: %s" % output_file
         else:
-            print ("Skipping line: "+filename+", "+multiply)
+            print "Skipping line: %s, %s" % (filename, multiply)
 
 print ("Done.")
