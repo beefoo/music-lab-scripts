@@ -34,7 +34,7 @@ All software required for making this song from scratch is free and open-source
   * **Active** essentially activates or deactivates an instrument
 5. Prepare all your sound files and place in folder `/instruments`. All files should be in .wav format. For best results, I'd recommend using very short clips (< 500ms).
 6. Prepare all your images and place in folder `/analysis/data`. All files should be jpg or png, 300 dpi and 288px in height.
-  
+
 ### Configure The Scripts
 
 1. Processing script: [analysis/analysis.pde](analysis/analysis.pde)
@@ -42,11 +42,11 @@ All software required for making this song from scratch is free and open-source
   * **color_radius_h/color_radius_s/color_radius_b** the hue/saturation/brightness sample radius
   * **msPerBeat** is the milliseconds per beat
   * **pxPerBeat** is the speed of the visualization (pixels per beat)
-2. Python script: [dating.py](dating.py)
+2. Python script: [painters.py](painters.py)
   * **BPM** is the song's beats per minute.
   * **PX_PER_BEAT** is pixels to move per beat.
   * **DIVISIONS_PER_BEAT** is how the beats are divided. For example, a value of 4 would create quarter-notes as the smallest unit, 8 would create eighth-notes, etc.
-3. ChucK script: [dating.ck](dating.ck)
+3. ChucK script: [painters.ck](painters.ck)
   * **padding** is the amount of milliseconds before and after the song.
   * **instrument_buffers** is the number of buffers each instrument has. If you hear clipping in your song, you will want to increase this number.
 	* **start** is which millisecond you would like the song to start on. Useful for debugging a particular part of the song.
